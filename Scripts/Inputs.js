@@ -6,6 +6,8 @@ var downArrow;
 var mouseX;
 var mouseY;
 
+var mouseDown = false;
+
 document.addEventListener('keydown', function(event) 
 {
     if(event.keyCode == 37) // LEFT
@@ -49,14 +51,14 @@ document.addEventListener('keyup', function(event)
 function UpdateInputs()
 {
     if(leftArrow)
-        player.position.x -= player.speed;
+        player.position.x -= player.speed/delta;
     else if(rightArrow)
-        player.position.x += player.speed;
+        player.position.x += player.speed/delta;
     
     if(upArrow)
-        player.position.y -= player.speed;
+        player.position.y -= player.speed/delta;
     else if(downArrow)
-        player.position.y += player.speed;
+        player.position.y += player.speed/delta;
 }
 
 function MovingMouse(event)
@@ -78,9 +80,20 @@ function MouseDown(event)
             }
         }
     }
+
+    mouseDown = true;
 }
 
 function MouseUp(event)
 {
-
+    mouseDown = false;
 }
+
+const Scroll = e => {
+    const direction = (e.deltaY || -e.wheelDelta || e.detail) >> 10 || 1;
+    scale += -direction * 1;
+    if(scale < 1) scale = 1;
+  };
+  document.addEventListener("wheel", Scroll);
+  document.addEventListener("mousewheel", Scroll);
+  document.addEventListener("DOMMouseScroll", Scroll);

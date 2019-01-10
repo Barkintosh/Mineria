@@ -1,21 +1,15 @@
 var blocksOnScreen = 0;
+var debug = false;
+
+var btn = new Button(position = {x:10, y:10}, 100, 30, "Debug", ToggleDebbug);
 
 function InterfaceUpdate()
 {
-    for( var i = 0; i < blocks.length; i++)
-    {
-      for( var j = 0; j < blocks.length; j++)
-      {
-        if(!blocks[i][j].IsOnScreen())
-        {
-            blocksOnScreen++;
-        }
-      }
-    }
+  btn.Update();
+}
 
-    ctx.font = "21px Arial";
-    ctx.fillStyle = "blue";
-    ctx.fillText("Blocks off screen : " + blocksOnScreen, 5, 25);
-
-    blocksOnScreen = 0;
+function ToggleDebbug()
+{
+  debug = !debug;
+  console.log("debug");
 }

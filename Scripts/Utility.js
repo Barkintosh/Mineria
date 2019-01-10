@@ -19,6 +19,11 @@ Math.getDistance = function( x1, y1, x2, y2 ) {
 	return Math.sqrt( xs + ys );
 };
 
+function lerp(a, b, n) 
+{
+    return (1 - n) * a + n * b;
+}
+
 function Create2DArray(rows)
 {
     var arr = [];

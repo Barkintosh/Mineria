@@ -4,6 +4,11 @@ class Block
     {
         this.id = id;
         this.gridPosition = gridPosition;
+        this.worldPosition = 
+        {
+            x: (this.gridPosition.x - player.position.x) * scale + canvas.width/2,
+            y: (this.gridPosition.y - player.position.y) * scale + canvas.height/2
+        }
     }
 
     DrawBlock()
@@ -16,8 +21,8 @@ class Block
             16,
             16,
 
-            this.worldPosition.x,
-            this.worldPosition.y,
+            this.worldPosition.x - scale/2,
+            this.worldPosition.y - scale/2,
             scale,
             scale
         );
@@ -25,10 +30,10 @@ class Block
 
     IsClicked(x, y)
     {
-        if(x > this.worldPosition.x
-        && x < this.worldPosition.x + scale
-        && y > this.worldPosition.y
-        && y < this.worldPosition.y + scale) return true;
+        if(x > this.worldPosition.x - scale/2
+        && x < this.worldPosition.x + scale/2
+        && y > this.worldPosition.y - scale/2
+        && y < this.worldPosition.y + scale/2) return true;
         else return false;
     }
 
@@ -36,10 +41,10 @@ class Block
     {
         if
         (
-        this.worldPosition.x > -scale
-        && this.worldPosition.x < window.innerWidth
-        && this.worldPosition.y > -scale
-        && this.worldPosition.y < window.innerHeight
+        this.worldPosition.x > -scale + 100
+        && this.worldPosition.x < window.innerWidth - 100
+        && this.worldPosition.y > -scale + 100
+        && this.worldPosition.y < window.innerHeight - 100
         )
         {
             return true;
@@ -51,46 +56,56 @@ class Block
     {
         ctx.beginPath();
         ctx.fillStyle = "rgba(0, 0, 0," + GetLightPercentage(8, this.gridPosition.x, this.gridPosition.y) + ")";
-        ctx.fillRect(this.worldPosition.x, this.worldPosition.y, scale, scale);
+        ctx.fillRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
+    }
+
+    DrawDebug()
+    {
+        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.position.x, player.position.y) < 0.5)
+        {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 1;
+            ctx.strokeRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
+        }
+        else
+        {
+            ctx.strokeStyle = "yellow";
+            ctx.lineWidth = 0.5;
+            ctx.strokeRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
+        
+            ctx.strokeStyle = "green";
+            ctx.beginPath();
+            ctx.moveTo(this.worldPosition.x, this.worldPosition.y - 5);
+            ctx.lineTo(this.worldPosition.x, this.worldPosition.y + 5);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.worldPosition.x - 5, this.worldPosition.y);
+            ctx.lineTo(this.worldPosition.x + 5, this.worldPosition.y);
+            ctx.stroke();
+        }
+
+        ctx.font = "14px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center"; 
+        ctx.justify = "center"; 
+        ctx.textBaseline = 'middle'; 
+        ctx.fillText(this.id, this.worldPosition.x, this.worldPosition.y);
     }
 
     Update()
     {
-        this.worldPosition = {
-            x: /*player.position.x + */this.gridPosition.x * scale,
-            y: /*player.position.y + */this.gridPosition.y * scale
+        this.worldPosition = 
+        {
+            x: (this.gridPosition.x - player.position.x) * scale + canvas.width/2,
+            y: (this.gridPosition.y - player.position.y) * scale + canvas.height/2
         }
 
-        if(this.IsOnScreen())
+        this.DrawBlock();
+        this.DrawShadow();
+
+        if(debug)
         {
-            this.DrawBlock();
-            this.DrawShadow();
+            this.DrawDebug();
         }
     }
-}
-
-function GetLightPercentage(range, x, y)
-{
-  var light = 1;
-
-  for( var i = 0; i < blocks.length; i++)
-  {
-    for( var j = 0; j < blocks.length; j++)
-    {
-        var newLight = 0;
-        /*
-        newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, mouseX - player.position.x, mouseY - player.position.y)/(range * scale);
-        if(newLight < light) light = newLight;
-        */
-        newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, player.position.x, player.position.y)/(2* scale);
-        if(newLight < light) light = newLight;
-
-        if(blocks[i][j].id == 6)
-        {
-        newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, i * scale + scale/2, j * scale + scale/2)/(range * scale/* + ((Math.cos(time * 4)+1)/2)*25 */);
-        if(newLight < light) light = newLight;
-        }
-    }
-  }
-  return light;
 }
