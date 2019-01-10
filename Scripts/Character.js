@@ -143,8 +143,8 @@ class Character
             characterSprite,
             0,
             0,
-            16,
-            16,
+            32,
+            32,
 
             canvas.width/2 - scale/2,
             canvas.height/2 - scale,

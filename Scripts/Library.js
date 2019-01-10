@@ -1,8 +1,8 @@
 var characterSprite = new Image();
-characterSprite.src = "./Assets/character.png";
+characterSprite.src = "./Assets/dwarf.png";
 
 var blocksSprite = new Image();
-blocksSprite.src = "./Assets/blocks.png";
+blocksSprite.src = "./Assets/blocks_16.png";
 
 /*
 // ROTATE IMAGE RENDERING
