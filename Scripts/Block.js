@@ -37,6 +37,25 @@ class Block
         else return false;
     }
 
+    PointInBounds(x, y)
+    {
+        if(x > this.collider[0]
+        && x < this.collider[4]
+        && y > this.collider[1]
+        && y < this.collider[5]) return true;
+        else return false;  
+    }
+
+    IsColling(collider)
+    {
+        for( let i = 0; i < collider.length; i += 2)
+        {
+            if(this.PointInBounds(player.collider[i], player.collider[i+1]))
+                return true;
+        }
+        return false;
+    }
+
     IsOnScreen()
     {
         if
@@ -64,7 +83,7 @@ class Block
         if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.position.x, player.position.y) < 0.5)
         {
             ctx.strokeStyle = "white";
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 5;
             ctx.strokeRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
         }
         else
@@ -92,6 +111,20 @@ class Block
         ctx.fillText(this.id, this.worldPosition.x, this.worldPosition.y);
     }
 
+    DrawCollider()
+    {
+        ctx.strokeStyle = "white";
+        ctx.beginPath();
+
+        ctx.moveTo(this.collider[0], this.collider[1]);
+        for( var i = 2; i < this.collider.length; i += 2)
+        {
+            ctx.lineTo(this.collider[i], this.collider[i+1]);
+        }
+        ctx.lineTo(this.collider[0], this.collider[1]);
+        ctx.stroke();
+    }
+
     Update()
     {
         this.worldPosition = 
@@ -100,12 +133,45 @@ class Block
             y: (this.gridPosition.y - player.position.y) * scale + canvas.height/2
         }
 
+        this.collider = [
+            this.worldPosition.x - scale/2,
+            this.worldPosition.y - scale/2,
+
+            this.worldPosition.x + scale/2,
+            this.worldPosition.y - scale/2,
+            
+            this.worldPosition.x + scale/2,
+            this.worldPosition.y + scale/2,
+
+            this.worldPosition.x - scale/2,
+            this.worldPosition.y + scale/2,
+        ];
+
         this.DrawBlock();
         this.DrawShadow();
+
+        //this.DrawCollider();
 
         if(debug)
         {
             this.DrawDebug();
         }
+
+
+        if(this.IsColling(player.collider))
+        {
+            ctx.beginPath();
+            ctx.fillStyle = "rgba(255, 0, 0, 0.75)";
+            ctx.fillRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
+            //this.id = 7;
+        }
+        /*
+        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.position.x, player.position.y) < 0.5)
+        {
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 5;
+            ctx.strokeRect(this.worldPosition.x - scale/2, this.worldPosition.y - scale/2, scale, scale);
+        }
+        */
     }
 }

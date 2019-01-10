@@ -11,5 +11,5 @@ function InterfaceUpdate()
 function ToggleDebbug()
 {
   debug = !debug;
-  console.log("debug");
+  console.log("Toggleling debug mod");
 }

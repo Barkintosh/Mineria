@@ -1,10 +1,11 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-var blocks = Create2DArray(128);
+var blocks = Create2DArray(2048);
 var scale = 32;
 var player = new Character();
 var time = 0;
+var gravity = 0.01;
 
 var worldOrigin = 
 {
@@ -12,7 +13,7 @@ var worldOrigin =
   y: 0
 }
 
-var cameraClampShift = 2;
+var cameraClampShift = -1;
 
 var fps = 30;
 var now;
@@ -78,9 +79,9 @@ function UpdateBlocks()
 
   let down = Math.round(player.position.y + canvas.height*0.5/scale) - cameraClampShift;
   if(down > blocks.length) down = blocks.length;
-  for( var i = left; i < right; i++)
+  for( let i = left; i < right; i++)
   {
-    for( var j = top; j < down; j++)
+    for( let j = top; j < down; j++)
     {
       blocks[i][j].Update();
     }
@@ -103,14 +104,15 @@ function GetLightPercentage(range, x, y)
   let down = Math.round(player.position.y + canvas.height*0.5/scale) - cameraClampShift;
   if(down > blocks.length) down = blocks.length;
 
-  for( var i = left; i < right; i++)
+  for( let i = left; i < right; i++)
   {
-    for( var j = top; j < down; j++)
+    for( let j = top; j < down; j++)
     {
         var newLight = 0;
-        
+        /*
         newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, mouseX - player.position.x, mouseY - player.position.y)/(range * scale);
         if(newLight < light) light = newLight;
+        */
         
         newLight = Math.getDistance(x, y, player.position.x, player.position.y)/4 ;
         if(newLight < light) light = newLight;

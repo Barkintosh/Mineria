@@ -67,8 +67,12 @@ function MovingMouse(event)
   mouseY = event.clientY;
 }
 
+var mouseDownEvent = new CustomEvent("mouseDownEvent");
+
 function MouseDown(event)
 {
+    this.dispatchEvent(mouseDownEvent);
+
     for( var i = 0; i < blocks.length; i++)
     {
         for( var j = 0; j < blocks.length; j++)
