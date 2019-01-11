@@ -7,19 +7,7 @@ class Character
             y: blocks.length/2
         };
 
-        this.collider = [
-            canvas.width/2 - scale/2,
-            canvas.height/2 - scale,
 
-            canvas.width/2 + scale/2,
-            canvas.height/2 - scale,
-            
-            canvas.width/2 + scale/2,
-            canvas.height/2,
-
-            canvas.width/2 - scale/2,
-            canvas.height/2
-        ];
 
         this.baseSpeed = 8;
 
@@ -28,6 +16,23 @@ class Character
 
         this.moving = false;
         this.falling = false;
+
+
+        let bounds = [
+            -scale/2,
+            -scale,
+
+            scale/2,
+            -scale,
+            
+            scale/2,
+            0,
+
+            -scale/2,
+            0
+        ];
+
+        this.collider = new Collider(bounds);
     }
 
     UpdateMovement()
@@ -105,7 +110,7 @@ class Character
 
         this.moving = false;
 
-        console.log(this.falling);
+        //console.log(this.falling);
     }
 
     IsFalling()
@@ -175,7 +180,7 @@ class Character
 
     UpdateCollider()
     {
-        this.collider = [
+        this.collider.bounds = [
             canvas.width/2 - scale/2,
             canvas.height/2 - scale,
 
@@ -189,8 +194,6 @@ class Character
             canvas.height/2
         ];
         this.DrawCollider();
-
-
     }
 
     Update()
@@ -211,9 +214,26 @@ class Character
         ];
         */
 
+        let worldPosition = [
+            canvas.width/2 - scale/2,
+            canvas.height/2 - scale,
+
+            canvas.width/2 + scale/2,
+            canvas.height/2 - scale,
+            
+            canvas.width/2 + scale/2,
+            canvas.height/2,
+
+            canvas.width/2 - scale/2,
+            canvas.height/2
+        ];
+
+
+        this.collider.Update(this.position);
+        this.collider.Draw("yellow", 2);
 
         this.UpdateMovement();
-        this.UpdateCollider();
+        //this.UpdateCollider();
 
         this.Draw();
     }

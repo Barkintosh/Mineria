@@ -13,7 +13,7 @@ var worldOrigin =
   y: 0
 }
 
-var cameraClampShift = -1;
+var cameraClampShift = 2;
 
 var fps = 30;
 var now;
