@@ -28,6 +28,12 @@ class GameObject
         this[component.constructor.name] = component;
     }
 
+    GetComponent(component)
+    {
+        if(this[component] != undefined) return this[component];
+        else return null;
+    }
+
     RemoveComponent(component)
     {
         for(let i = 0; i < this.components.length; i++)

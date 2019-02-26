@@ -4,16 +4,23 @@ class Collider
     {
         this.transform = transform;
         this.bounds = bounds;
+
+        this.shown = false;
     }
 
     Update()
     {
-       this.screenPosition = 
+       this.position = 
        {
            x: (this.transform.position.x - camera.transform.position.x),
            y: (this.transform.position.y - camera.transform.position.y)
        }
-       this.Draw("yellow", 2);
+       if(this.shown) this.Draw();
+    }
+
+    ToggleShown()
+    {
+        this.shown = !this.shown;
     }
 
     Draw(color = "white", width = 1)
@@ -21,12 +28,12 @@ class Collider
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
         ctx.beginPath();
-        ctx.moveTo(this.bounds[0] + this.screenPosition.x, this.bounds[1] + this.screenPosition.y);
+        ctx.moveTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
         for( let i = 2; i < this.bounds.length; i += 2)
         {
-            ctx.lineTo(this.bounds[i] + this.screenPosition.x, this.bounds[i+1] + this.screenPosition.y);
+            ctx.lineTo(this.bounds[i] + this.position.x, this.bounds[i+1] + this.position.y);
         }
-        ctx.lineTo(this.bounds[0] + this.screenPosition.x, this.bounds[1] + this.screenPosition.y);
+        ctx.lineTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
 
         ctx.stroke();
     }

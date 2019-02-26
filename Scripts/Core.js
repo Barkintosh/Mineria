@@ -1,16 +1,16 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
+var scene = [];
 var blocks = Create2DArray(2048);
 var scale = 32;
 var time = 0;
 var gravity = 0.01;
 
-var player = new Character();
-var camera = new Camera();
-//var dummy = new Dummy(player.transform.position);
+var player = Instantiate("Character");
+var camera = Instantiate("Camera");
+var dummy;
 
-var scene = [];
 
 var worldOrigin = 
 {
@@ -34,7 +34,11 @@ function Start()
   //GenerateBlocks();
   CoreUpdate();
 
-  Instantiate("Dummy", { x:player.transform.position.x, y:player.transform.position.y });
+
+  for(var i = 0; i < 100; i++)
+  {
+    Instantiate("Dummy", { x:player.transform.position.x + GetRandomInt(-500, 500), y:player.transform.position.y + GetRandomInt(-500, 500) });
+  }
 }
 
 function CoreUpdate() 
@@ -57,10 +61,8 @@ function Update()
 {
   DrawBackground();
   //UpdateBlocks();
-
-  player.Update();
+  
   camera.target = player.transform;
-  camera.Update();
 
   for(var i = 0; i < scene.length; i++)
   {
@@ -174,6 +176,8 @@ function Instantiate(className, position = {x:0, y:0})
   {
     myClass.transform.position = position;
   }
+
+  return myClass;
 }
 
 var stringToFunction = function(str) {

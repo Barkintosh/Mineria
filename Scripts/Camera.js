@@ -1,7 +1,9 @@
-class Camera
+class Camera extends GameObject
 {
     constructor()
     {
+        super();
+
         this.transform = new Transform( {x:0, y:0}, {x:1, y:1} );
         this.zoom = 1;
         this.target = undefined;

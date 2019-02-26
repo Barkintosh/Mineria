@@ -1,6 +1,6 @@
 class Button
 {
-    constructor(position = {x:0, y:0}, width = 10, height = 10, text = "undefined", action = null)
+    constructor(position = {x:0, y:0}, width = 10, height = 10, text = "undefined", color = "white", action = null)
     {
         this.position = 
         {
@@ -13,6 +13,7 @@ class Button
         this.action = action;
         this.width = width;
         this.height = height;
+        this.color = color;
 
         this.action = action;
 
@@ -44,7 +45,7 @@ class Button
     Draw()
     {
         ctx.beginPath();
-        ctx.fillStyle = "white";
+        ctx.fillStyle = this.color;
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         ctx.font = "14px Arial";

@@ -1,14 +1,14 @@
 class Transform
 {
-    constructor(sPos = {x:0, y:0}, sSize = {x:1, y:1})
+    constructor(pos = {x:0, y:0}, size = {x:1, y:1})
     {
         this.position = {
-            x:sPos.x,
-            y:sPos.y
+            x:pos.x,
+            y:pos.y
         };
         this.scale = {
-            x:sSize.x,
-            y:sSize.y
+            x:size.x,
+            y:size.y
         };
         /*
         this.rotation = {

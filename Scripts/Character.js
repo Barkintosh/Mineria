@@ -1,7 +1,5 @@
 class Character extends GameObject
 {
-
-
     constructor()
     {
         super();

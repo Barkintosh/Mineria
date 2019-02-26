@@ -22,13 +22,15 @@ class Dummy extends GameObject
             0];
 
         this.AddComponent(new Collider(this.transform, bounds));
+
+        this.speed = GetRandomInt(-10, 10);
     }
 
     Update()
     {
         super.Update();
 
-        this.transform.position.x += Math.cos(time) * 2;
-        this.transform.position.y += Math.sin(time) * 2;
+        this.transform.position.x += Math.cos(time) * this.speed;
+        this.transform.position.y += Math.sin(time) * this.speed;
     }
 }

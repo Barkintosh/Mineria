@@ -3,7 +3,7 @@ const VerticalAlignement = { DOWN:0, MIDDLE:1, TOP:2};
 
 class SpriteRenderer
 {
-    constructor(transform, sprite, pixelPos, width, height, hAlign, vAlign)
+    constructor(transform, sprite, pixelPos, width, height, hAlign = HorizontalAlignement.MIDDLE, vAlign = VerticalAlignement.MIDDLE)
     {   
         this.sprite = sprite;
         this.width = width;
