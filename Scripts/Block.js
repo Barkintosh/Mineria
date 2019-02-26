@@ -6,8 +6,8 @@ class Block
         this.gridPosition = gridPosition;
         this.worldPosition = 
         {
-            x: (this.gridPosition.x - player.position.x) * scale + canvas.width/2,
-            y: (this.gridPosition.y - player.position.y) * scale + canvas.height/2
+            x: (this.gridPosition.x - player.transform.position.x) * scale + canvas.width/2,
+            y: (this.gridPosition.y - player.transform.position.y) * scale + canvas.height/2
         }
     }
 
@@ -80,7 +80,7 @@ class Block
 
     DrawDebug()
     {
-        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.position.x, player.position.y) < 0.5)
+        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.transform.position.x, player.transform.position.y) < 0.5)
         {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 5;
@@ -129,8 +129,8 @@ class Block
     {
         this.worldPosition = 
         {
-            x: (this.gridPosition.x - player.position.x) * scale + canvas.width/2,
-            y: (this.gridPosition.y - player.position.y) * scale + canvas.height/2
+            x: (this.gridPosition.x - player.transform.position.x) * scale + canvas.width/2,
+            y: (this.gridPosition.y - player.transform.position.y) * scale + canvas.height/2
         }
 
         this.collider = [
@@ -166,7 +166,7 @@ class Block
             //this.id = 7;
         }
         /*
-        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.position.x, player.position.y) < 0.5)
+        if(Math.getDistance(this.gridPosition.x, this.gridPosition.y, player.transform.position.x, player.transform.position.y) < 0.5)
         {
             ctx.strokeStyle = "white";
             ctx.lineWidth = 5;

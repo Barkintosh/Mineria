@@ -7,6 +7,7 @@ var mouseX;
 var mouseY;
 
 var mouseDown = false;
+var mouseUp = false;
 
 document.addEventListener('keydown', function(event) 
 {
@@ -50,48 +51,25 @@ document.addEventListener('keyup', function(event)
 
 function UpdateInputs()
 {
-    if(leftArrow)
-        player.position.x -= player.speed/delta;
-    else if(rightArrow)
-        player.position.x += player.speed/delta;
-    
-    if(upArrow)
-        player.position.y -= player.speed/delta;
-    else if(downArrow)
-        player.position.y += player.speed/delta;
-}
-
-function MovingMouse(event)
-{
-  mouseX = event.clientX;
-  mouseY = event.clientY;
-}
-
-var mouseDownEvent = new CustomEvent("mouseDownEvent");
-
-function MouseDown(event)
-{
-    this.dispatchEvent(mouseDownEvent);
-
-    for( var i = 0; i < blocks.length; i++)
-    {
-        for( var j = 0; j < blocks.length; j++)
-        {
-            if(blocks[i][j].IsClicked(mouseX, mouseY))
-            {
-                blocks[i][j].id = 6;
-                return;
-            }
-        }
-    }
-
-    mouseDown = true;
-}
-
-function MouseUp(event)
-{
     mouseDown = false;
+    mouseUp = false;
 }
+
+document.addEventListener('mousedown', function()
+{
+    mouseDown = true;
+});
+
+document.addEventListener('mouseup', function()
+{
+    mouseUp = true;
+});
+
+document.addEventListener('mousemove', function()
+{
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
 
 const Scroll = e => {
     const direction = (e.deltaY || -e.wheelDelta || e.detail) >> 10 || 1;

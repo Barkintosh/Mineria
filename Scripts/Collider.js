@@ -1,25 +1,19 @@
 class Collider
 {
-    constructor(bounds)
+    constructor(transform, bounds)
     {
+        this.transform = transform;
         this.bounds = bounds;
     }
 
-    Update(position)
+    Update()
     {
-        /*
-        for( let i = 0; i < this.bounds.length; i += 1)
-        {
-            if(i%2 == 0) this.bounds[i];
-            else this.bounds[i];
-        }
-        */
-       this.position = 
+       this.screenPosition = 
        {
-           x: (position.x*scale/canvas.width),
-           y: (position.y*scale/canvas.height)
+           x: (this.transform.position.x - camera.transform.position.x),
+           y: (this.transform.position.y - camera.transform.position.y)
        }
-       console.log(this.position);
+       this.Draw("yellow", 2);
     }
 
     Draw(color = "white", width = 1)
@@ -27,13 +21,12 @@ class Collider
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
         ctx.beginPath();
-
-        ctx.moveTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
+        ctx.moveTo(this.bounds[0] + this.screenPosition.x, this.bounds[1] + this.screenPosition.y);
         for( let i = 2; i < this.bounds.length; i += 2)
         {
-            ctx.lineTo(this.bounds[i] + this.position.x, this.bounds[i+1] + this.position.y);
+            ctx.lineTo(this.bounds[i] + this.screenPosition.x, this.bounds[i+1] + this.screenPosition.y);
         }
-        ctx.lineTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
+        ctx.lineTo(this.bounds[0] + this.screenPosition.x, this.bounds[1] + this.screenPosition.y);
 
         ctx.stroke();
     }
@@ -47,7 +40,8 @@ class Collider
 
                 //denom = ((LineB2.Y – LineB1.Y) * (LineA2.X – LineA1.X)) – ((LineB2.X – LineB1.X) * (LineA2.Y - LineA1.Y));
 
-                var denom = ( (other.bounds[j+3] - other.bounds[j+1]) * (other.bounds[i+2] - other.bounds[i]) ) - ( (other.bounds[j+3] - other.bounds[j]) * (other.bounds[i+3] - other.bounds[i+1]) );
+                var denom = ((other.bounds[j+3] - other.bounds[j+1])*(other.bounds[i+2] - other.bounds[i])) 
+                - ((other.bounds[j+3] - other.bounds[j]) *(other.bounds[i+3] - other.bounds[i+1]));
                 console.log(denom);
 
                 if (denom != 0)

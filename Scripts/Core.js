@@ -3,9 +3,14 @@ var ctx = canvas.getContext("2d");
 
 var blocks = Create2DArray(2048);
 var scale = 32;
-var player = new Character();
 var time = 0;
 var gravity = 0.01;
+
+var player = new Character();
+var camera = new Camera();
+//var dummy = new Dummy(player.transform.position);
+
+var scene = [];
 
 var worldOrigin = 
 {
@@ -26,15 +31,15 @@ function Start()
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx.imageSmoothingEnabled = false;
+  //GenerateBlocks();
+  CoreUpdate();
 
-  GenerateBlocks();
-
-  Update();
+  Instantiate("Dummy", { x:player.transform.position.x, y:player.transform.position.y });
 }
 
-function Update() 
+function CoreUpdate() 
 {
-  requestAnimationFrame(Update);
+  requestAnimationFrame(CoreUpdate);
      
   now = Date.now();
   delta = now - then;
@@ -42,15 +47,28 @@ function Update()
   if (delta > interval) 
   {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    DrawBackground();
-    UpdateBlocks();
-    InterfaceUpdate();
-
-    player.Update();
-
+    Update();
     then = now - (delta % interval);
   }
   time = performance.now() / 1000;
+}
+
+function Update()
+{
+  DrawBackground();
+  //UpdateBlocks();
+
+  player.Update();
+  camera.target = player.transform;
+  camera.Update();
+
+  for(var i = 0; i < scene.length; i++)
+  {
+    scene[i].Update();
+  }
+
+  UpdateInterface();
+  UpdateInputs();
 }
 
 function GenerateBlocks()
@@ -68,16 +86,16 @@ function GenerateBlocks()
 
 function UpdateBlocks()
 {
-  let left = Math.round(player.position.x - canvas.width*0.5/scale) + cameraClampShift;
+  let left = Math.round(player.transform.position.x - canvas.width*0.5/scale) + cameraClampShift;
   if(left < 0) left = 0;
 
-  let right = Math.round(player.position.x + canvas.width*0.5/scale) - cameraClampShift;
+  let right = Math.round(player.transform.position.x + canvas.width*0.5/scale) - cameraClampShift;
   if(right > blocks.length) right = blocks.length;
 
-  let top = Math.round(player.position.y - canvas.height*0.5/scale) + cameraClampShift;
+  let top = Math.round(player.transform.position.y - canvas.height*0.5/scale) + cameraClampShift;
   if(top < 0) top = 0;
 
-  let down = Math.round(player.position.y + canvas.height*0.5/scale) - cameraClampShift;
+  let down = Math.round(player.transform.position.y + canvas.height*0.5/scale) - cameraClampShift;
   if(down > blocks.length) down = blocks.length;
   for( let i = left; i < right; i++)
   {
@@ -92,16 +110,16 @@ function GetLightPercentage(range, x, y)
 {
   var light = 1;
   
-  let left = Math.round(player.position.x - canvas.width*0.5/scale) + cameraClampShift;
+  let left = Math.round(player.transform.position.x - canvas.width*0.5/scale) + cameraClampShift;
   if(left < 0) left = 0;
 
-  let right = Math.round(player.position.x + canvas.width*0.5/scale) - cameraClampShift;
+  let right = Math.round(player.transform.position.x + canvas.width*0.5/scale) - cameraClampShift;
   if(right > blocks.length) right = blocks.length;
 
-  let top = Math.round(player.position.y - canvas.height*0.5/scale) + cameraClampShift;
+  let top = Math.round(player.transform.position.y - canvas.height*0.5/scale) + cameraClampShift;
   if(top < 0) top = 0;
 
-  let down = Math.round(player.position.y + canvas.height*0.5/scale) - cameraClampShift;
+  let down = Math.round(player.transform.position.y + canvas.height*0.5/scale) - cameraClampShift;
   if(down > blocks.length) down = blocks.length;
 
   for( let i = left; i < right; i++)
@@ -110,11 +128,11 @@ function GetLightPercentage(range, x, y)
     {
         var newLight = 0;
         /*
-        newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, mouseX - player.position.x, mouseY - player.position.y)/(range * scale);
+        newLight = Math.getDistance(x * scale + scale/2, y * scale + scale/2, mouseX - player.transform.position.x, mouseY - player.transform.position.y)/(range * scale);
         if(newLight < light) light = newLight;
         */
         
-        newLight = Math.getDistance(x, y, player.position.x, player.position.y)/4 ;
+        newLight = Math.getDistance(x, y, player.transform.position.x, player.transform.position.y)/4 ;
         if(newLight < light) light = newLight;
 
         if(blocks[i][j].id == 6)
@@ -141,6 +159,34 @@ window.onresize = function()
 function DrawBackground() 
 {
   ctx.beginPath();
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "darkgrey";
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
+
+function Instantiate(className, position = {x:0, y:0})
+{
+  //var myClass = stringToFunction(className);
+  //var myClass = new window[className]();
+  var myClass = eval("new " + className + "()");
+  scene[scene.length] = myClass;
+
+  if(myClass.transform != undefined)
+  {
+    myClass.transform.position = position;
+  }
+}
+
+var stringToFunction = function(str) {
+  var arr = str.split(".");
+
+  var fn = (window || this);
+  for (var i = 0, len = arr.length; i < len; i++) {
+    fn = fn[arr[i]];
+  }
+
+  if (typeof fn !== "function") {
+    throw new Error("function not found");
+  }
+
+  return  fn;
+};

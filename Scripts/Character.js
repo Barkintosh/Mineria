@@ -1,92 +1,88 @@
-class Character
+class Character extends GameObject
 {
+
+
     constructor()
     {
-        this.position = {
-            x: blocks.length/2,
-            y: blocks.length/2
-        };
+        super();
 
-
-
-        this.baseSpeed = 8;
-
+        this.baseSpeed = 250;
         this.vSpeed = 0;
         this.hSpeed = 0;
-
         this.moving = false;
         this.falling = false;
-
+        
+        this.transform = new Transform( {x:blocks.length/2, y:blocks.length/2}, {x:1, y:1} );
 
         let bounds = [
+            // LEFT TOP
             -scale/2,
             -scale,
-
+            // RIGHT TOP
             scale/2,
             -scale,
-            
+            // LEFT DOWN
             scale/2,
             0,
-
+            // RIGHT DOWN
             -scale/2,
-            0
-        ];
+            0];
 
-        this.collider = new Collider(bounds);
+        this.AddComponent(new Collider(this.transform, bounds));
+        this.AddComponent(new SpriteRenderer(this.transform, characterSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.DOWN));
     }
 
-    UpdateMovement()
+    Movement()
     {
         if(leftArrow || rightArrow) this.moving = true;
-
+        /*
         ctx.beginPath();
         ctx.fillStyle = "rgba(255, 0, 0, 0.75)";
         ctx.fillRect(   
-                        blocks[Math.round(this.position.x+1)][Math.round(this.position.y-1)].worldPosition.x - scale/2, 
-                        blocks[Math.round(this.position.x+1)][Math.round(this.position.y-1)].worldPosition.y - scale/2, 
+                        blocks[Math.round(this.transform.position.x+1)][Math.round(this.transform.position.y-1)].worldPosition.x - scale/2, 
+                        blocks[Math.round(this.transform.position.x+1)][Math.round(this.transform.position.y-1)].worldPosition.y - scale/2, 
                         scale, 
                         scale
                     );
         ctx.fillRect(   
-                        blocks[Math.round(this.position.x-1)][Math.round(this.position.y-1)].worldPosition.x - scale/2, 
-                        blocks[Math.round(this.position.x-1)][Math.round(this.position.y-1)].worldPosition.y - scale/2, 
+                        blocks[Math.round(this.transform.position.x-1)][Math.round(this.transform.position.y-1)].worldPosition.x - scale/2, 
+                        blocks[Math.round(this.transform.position.x-1)][Math.round(this.transform.position.y-1)].worldPosition.y - scale/2, 
                         scale, 
                         scale
                     );
-/*
+
         if(this.moving)
         {
-            if(leftArrow && blocks[Math.round(this.position.x-1)][Math.round(this.position.y-1)].id == 6)
-                this.vSpeed = lerp(this.vSpeed, -this.baseSpeed/delta, 0.5);
-            else this.vSpeed = lerp(this.vSpeed, 0, 0.5);   
-            
-
-            if(rightArrow && blocks[Math.round(this.position.x+1)][Math.round(this.position.y-1)].id == 6)
-                this.vSpeed = lerp(this.vSpeed, this.baseSpeed/delta, 0.5);
-            else this.vSpeed = lerp(this.vSpeed, 0, 0.5);          
+            if(leftArrow)
+            {
+                if(blocks[Math.round(this.transform.position.x-1)][Math.round(this.transform.position.y-1)].id == 6)
+                    this.vSpeed = lerp(this.vSpeed, -this.baseSpeed/delta, 0.5);
+                else this.vSpeed = lerp(this.vSpeed, 0, 0.5);
+            }
+            else
+            {
+                if(blocks[Math.round(this.transform.position.x+1)][Math.round(this.transform.position.y-1)].id == 6)
+                    this.vSpeed = lerp(this.vSpeed, this.baseSpeed/delta, 0.5);
+                else this.vSpeed = lerp(this.vSpeed, 0, 0.5); 
+            }
         }
-        else this.vSpeed = lerp(this.vSpeed, 0, 0.5);   
-*/
-    if(this.moving)
-    {
-        if(leftArrow)
+        */
+
+
+        if(this.moving)
         {
-            if(blocks[Math.round(this.position.x-1)][Math.round(this.position.y-1)].id == 6)
+            if(leftArrow)
+            {
                 this.vSpeed = lerp(this.vSpeed, -this.baseSpeed/delta, 0.5);
-            else this.vSpeed = lerp(this.vSpeed, 0, 0.5);
-        }
-        else
-        {
-            if(blocks[Math.round(this.position.x+1)][Math.round(this.position.y-1)].id == 6)
+            }
+            else
+            {
                 this.vSpeed = lerp(this.vSpeed, this.baseSpeed/delta, 0.5);
-            else this.vSpeed = lerp(this.vSpeed, 0, 0.5); 
+            }
         }
-    }
-    else this.vSpeed = lerp(this.vSpeed, 0, 0.5); 
+        else this.vSpeed = lerp(this.vSpeed, 0, 0.5); 
 
-
-
-
+        /*
         this.falling = this.IsFalling();
         if(this.falling)
         {
@@ -95,7 +91,7 @@ class Character
         else 
         {
             this.hSpeed = 0;
-            this.position.y = Math.round(this.position.y) - 0.5;
+            this.transform.position.y = Math.round(this.transform.position.y) - 0.5;
         }
 
         if(upArrow && !this.falling)
@@ -103,14 +99,10 @@ class Character
             this.hSpeed = -0.2;
         }
 
-
-
-        this.position.x += this.vSpeed;
-        this.position.y += this.hSpeed;
-
+        */
+        this.transform.position.x += this.vSpeed;
+        //this.transform.position.y += this.hSpeed;
         this.moving = false;
-
-        //console.log(this.falling);
     }
 
     IsFalling()
@@ -135,106 +127,20 @@ class Character
                 }
             }
         }
-        */
-        if(blocks[Math.round(this.position.x)][Math.round(this.position.y)].id != 6) return false;
-        else return true;
-    }
-
-
-    Draw()
-    {
-        ctx.drawImage
-        (
-            characterSprite,
-            0,
-            0,
-            32,
-            32,
-
-            canvas.width/2 - scale/2,
-            canvas.height/2 - scale,
-            scale,
-            scale
-        );
         
-        ctx.font = "12px Arial";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center"; 
-        ctx.textBaseline = 'middle'; 
-        ctx.fillText(Math.round(this.vSpeed*delta), canvas.width/2, canvas.height/2 + scale/2);
+        if(blocks[Math.round(this.transform.position.x)][Math.round(this.transform.position.y)].id != 6) return false;
+        else return true;
+        */
     }
 
-    DrawCollider()
+    DebugMode()
     {
-        ctx.strokeStyle = "white";
-        ctx.beginPath();
-
-        ctx.moveTo(this.collider[0], this.collider[1]);
-        for( let i = 2; i < this.collider.length; i += 2)
-        {
-            ctx.lineTo(this.collider[i], this.collider[i+1]);
-        }
-        ctx.lineTo(this.collider[0], this.collider[1]);
-        ctx.stroke();
-    }
-
-    UpdateCollider()
-    {
-        this.collider.bounds = [
-            canvas.width/2 - scale/2,
-            canvas.height/2 - scale,
-
-            canvas.width/2 + scale/2,
-            canvas.height/2 - scale,
-            
-            canvas.width/2 + scale/2,
-            canvas.height/2,
-
-            canvas.width/2 - scale/2,
-            canvas.height/2
-        ];
-        this.DrawCollider();
+        this.SpriteRenderer.ToggleMask();
     }
 
     Update()
     {
-        /*
-        this.collider = [
-            this.position.x - scale/2 + canvas.width/2,
-            this.position.y - scale + canvas.height/2,
-
-            this.position.x + scale/2 + canvas.width/2,
-            this.position.y - scale + canvas.height/2,
-            
-            this.position.x + scale/2 + canvas.width/2,
-            this.position.y + canvas.height/2,
-
-            this.position.x - scale/2 + canvas.width/2,
-            this.position.y + canvas.height/2
-        ];
-        */
-
-        let worldPosition = [
-            canvas.width/2 - scale/2,
-            canvas.height/2 - scale,
-
-            canvas.width/2 + scale/2,
-            canvas.height/2 - scale,
-            
-            canvas.width/2 + scale/2,
-            canvas.height/2,
-
-            canvas.width/2 - scale/2,
-            canvas.height/2
-        ];
-
-
-        this.collider.Update(this.position);
-        this.collider.Draw("yellow", 2);
-
-        this.UpdateMovement();
-        //this.UpdateCollider();
-
-        this.Draw();
+        super.Update();
+        this.Movement();
     }
 }
