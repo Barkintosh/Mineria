@@ -11,8 +11,6 @@ function UpdateInterface()
 function ToggleDebbug()
 {
   debug = !debug;
-  player.DebugMode();
-
   for(var i = 0; i < scene.length; i++)
   {
     var sr = scene[i].GetComponent("SpriteRenderer");
@@ -20,5 +18,8 @@ function ToggleDebbug()
 
     var c = scene[i].GetComponent("Collider");
     if(c != null) c.ToggleShown();
+
+    var t = scene[i].GetComponent("Transform");
+    if(t != null) t.ToggleShown();
   }
 }

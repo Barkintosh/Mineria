@@ -16,6 +16,18 @@ class SpriteRenderer
 
     Update()
     {
+        var drawPoint = 
+        {
+            x: (this.transform.position.x - camera.transform.position.x) + this.GetHorizontalShift() * this.transform.size.x,
+            y: (this.transform.position.y - camera.transform.position.y) + this.GetVerticalShift() * this.transform.size.y
+        }
+
+        var drawBound =
+        {
+            w:this.width * this.transform.size.x,
+            h:this.height * this.transform.size.y
+        }
+
         ctx.drawImage
         (
             this.sprite,
@@ -24,21 +36,21 @@ class SpriteRenderer
             this.width,
             this.height,
 
-            (this.transform.position.x - camera.transform.position.x) + this.GetHorizontalShift(),
-            (this.transform.position.y - camera.transform.position.y) + this.GetVerticalShift(),
-            this.width,
-            this.height
+            drawPoint.x,
+            drawPoint.y,
+            drawBound.w,
+            drawBound.h
         );
 
         if(this.masked)
         {
             ctx.beginPath();
-            ctx.fillStyle = "rgba(0, 0, 255, 0.25)";
+            ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
             ctx.fillRect(
-            (this.transform.position.x - camera.transform.position.x) + this.GetHorizontalShift(),
-            (this.transform.position.y - camera.transform.position.y) + this.GetVerticalShift(),
-            this.width,
-            this.height
+                drawPoint.x,
+                drawPoint.y,
+                drawBound.w,
+                drawBound.h
             );
         }
     }
@@ -63,3 +75,24 @@ class SpriteRenderer
         else return -this.height/2;
     }
 }
+
+/*
+function drawImageRot(img,x,y,width,height,deg){
+
+    //Convert degrees to radian 
+    var rad = deg * Math.PI / 180;
+
+    //Set the origin to the center of the image
+    ctx.translate(x + width / 2, y + height / 2);
+
+    //Rotate the canvas around the origin
+    ctx.rotate(rad);
+
+    //draw the image    
+    ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
+
+    //reset the canvas  
+    ctx.rotate(rad * ( -1 ) );
+    ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
+}
+*/

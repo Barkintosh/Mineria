@@ -1,21 +1,31 @@
 class Collider
 {
-    constructor(transform, bounds)
+    constructor(transform, newBounds)
     {
         this.transform = transform;
-        this.bounds = bounds;
-
+        this.baseBounds = this.CopyArray(newBounds);
+        this.bounds = this.CopyArray(this.baseBounds);
         this.shown = false;
     }
 
     Update()
     {
-       this.position = 
-       {
-           x: (this.transform.position.x - camera.transform.position.x),
-           y: (this.transform.position.y - camera.transform.position.y)
-       }
-       if(this.shown) this.Draw();
+        // UPDATE POSITION
+        this.position = 
+        {
+            x: (this.transform.position.x - camera.transform.position.x),
+            y: (this.transform.position.y - camera.transform.position.y)
+        }
+
+        // UPDATE BOUNDS
+        for( let i = 0; i < this.bounds.length; i += 2)
+        {
+                this.bounds[i] = this.baseBounds[i] * this.transform.size.x;
+                this.bounds[i+1] = this.baseBounds[i+1] * this.transform.size.y;
+        }
+
+        // DEBUG
+        if(this.shown) this.Draw();
     }
 
     ToggleShown()
@@ -28,35 +38,64 @@ class Collider
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
         ctx.beginPath();
-        ctx.moveTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
+
+        ctx.moveTo(
+            (this.bounds[0] + this.position.x),
+            (this.bounds[1] + this.position.y)
+        );
+
         for( let i = 2; i < this.bounds.length; i += 2)
         {
-            ctx.lineTo(this.bounds[i] + this.position.x, this.bounds[i+1] + this.position.y);
+            ctx.lineTo(
+                this.bounds[i] + this.position.x,
+                this.bounds[i+1] + this.position.y
+            );
         }
-        ctx.lineTo(this.bounds[0] + this.position.x, this.bounds[1] + this.position.y);
+
+        ctx.lineTo(
+            this.bounds[0] + this.position.x,
+            this.bounds[1] + this.position.y
+        );
 
         ctx.stroke();
     }
-
+    /*
     IsColliding(other)
     {        
         for( let i = 0; i < this.bounds.length; i += 4)
         {
             for( let j = 0; j < other.bounds.length; j += 4)
             {
-
                 //denom = ((LineB2.Y – LineB1.Y) * (LineA2.X – LineA1.X)) – ((LineB2.X – LineB1.X) * (LineA2.Y - LineA1.Y));
-
                 var denom = ((other.bounds[j+3] - other.bounds[j+1])*(other.bounds[i+2] - other.bounds[i])) 
                 - ((other.bounds[j+3] - other.bounds[j]) *(other.bounds[i+3] - other.bounds[i+1]));
-                console.log(denom);
-
                 if (denom != 0)
-                {
-
-                }
+                {}
             }
         }
         return null;
+    }
+    */
+
+    CopyArray(array)
+    {
+        var newArray = [];
+
+        for(var i = 0; i < array.length; i++)
+        {
+            newArray[i] = array[i];
+        }
+        
+        return newArray;
+    }
+
+    PointInBounds(posX, posY)
+    {
+        var pos = ScreenToWorld(posX, posY);
+        if(pos.x > this.transform.position.x + this.bounds[0]
+        && pos.x < this.transform.position.x + this.bounds[4]
+        && pos.y > this.transform.position.y + this.bounds[1]
+        && pos.y < this.transform.position.y + this.bounds[5]) return true;
+        else return false;  
     }
 }

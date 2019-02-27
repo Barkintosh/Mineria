@@ -34,11 +34,26 @@ function Start()
   //GenerateBlocks();
   CoreUpdate();
 
-
+/*
   for(var i = 0; i < 100; i++)
   {
-    Instantiate("Dummy", { x:player.transform.position.x + GetRandomInt(-500, 500), y:player.transform.position.y + GetRandomInt(-500, 500) });
+    Instantiate("Dummy", { x:GetRandomInt(-250, 250), y:GetRandomInt(-250, 250) });
   }
+  */
+
+ Instantiate("Dummy", { x:-100, y:0});
+ Instantiate("Dummy", { x:100, y:0});
+
+ Instantiate("Dummy", { x:0, y:100});
+ Instantiate("Dummy", { x:0, y:-100});
+
+ Instantiate("Dummy", { x:-200, y:0});
+ Instantiate("Dummy", { x:200, y:0});
+
+ Instantiate("Dummy", { x:0, y:200});
+ Instantiate("Dummy", { x:0, y:-200});
+
+ console.log(scene.length);
 }
 
 function CoreUpdate() 
@@ -62,7 +77,7 @@ function Update()
   DrawBackground();
   //UpdateBlocks();
   
-  camera.target = player.transform;
+  camera.target = player.Transform;
 
   for(var i = 0; i < scene.length; i++)
   {
@@ -165,32 +180,32 @@ function DrawBackground()
   ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
-function Instantiate(className, position = {x:0, y:0})
+function Instantiate(object, position = {x:0, y:0})
 {
-  //var myClass = stringToFunction(className);
-  //var myClass = new window[className]();
-  var myClass = eval("new " + className + "()");
-  scene[scene.length] = myClass;
+  var newObject = eval("new " + object + "()");
+  scene[scene.length] = newObject;
 
-  if(myClass.transform != undefined)
+  if(newObject.Transform != undefined)
   {
-    myClass.transform.position = position;
+    newObject.Transform.position = position;
   }
-
-  return myClass;
+  return newObject;
 }
 
-var stringToFunction = function(str) {
-  var arr = str.split(".");
-
-  var fn = (window || this);
-  for (var i = 0, len = arr.length; i < len; i++) {
-    fn = fn[arr[i]];
+function Destroy(object)
+{
+  for(var i = 0; i < scene.length; i++)
+  {
+    if(object == scene[i])
+    {
+      delete scene[i];
+      scene.splice(i, 1);
+      return;
+    }
   }
+}
 
-  if (typeof fn !== "function") {
-    throw new Error("function not found");
-  }
-
-  return  fn;
-};
+function ScreenToWorld(posX, posY)
+{
+  return { x: posX + camera.transform.position.x, y: posY + camera.transform.position.y };
+}

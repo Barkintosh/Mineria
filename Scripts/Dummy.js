@@ -4,33 +4,40 @@ class Dummy extends GameObject
     {
         super();
 
-        this.transform = new Transform( {x:0, y:0}, {x:1, y:1} );       
-        this.AddComponent(new SpriteRenderer(this.transform, creeperSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.DOWN));
+        this.AddComponent(new Transform( {x:0, y:0}, {x:1, y:1} ));
+        this.AddComponent(new SpriteRenderer(this.Transform, creeperSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.MIDDLE));
         
         let bounds = [
             // LEFT TOP
-            -scale/2,
-            -scale,
+            -16,
+            -16,
             // RIGHT TOP
-            scale/2,
-            -scale,
+            16,
+            -16,
             // LEFT DOWN
-            scale/2,
-            0,
+            16,
+            16,
             // RIGHT DOWN
-            -scale/2,
-            0];
+            -16,
+            16];
 
-        this.AddComponent(new Collider(this.transform, bounds));
+        this.AddComponent(new Collider(this.Transform, bounds));
+        //this.speed = GetRandomInt(-5, 5);
 
-        this.speed = GetRandomInt(-10, 10);
+        //this.transform.size = {x:1, y:1};
     }
 
     Update()
     {
         super.Update();
 
-        this.transform.position.x += Math.cos(time) * this.speed;
-        this.transform.position.y += Math.sin(time) * this.speed;
+        //this.transform.position.x += Math.cos(time) * this.speed;
+        ///this.transform.position.y += Math.sin(time) * this.speed;
+
+
+        if(this.Collider.PointInBounds(mouseX, mouseY))
+        {
+            Destroy(this);
+        }
     }
 }

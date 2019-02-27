@@ -41,7 +41,6 @@ class GameObject
             if(this.components[i] == component)
             {
                 delete this.components[i];
-                this[component.constructor.name] = undefined;
                 this.components.splice(i, 1);
             }
         }

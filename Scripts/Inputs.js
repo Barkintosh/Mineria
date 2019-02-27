@@ -71,6 +71,7 @@ document.addEventListener('mousemove', function()
     mouseY = event.clientY;
 });
 
+/*
 const Scroll = e => {
     const direction = (e.deltaY || -e.wheelDelta || e.detail) >> 10 || 1;
     scale += -direction * 1;
@@ -79,3 +80,4 @@ const Scroll = e => {
   document.addEventListener("wheel", Scroll);
   document.addEventListener("mousewheel", Scroll);
   document.addEventListener("DOMMouseScroll", Scroll);
+  */

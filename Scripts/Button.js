@@ -49,7 +49,7 @@ class Button
         ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         ctx.font = "14px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.textAlign = "center"; 
         ctx.justify = "center"; 
         ctx.textBaseline = 'middle'; 

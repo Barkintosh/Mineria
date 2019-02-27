@@ -34,7 +34,7 @@ function Create2DArray(rows)
     }
   
     return arr;
-  }
+}
 
 
 function GetRandomInt(min, max) 
