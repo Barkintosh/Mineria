@@ -20,8 +20,8 @@ class Collider
         // UPDATE BOUNDS
         for( let i = 0; i < this.bounds.length; i += 2)
         {
-                this.bounds[i] = this.baseBounds[i] * this.transform.size.x;
-                this.bounds[i+1] = this.baseBounds[i+1] * this.transform.size.y;
+            this.bounds[i] = this.baseBounds[i] * this.transform.size.x;
+            this.bounds[i+1] = this.baseBounds[i+1] * this.transform.size.y;
         }
 
         // DEBUG
@@ -56,36 +56,40 @@ class Collider
             this.bounds[0] + this.position.x,
             this.bounds[1] + this.position.y
         );
-
         ctx.stroke();
     }
-    /*
+
     IsColliding(other)
-    {        
+    {    
         for( let i = 0; i < this.bounds.length; i += 4)
         {
             for( let j = 0; j < other.bounds.length; j += 4)
             {
-                //denom = ((LineB2.Y – LineB1.Y) * (LineA2.X – LineA1.X)) – ((LineB2.X – LineB1.X) * (LineA2.Y - LineA1.Y));
-                var denom = ((other.bounds[j+3] - other.bounds[j+1])*(other.bounds[i+2] - other.bounds[i])) 
-                - ((other.bounds[j+3] - other.bounds[j]) *(other.bounds[i+3] - other.bounds[i+1]));
-                if (denom != 0)
-                {}
+                if(IsIntersecting(
+                    this.bounds[i] + this.transform.position.x,
+                    this.bounds[i+1] + this.transform.position.y,
+                    this.bounds[i+2] + this.transform.position.x,
+                    this.bounds[i+3] + this.transform.position.y,
+                    other.bounds[j] + other.transform.position.x,
+                    other.bounds[j+1] + other.transform.position.y,
+                    other.bounds[j+2] + other.transform.position.x,
+                    other.bounds[j+3] + other.transform.position.y
+                    ))
+                {
+                    return true;
+                }
             }
         }
-        return null;
+        return false;
     }
-    */
 
     CopyArray(array)
     {
         var newArray = [];
-
         for(var i = 0; i < array.length; i++)
         {
             newArray[i] = array[i];
         }
-        
         return newArray;
     }
 

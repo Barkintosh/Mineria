@@ -3,7 +3,7 @@ class GameObject
     constructor()
     {
         this.components = [];
-        this.transform = new Transform({x:0, y:0}, {x:1, y:1});
+        this.name = "GameObject";
     }
 
     Start()

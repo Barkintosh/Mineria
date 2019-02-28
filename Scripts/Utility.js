@@ -86,3 +86,55 @@ function include(filename)
 
     head.appendChild(script)
 }
+
+function IsIntersecting(ax, ay, bx, by, cx, cy, dx, dy)
+{
+    var tmp = (cx - dx) * (by - ay) - (dy - cy) * (bx - ax);
+
+    console.log(tmp);
+
+
+
+
+    /*
+    var denominator = ((bx - ax) * (dy - cy)) - ((by - ay) * (dx - cx));
+    var numeratorOne = ((ay - cy) * (dx - cx)) - ((ax - cx) * (dy - cy));
+    var numeratorTwo = ((ay - cy) * (bx - ax)) - ((ax - cx) * (by - ay));
+
+    if(denominator == 0) return numeratorOne == 0 && numeratorTwo == 0;
+
+    var r = numeratorOne / denominator;
+    var s = numeratorTwo / denominator;
+    
+    return (r >= 0 && r <= 1) && (s >= 0 && s <= 1);
+    */
+}
+
+function BoxOverlap(box1, box2)
+{
+    if(box1.position.x < box2.position.x + box2.size.x
+    && box2.position.x < box1.position.x + box1.size.x
+    && box1.position.y < box2.position.y + box2.size.y
+    && box2.position.y < box1.position.y + box1.size.y
+    )
+    {
+        return true;
+    }
+    return false;
+}
+
+/*
+let bounds = [
+    // LEFT TOP
+    -scale/2,
+    -scale,
+    // RIGHT TOP
+    scale/2,
+    -scale,
+    // LEFT DOWN
+    scale/2,
+    0,
+    // RIGHT DOWN
+    -scale/2,
+    0];
+*/

@@ -21,5 +21,8 @@ function ToggleDebbug()
 
     var t = scene[i].GetComponent("Transform");
     if(t != null) t.ToggleShown();
+
+    var bc = scene[i].GetComponent("BoxCollider");
+    if(bc != null) bc.ToggleShown();
   }
 }

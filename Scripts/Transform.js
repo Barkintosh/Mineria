@@ -1,6 +1,6 @@
 class Transform
 {
-    constructor(pos = {x:0, y:0}, size = {x:1, y:1}, rotation = 0)
+    constructor(pos = {x:0, y:0}, size = {x:1, y:1}, rotation = 0, parent = undefined)
     {
         this.position = {
             x:pos.x,
@@ -10,9 +10,8 @@ class Transform
             x:size.x,
             y:size.y
         };
-        
         this.rotation = rotation;
-
+        this.parent = parent;
         this.shown = false;
     }
 
@@ -26,7 +25,7 @@ class Transform
         this.shown = !this.shown;
     }
 
-    Draw(color = "red", width = 1)
+    Draw(color = "white", width = 1)
     {
         ctx.strokeStyle = color;
         ctx.lineWidth = width;
@@ -55,13 +54,13 @@ class Transform
         );
         ctx.stroke();
 
-        ctx.font = "14px Arial";
-        ctx.fillStyle = "red";
+        ctx.font = "10px Arial";
+        ctx.fillStyle = "white";
         ctx.textAlign = "center"; 
         ctx.justify = "center"; 
         ctx.textBaseline = 'middle'; 
         ctx.fillText(
-            Math.floor(this.position.x) + " " + Math.floor(this.position.y),
+            "{ x:" + Math.floor(this.position.x) + ", y:" + Math.floor(this.position.y) + " }",
             this.position.x - camera.transform.position.x,
             this.position.y - camera.transform.position.y + 25
         );

@@ -3,14 +3,10 @@ var ctx = canvas.getContext("2d");
 
 var scene = [];
 var blocks = Create2DArray(2048);
-var scale = 32;
-var time = 0;
-var gravity = 0.01;
 
 var player = Instantiate("Character");
 var camera = Instantiate("Camera");
 var dummy;
-
 
 var worldOrigin = 
 {

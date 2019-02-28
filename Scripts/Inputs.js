@@ -80,4 +80,4 @@ const Scroll = e => {
   document.addEventListener("wheel", Scroll);
   document.addEventListener("mousewheel", Scroll);
   document.addEventListener("DOMMouseScroll", Scroll);
-  */
+*/
