@@ -3,14 +3,14 @@ const VerticalAlignement = { DOWN:0, MIDDLE:1, TOP:2};
 
 class SpriteRenderer
 {
-    constructor(transform, sprite, pixelPosisiton, width, height, hAlign = HorizontalAlignement.MIDDLE, vAlign = VerticalAlignement.MIDDLE)
+    constructor(transform, sprite, pixelPosisiton, width, height/*, hAlign = HorizontalAlignement.MIDDLE, vAlign = VerticalAlignement.MIDDLE*/)
     {   
         this.sprite = sprite;
         this.width = width;
         this.height = height;
         this.pixelPosition = {x:0, y:0};
-        this.horizontalAlignement = hAlign;
-        this.verticalAlignement = vAlign;
+        //this.horizontalAlignement = hAlign;
+        //this.verticalAlignement = vAlign;
         this.transform = transform;
     }
 
@@ -18,8 +18,8 @@ class SpriteRenderer
     {
         var drawPoint = 
         {
-            x: (this.transform.position.x - camera.transform.position.x) + this.GetHorizontalShift() * this.transform.size.x,
-            y: (this.transform.position.y - camera.transform.position.y) + this.GetVerticalShift() * this.transform.size.y
+            x: (this.transform.position.x - camera.transform.position.x) + /*this.GetHorizontalShift()*/0 * this.transform.size.x,
+            y: (this.transform.position.y - camera.transform.position.y) + /*this.GetVerticalShift()*/0 * this.transform.size.y
         }
 
         var drawBound =
@@ -28,30 +28,71 @@ class SpriteRenderer
             h:this.height * this.transform.size.y
         }
 
-        ctx.drawImage
-        (
-            this.sprite,
-            this.pixelPosition.x,
-            this.pixelPosition.y,
-            this.width,
-            this.height,
-
-            drawPoint.x,
-            drawPoint.y,
-            drawBound.w,
-            drawBound.h
-        );
-
-        if(this.masked)
+        if(this.transform.rotation != 0)
         {
-            ctx.beginPath();
-            ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
-            ctx.fillRect(
-                drawPoint.x,
-                drawPoint.y,
-                drawBound.w,
-                drawBound.h
-            );
+            var rad = this.transform.rotation * Math.PI / 180;
+            ctx.translate(drawPoint.x, drawPoint.y);
+            ctx.rotate(rad);
+
+            if(this.masked)
+            {
+                ctx.beginPath();
+                ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+                ctx.fillRect(
+                    -drawBound.w/2,
+                    -drawBound.h/2,
+                    drawBound.w,
+                    drawBound.h
+                );
+            }
+            else
+            {
+                ctx.drawImage
+                (
+                    this.sprite,
+                    this.pixelPosition.x,
+                    this.pixelPosition.y,
+                    this.width,
+                    this.height,
+        
+                    -drawBound.w/2,
+                    -drawBound.h/2,
+                    drawBound.w,
+                    drawBound.h
+                );
+            }
+            ctx.rotate(-rad);
+            ctx.translate(-drawPoint.x, -drawPoint.y);
+        }
+        else
+        {
+            if(this.masked)
+            {
+                ctx.beginPath();
+                ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+                ctx.fillRect(
+                    drawPoint.x - drawBound.w/2,
+                    drawPoint.y - drawBound.h/2,
+                    drawBound.w,
+                    drawBound.h
+                );
+            }
+            else
+            {
+                ctx.drawImage
+                (
+                    this.sprite,
+                    this.pixelPosition.x,
+                    this.pixelPosition.y,
+                    this.width,
+                    this.height,
+        
+                    drawPoint.x - drawBound.w/2,
+                    drawPoint.y - drawBound.h/2,
+                    drawBound.w,
+                    drawBound.h
+                );
+            }
         }
     }
 

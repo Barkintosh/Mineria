@@ -93,7 +93,7 @@ class Collider
         return newArray;
     }
 
-    PointInBounds(posX, posY)
+    IsPointInBounds(posX, posY)
     {
         var pos = ScreenToWorld(posX, posY);
         if(pos.x > this.transform.position.x + this.bounds[0]

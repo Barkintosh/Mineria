@@ -26,8 +26,8 @@ function Start()
     ResizeScreen();
     camera.FocusOn(player.Transform);
 
+    player.Transform.SetParent(Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform"));
     Instantiate("Dummy", { x:-100, y:0});
-    Instantiate("Dummy", { x:-200, y:0});
     Instantiate("Dummy", { x:0, y:-100});
     Instantiate("Dummy", { x:0, y:-200});
 
@@ -111,7 +111,7 @@ function DrawBackground()
     grd.addColorStop(0.5, "green");
     grd.addColorStop(1, "blue");
 
-    ctx.fillStyle = grd;
+    ctx.fillStyle = "black";
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
