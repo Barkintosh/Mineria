@@ -8,7 +8,7 @@ var scene = [];
 
 // REFRESH SYSTEM
 var time = 0;
-var fps = 30;
+var fps = 60;
 var now;
 var then = Date.now();
 var interval = 1000/fps;

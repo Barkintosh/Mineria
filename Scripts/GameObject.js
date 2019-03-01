@@ -4,6 +4,7 @@ class GameObject
     {
         this.components = [];
         this.name = "GameObject";
+        this.AddComponent(new Transform());
     }
 
     Start()
@@ -25,7 +26,7 @@ class GameObject
     AddComponent(component)
     {   
         this.components[this.components.length] = component;
-        this[component.constructor.name] = component;
+        this[component.constructor.name] = this.components[this.components.length - 1];
     }
 
     GetComponent(component)

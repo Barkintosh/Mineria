@@ -7,6 +7,9 @@ blocksSprite.src = "./Assets/blocks_16.png";
 var creeperSprite = new Image();
 creeperSprite.src = "./Assets/creeper.png";
 
+var ballSprite = new Image();
+ballSprite.src = "./Assets/ball.png";
+
 /*
 // ROTATE IMAGE RENDERING
 ctx.save(); // save current state

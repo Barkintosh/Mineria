@@ -24,6 +24,11 @@ function lerp(a, b, n)
     return (1 - n) * a + n * b;
 }
 
+function ToRadian(angle)
+{
+    return angle * Math.PI / 180;
+}
+
 function Create2DArray(rows)
 {
     var arr = [];

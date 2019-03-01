@@ -7,11 +7,22 @@ class Character extends GameObject
         this.vSpeed = 0;
         this.hSpeed = 0;
         
-        this.AddComponent(new Transform( {x:0, y:0}, {x:1, y:1} ));
         this.AddComponent(new SpriteRenderer(this.Transform, characterSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.MIDDLE));
         this.AddComponent(new BoxCollider(this.Transform, false, {x:32, y:32}, {x:0, y:0}));
 
         this.Transform.name = "Character";
+
+        this.ball = this.CreateAura();
+        console.log(this.ball);
+    }
+
+    CreateAura()
+    {
+        var ball = Instantiate("GameObject");
+        ball.AddComponent(new SpriteRenderer(ball.Transform, ballSprite, {x:0, y:0}, 16, 16));
+        ball.Transform.name = "Energy";
+        ball.Transform.SetParent(this.Transform);
+        return ball;
     }
 
     Movement()
@@ -42,8 +53,8 @@ class Character extends GameObject
             this.hSpeed = lerp(this.hSpeed, 0, 0.5);
         }
 
-        this.Transform.localPosition.x += this.hSpeed;
-        this.Transform.localPosition.y += this.vSpeed;
+        this.Transform.position.x += this.hSpeed;
+        this.Transform.position.y += this.vSpeed;
 
         this.moving = false;
     }
@@ -52,5 +63,8 @@ class Character extends GameObject
     {
         super.Update();
         this.Movement();
+
+        this.ball.Transform.localPosition.x = Math.cos(time) * 32;
+        this.ball.Transform.localPosition.y = Math.sin(time) * 32;
     }
 }
