@@ -1,13 +1,13 @@
-var characterSprite = new Image();
+const characterSprite = new Image();
 characterSprite.src = "./Assets/dwarf.png";
 
-var blocksSprite = new Image();
+const blocksSprite = new Image();
 blocksSprite.src = "./Assets/blocks_16.png";
 
-var creeperSprite = new Image();
+const creeperSprite = new Image();
 creeperSprite.src = "./Assets/creeper.png";
 
-var ballSprite = new Image();
+const ballSprite = new Image();
 ballSprite.src = "./Assets/ball.png";
 
 /*

@@ -41,7 +41,6 @@ function Create2DArray(rows)
     return arr;
 }
 
-
 function GetRandomInt(min, max) 
 {
     return min + Math.floor(Math.random() * Math.floor(max - min));
@@ -74,22 +73,7 @@ function GetRandomName()
 
 function GetRandomColor(minRed, maxRed, minGreen, maxGreen, minBlue, maxBlue)
 {
-    var string; 
-
-    string = "rgb(" + GetRandomInt(minRed, maxRed) + ", " + GetRandomInt(minGreen, maxGreen) + ", " + GetRandomInt(minBlue, maxBlue) + ")"; 
-
-    return string;
-}
-
-function include(filename)
-{
-    var head = document.getElementsByTagName('head')[0];
-
-    var script = document.createElement('script');
-    script.src = filename;
-    script.type = 'text/javascript';
-
-    head.appendChild(script)
+    return "rgb(" + GetRandomInt(minRed, maxRed) + ", " + GetRandomInt(minGreen, maxGreen) + ", " + GetRandomInt(minBlue, maxBlue) + ")"; 
 }
 
 function IsIntersecting(ax, ay, bx, by, cx, cy, dx, dy)

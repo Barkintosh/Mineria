@@ -1,4 +1,4 @@
-class GameObject
+export class GameObject
 {
     constructor()
     {
@@ -47,3 +47,5 @@ class GameObject
         }
     }
 }
+
+export {GameObject};

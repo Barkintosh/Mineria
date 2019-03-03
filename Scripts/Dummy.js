@@ -4,7 +4,7 @@ class Dummy extends GameObject
     {
         super();
         this.name = "Dummy";
-        this.AddComponent(new SpriteRenderer(this.Transform, creeperSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.MIDDLE));
+        this.AddComponent(new SpriteRenderer(this.Transform, creeperSprite, {x:0, y:0}, 32, 32));
         this.AddComponent(new BoxCollider(this.Transform, false, {x:32, y:32}));
         this.moving = false;
         this.Transform.name = "Dummy";
@@ -17,7 +17,10 @@ class Dummy extends GameObject
         {
             this.ToggleMoving();
         }
-        if(this.moving) this.Transform.rotation += 1;
+        if(this.moving)
+        {
+            this.Transform.rotation += 1;
+        }
     }
 
     ToggleMoving()

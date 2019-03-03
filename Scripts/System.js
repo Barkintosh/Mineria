@@ -1,7 +1,11 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-const Layer = { SCENE:0, GUI:1, GIZMO:2 }
+Include("./Scripts/GameObject.js", "module");
+import GameObject from "./Scripts/GameObject.js";
+var GameObject = new GameObject();
+
+import("./Scripts/GameObject.js");
 
 // SCENE
 var scene = [];
@@ -25,12 +29,9 @@ function Start()
 {
     ResizeScreen();
     camera.FocusOn(player.Transform);
-
-    player.Transform.SetParent(Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform"));
-    Instantiate("Dummy", { x:-100, y:0});
+    //player.Transform.SetParent(Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform"));
     Instantiate("Dummy", { x:0, y:-100});
     Instantiate("Dummy", { x:0, y:-200});
-
     Refresh();
 }
 
@@ -105,12 +106,10 @@ function ScreenToWorld(posX, posY)
 function DrawBackground() 
 {
     ctx.beginPath();
-
     var grd = ctx.createLinearGradient(0, window.innerHeight, window.innerWidth, 0);
     grd.addColorStop(0, "red");
     grd.addColorStop(0.5, "green");
     grd.addColorStop(1, "blue");
-
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
@@ -124,4 +123,26 @@ function FindComponents(component)
         if(c != null) components[components.length] = c;
     }
     return components;
+}
+
+function Include(filename)
+{
+    var head = document.getElementsByTagName('head')[0];
+
+    var script = document.createElement('script');
+    script.src = filename;
+    script.type = 'text/javascript';
+
+    head.appendChild(script)
+}
+
+function Include(filename, type = "text/javascript")
+{
+    var head = document.getElementsByTagName('head')[0];
+
+    var script = document.createElement('script');
+    script.src = filename;
+    script.type = type;
+
+    head.appendChild(script)
 }
