@@ -1,12 +1,6 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-Include("./Scripts/GameObject.js", "module");
-import GameObject from "./Scripts/GameObject.js";
-var GameObject = new GameObject();
-
-import("./Scripts/GameObject.js");
-
 // SCENE
 var scene = [];
 
@@ -61,7 +55,6 @@ function Update()
     UpdateCollisions();
     UpdateInterface();
     UpdateInputs();
-    
 }
 
 function ResizeScreen()

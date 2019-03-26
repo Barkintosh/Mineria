@@ -34,9 +34,8 @@ class Transform
         if(this.parent != undefined)
         {
             var rad = ToRadian(this.parent.rotation);
-            let dist = this.localPosition.x - this.localPosition.y;      
-            this.position.x = this.parent.position.x + Math.cos(rad) * dist;
-            this.position.y = this.parent.position.y + Math.sin(rad) * dist;
+            this.position.x = this.parent.position.x + Math.cos(rad) * this.localPosition.x;
+            this.position.y = this.parent.position.y + (Math.sin(rad)+1) * this.localPosition.y;
             this.rotation = this.localRotation + this.parent.rotation;
         }
         if(this.shown) this.Draw();
