@@ -4,15 +4,18 @@ class Dummy extends GameObject
     {
         super();
         this.name = "Dummy";
-        this.AddComponent(new SpriteRenderer(this.Transform, creeperSprite, {x:0, y:0}, 32, 32));
+        this.AddComponent(new SpriteRenderer(this.Transform, fireCircle, {x:0, y:0}, 50, 50));
+        this.AddComponent(new Animator(this.SpriteRenderer, fireCircle, 61,  {x:0, y:0}, {x:50, y:50}, 1));
         this.AddComponent(new BoxCollider(this.Transform, false, {x:32, y:32}));
         this.moving = false;
+        this.Transform.size = {x: 5, y: 5};
         this.Transform.name = "Dummy";
     }
 
     Update()
     {
         super.Update();
+
         if(mouseDown && this.BoxCollider.IsPointInBounds({x:mouseX, y:mouseY}))
         {
             this.ToggleMoving();

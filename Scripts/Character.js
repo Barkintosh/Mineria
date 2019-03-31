@@ -67,5 +67,7 @@ class Character extends GameObject
 
         this.ball.Transform.localPosition.x = Math.cos(time) * 48;
         this.ball.Transform.localPosition.y = Math.sin(time) * 48;
+
+        console.log(this.Transform.localPosition);
     }
 }

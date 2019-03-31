@@ -10,6 +10,9 @@ creeperSprite.src = "./Assets/creeper.png";
 const ballSprite = new Image();
 ballSprite.src = "./Assets/ball.png";
 
+const fireCircle = new Image();
+fireCircle.src = "./Assets/fire_circles_50x50px.png";
+
 /*
 // ROTATE IMAGE RENDERING
 ctx.save(); // save current state

@@ -14,6 +14,14 @@ class SpriteRenderer
         this.transform = transform;
     }
 
+    NewSprite(sprite, pixelPosisiton, width, height)
+    {
+        this.sprite = sprite;
+        this.pixelPosition = pixelPosisiton;  
+        this.width = width;
+        this.height = height;
+    }
+
     Update()
     {
         var drawPoint = 

@@ -16,16 +16,13 @@ var delta;
 var gravity = 0.01;
 var scale = 32;
 
-var player = Instantiate("Character");
+//var player = Instantiate("Character");
 var camera = Instantiate("Camera");
 
 function Start()
 {
     ResizeScreen();
-    camera.FocusOn(player.Transform);
-    //player.Transform.SetParent(Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform"));
-    Instantiate("Dummy", { x:0, y:-100});
-    Instantiate("Dummy", { x:0, y:-200});
+    camera.FocusOn(Instantiate("Dummy", { x:0, y:-100}).GetComponent("Transform"));    
     Refresh();
 }
 
