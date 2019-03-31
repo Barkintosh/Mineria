@@ -4,6 +4,9 @@ characterSprite.src = "./Assets/dwarf.png";
 const blocksSprite = new Image();
 blocksSprite.src = "./Assets/blocks_16.png";
 
+const minecraftBlocksSprite = new Image();
+minecraftBlocksSprite.src = "./Assets/blocks_32.jpg";
+
 const creeperSprite = new Image();
 creeperSprite.src = "./Assets/creeper.png";
 
@@ -12,6 +15,15 @@ ballSprite.src = "./Assets/ball.png";
 
 const fireCircle = new Image();
 fireCircle.src = "./Assets/fire_circles_50x50px.png";
+
+const torch = new Image();
+torch.src = "./Assets/torch.png";
+
+const skeleton = new Image();
+skeleton.src = "./Assets/skeleton.png";
+
+const trump = new Image();
+trump.src = "./Assets/trump.png";
 
 /*
 // ROTATE IMAGE RENDERING

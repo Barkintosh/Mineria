@@ -7,11 +7,12 @@ class Character extends GameObject
         this.vSpeed = 0;
         this.hSpeed = 0;
         
-        this.AddComponent(new SpriteRenderer(this.Transform, characterSprite, {x:0, y:0}, 32, 32, HorizontalAlignement.MIDDLE, VerticalAlignement.MIDDLE));
+        this.AddComponent(new SpriteRenderer(this.Transform, minecraftBlocksSprite, {x:32, y:48}, 16, 16));
         this.AddComponent(new BoxCollider(this.Transform, false, {x:32, y:32}));
+        this.Transform.size = {x: 3, y: 3};
         this.Transform.name = "Character";
 
-        this.ball = this.CreateAura();
+        //this.ball = this.CreateAura();
     }
 
     CreateAura()
@@ -65,9 +66,11 @@ class Character extends GameObject
         super.Update();
         this.Movement();
 
+        /*
         this.ball.Transform.localPosition.x = Math.cos(time) * 48;
         this.ball.Transform.localPosition.y = Math.sin(time) * 48;
 
         console.log(this.Transform.localPosition);
+        */
     }
 }

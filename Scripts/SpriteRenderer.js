@@ -8,7 +8,7 @@ class SpriteRenderer
         this.sprite = sprite;
         this.width = width;
         this.height = height;
-        this.pixelPosition = {x:0, y:0};
+        this.pixelPosition = pixelPosisiton;
         //this.horizontalAlignement = hAlign;
         //this.verticalAlignement = vAlign;
         this.transform = transform;

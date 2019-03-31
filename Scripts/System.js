@@ -16,13 +16,35 @@ var delta;
 var gravity = 0.01;
 var scale = 32;
 
-//var player = Instantiate("Character");
+var player = Instantiate("Character");
 var camera = Instantiate("Camera");
 
 function Start()
 {
     ResizeScreen();
-    camera.FocusOn(Instantiate("Dummy", { x:0, y:-100}).GetComponent("Transform"));    
+
+    camera.FocusOn(player.GetComponent("Transform"));
+
+    Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform").size = {x: 0.25, y: 0.25};
+    Instantiate("Dummy", { x:-100, y:0}).GetComponent("Transform").size = {x: 0.5, y: 0.5};
+    Instantiate("Dummy", { x:0, y:0}).GetComponent("Transform");
+    Instantiate("Dummy", { x:100, y:0}).GetComponent("Transform").size = {x: 1.5, y: 1.5};
+    Instantiate("Dummy", { x:200, y:0}).GetComponent("Transform").size = {x: 2, y: 2};
+
+    var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Animator");
+    anim.sheet = characterSprite;
+    anim.frameCount = 8;
+    anim.spriteSize = {x:32, y:32};
+    anim.speed = 0.25;
+
+    anim = Instantiate("Dummy", { x:-100, y:100}).GetComponent("Animator");
+    anim.sheet = trump;
+    anim.frameCount = 24;
+    anim.spriteSize = {x:100, y:100};
+    anim.pixelCoord = {x: 0, y:100};
+    anim.originPixelCoord = anim.pixelCoord;
+    anim.speed = 0.25;
+
     Refresh();
 }
 
