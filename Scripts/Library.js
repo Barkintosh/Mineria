@@ -25,6 +25,9 @@ skeleton.src = "./Assets/skeleton.png";
 const trump = new Image();
 trump.src = "./Assets/trump.png";
 
+
+const arrowSprite = new Image();
+arrowSprite.src = "./Assets/arrow.png";
 /*
 // ROTATE IMAGE RENDERING
 ctx.save(); // save current state

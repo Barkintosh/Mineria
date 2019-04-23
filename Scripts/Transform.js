@@ -26,20 +26,20 @@ class Transform
 
         this.name = "GameObject";
 
-        this.shown = false;
+        this.debug = debug;
     }
 
     Update()
     {
         if(this.parent != undefined)
         {
-            var rad = ToRadian(this.parent.rotation);
-            var distance = this.localPosition.x - this.localPosition.y;
+            var rad = ToRadian(this.parent.rotation + this.localRotation);
+            var distance = this.localPosition.x + this.localPosition.y;
             this.position.x = this.parent.position.x + Math.cos(rad) * distance;
             this.position.y = this.parent.position.y + Math.sin(rad) * distance;
             this.rotation = this.localRotation + this.parent.rotation;
         }
-        if(this.shown) this.Draw();
+        if(this.debug) this.Draw();
     }
 
     SetParent(parent)
@@ -59,9 +59,9 @@ class Transform
         this.size = {x:1 ,y:1};
     }
 
-    ToggleShown()
+    ToggleDebug()
     {
-        this.shown = !this.shown;
+        this.debug = !this.debug;
     }
 
     Draw(color = "white", width = 1)

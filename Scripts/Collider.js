@@ -28,7 +28,7 @@ class Collider
         if(this.shown) this.Draw();
     }
 
-    ToggleShown()
+    ToggleDebug()
     {
         this.shown = !this.shown;
     }

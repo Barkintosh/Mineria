@@ -9,8 +9,8 @@ function UpdateCollisions()
         {
             if(colliders[i].BoxOverlap(colliders[j]))
             {
-                colliders[i].overlaping = true;
-                colliders[j].overlaping = true;
+                colliders[i].OnCollision(colliders[j]);
+                colliders[j].OnCollision(colliders[i]);
             }
         }
     }

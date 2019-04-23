@@ -46,4 +46,9 @@ class GameObject
             }
         }
     }
+
+    OnTriggerEnter(other)
+    {
+
+    }
 }

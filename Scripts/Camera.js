@@ -27,4 +27,9 @@ class Camera extends GameObject
             this.MoveTo(this.target.position.x, this.target.position.y);
         }
     }
+
+    ScreenToWorldPoint(mousePosition)
+    {
+        return {x:mousePosition.x + this.transform.position.x, y: mousePosition.y + this.transform.position.y};
+    }
 }

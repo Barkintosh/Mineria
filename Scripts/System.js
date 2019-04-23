@@ -25,11 +25,11 @@ function Start()
 
     camera.FocusOn(player.GetComponent("Transform"));
 
-    Instantiate("Dummy", { x:-200, y:0}).GetComponent("Transform").size = {x: 0.25, y: 0.25};
-    Instantiate("Dummy", { x:-100, y:0}).GetComponent("Transform").size = {x: 0.5, y: 0.5};
+    Instantiate("Dummy", { x:-100, y:0}).GetComponent("Transform").size = {x: 0.25, y: 0.25};
+    Instantiate("Dummy", { x:-50, y:0}).GetComponent("Transform").size = {x: 0.5, y: 0.5};
     Instantiate("Dummy", { x:0, y:0}).GetComponent("Transform");
-    Instantiate("Dummy", { x:100, y:0}).GetComponent("Transform").size = {x: 1.5, y: 1.5};
-    Instantiate("Dummy", { x:200, y:0}).GetComponent("Transform").size = {x: 2, y: 2};
+    Instantiate("Dummy", { x:50, y:0}).GetComponent("Transform").size = {x: 1.5, y: 1.5};
+    Instantiate("Dummy", { x:100, y:0}).GetComponent("Transform").size = {x: 2, y: 2};
 
     var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Animator");
     anim.sheet = characterSprite;

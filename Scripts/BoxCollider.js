@@ -3,16 +3,14 @@ class BoxCollider
     constructor(transform, isTrigger = false, size = {x:1, y:1}, offset = {x:0, y:0})
     {
         this.transform = transform;
-
         this.baseSize = size;
-
         this.size = size;
-
         this.offset = offset;
         this.isTrigger = isTrigger;
-
-        this.shown = false;
         this.overlaping = false;
+
+        this.debug = debug;
+
     }
 
     Update()
@@ -29,12 +27,12 @@ class BoxCollider
             y: this.baseSize.y * this.transform.size.y,
         }
         // DEBUG
-        if(this.shown) this.Draw();
+        if(this.debug) this.Draw();
     }
 
-    ToggleShown()
+    ToggleDebug()
     {
-        this.shown = !this.shown;
+        this.debug = !this.debug;
     }
 
     Draw(color = "red", width = 1)
@@ -62,16 +60,21 @@ class BoxCollider
         }
     }
 
+    OnCollision(other)
+    {
+        this.overlaping = true;
+    }
+
     BoxOverlap(other)
     {
         //console.log(this.position.x + " > " + other.position.x + other.size.x/2);
 
         if(other != this)
         {
-           if( this.position.x < other.position.x + other.size.x
-            && other.position.x < this.position.x + this.size.x
-            && this.position.y < other.position.y + other.size.y
-            && other.position.y < this.position.y + this.size.y
+           if( this.position.x - this.size.x/2 < other.position.x + other.size.x/2
+            && other.position.x - other.size.x/2 < this.position.x + this.size.x/2
+            && this.position.y - this.size.y/2 < other.position.y + other.size.y/2
+            && other.position.y - other.size.y/2 < this.position.y + this.size.y/2
             )
             {
                 //console.log(this.transform.name + " colliding with " + other.transform.name);

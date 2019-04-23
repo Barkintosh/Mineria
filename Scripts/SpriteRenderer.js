@@ -3,15 +3,15 @@ const VerticalAlignement = { DOWN:0, MIDDLE:1, TOP:2};
 
 class SpriteRenderer
 {
-    constructor(transform, sprite, pixelPosisiton, width, height/*, hAlign = HorizontalAlignement.MIDDLE, vAlign = VerticalAlignement.MIDDLE*/)
+    constructor(transform, sprite, pixelPosisiton, width, height)
     {   
         this.sprite = sprite;
         this.width = width;
         this.height = height;
         this.pixelPosition = pixelPosisiton;
-        //this.horizontalAlignement = hAlign;
-        //this.verticalAlignement = vAlign;
         this.transform = transform;
+
+        this.debug = debug;
     }
 
     NewSprite(sprite, pixelPosisiton, width, height)
@@ -42,10 +42,10 @@ class SpriteRenderer
             ctx.translate(drawPoint.x, drawPoint.y);
             ctx.rotate(rad);
 
-            if(this.masked)
+            if(this.debug)
             {
                 ctx.beginPath();
-                ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+                ctx.fillStyle = "rgba(255, 255, 0, 0.25)";
                 ctx.fillRect(
                     -drawBound.w/2,
                     -drawBound.h/2,
@@ -74,10 +74,10 @@ class SpriteRenderer
         }
         else
         {
-            if(this.masked)
+            if(this.debug)
             {
                 ctx.beginPath();
-                ctx.fillStyle = "rgba(0, 0, 255, 0.5)";
+                ctx.fillStyle = "rgba(255, 255, 0, 0.25)";
                 ctx.fillRect(
                     drawPoint.x - drawBound.w/2,
                     drawPoint.y - drawBound.h/2,
@@ -104,10 +104,10 @@ class SpriteRenderer
         }
     }
 
-    ToggleMask()
+    ToggleDebug()
     {
-        if(this.masked == undefined) this.masked = true;
-        else this.masked = !this.masked;
+        if(this.debug == undefined) this.debug = true;
+        else this.debug = !this.debug;
     }
 
     GetHorizontalShift()
