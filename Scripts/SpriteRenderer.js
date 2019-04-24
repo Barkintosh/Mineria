@@ -1,15 +1,12 @@
-const HorizontalAlignement = { LEFT:0, MIDDLE:1, RIGHT:2};
-const VerticalAlignement = { DOWN:0, MIDDLE:1, TOP:2};
-
 class SpriteRenderer
 {
-    constructor(transform, sprite, pixelPosisiton, width, height)
+    constructor(gameObject, sprite, pixelPosisiton, width, height)
     {   
         this.sprite = sprite;
         this.width = width;
         this.height = height;
         this.pixelPosition = pixelPosisiton;
-        this.transform = transform;
+        this.gameObject = gameObject;
 
         this.debug = debug;
     }
@@ -26,19 +23,19 @@ class SpriteRenderer
     {
         var drawPoint = 
         {
-            x: (this.transform.position.x - camera.transform.position.x) + /*this.GetHorizontalShift()*/0 * this.transform.size.x,
-            y: (this.transform.position.y - camera.transform.position.y) + /*this.GetVerticalShift()*/0 * this.transform.size.y
+            x: (this.gameObject.Transform.position.x - camera.Transform.position.x),
+            y: (this.gameObject.Transform.position.y - camera.Transform.position.y)
         }
 
         var drawBound =
         {
-            w:this.width * this.transform.size.x,
-            h:this.height * this.transform.size.y
+            w:this.width * this.gameObject.Transform.size.x,
+            h:this.height * this.gameObject.Transform.size.y
         }
 
-        if(this.transform.rotation != 0)
+        if(this.gameObject.Transform.rotation != 0)
         {
-            var rad = this.transform.rotation * Math.PI / 180;
+            var rad = this.gameObject.Transform.rotation * Math.PI / 180;
             ctx.translate(drawPoint.x, drawPoint.y);
             ctx.rotate(rad);
 

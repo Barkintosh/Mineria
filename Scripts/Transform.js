@@ -71,25 +71,25 @@ class Transform
 
         ctx.beginPath();
         ctx.moveTo(
-            this.position.x - camera.transform.position.x,
-            this.position.y - camera.transform.position.y - 5
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y - 5
         );
 
         ctx.lineTo(
-            this.position.x - camera.transform.position.x,
-            this.position.y - camera.transform.position.y + 5
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y + 5
         );
         ctx.stroke();
 
         ctx.beginPath();
         ctx.moveTo(
-            this.position.x - camera.transform.position.x - 5,
-            this.position.y - camera.transform.position.y
+            this.position.x - camera.Transform.position.x - 5,
+            this.position.y - camera.Transform.position.y
         );
 
         ctx.lineTo(
-            this.position.x - camera.transform.position.x + 5,
-            this.position.y - camera.transform.position.y
+            this.position.x - camera.Transform.position.x + 5,
+            this.position.y - camera.Transform.position.y
         );
         ctx.stroke();
 
@@ -100,14 +100,14 @@ class Transform
         ctx.textBaseline = 'middle'; 
         ctx.fillText(
             "{ x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + " }",
-            this.position.x - camera.transform.position.x,
-            this.position.y - camera.transform.position.y + 25 * this.size.y
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y + 25 * this.size.y
         );
 
         ctx.fillText(
             this.name,
-            this.position.x - camera.transform.position.x,
-            this.position.y - camera.transform.position.y + 25 * this.size.y + 10
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y + 25 * this.size.y + 10
         );
 
         if(this.parent != undefined)
@@ -116,12 +116,12 @@ class Transform
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(
-                this.position.x - camera.transform.position.x,
-                this.position.y - camera.transform.position.y
+                this.position.x - camera.Transform.position.x,
+                this.position.y - camera.Transform.position.y
             );
             ctx.lineTo(
-                this.parent.position.x - camera.transform.position.x,
-                this.parent.position.y - camera.transform.position.y
+                this.parent.position.x - camera.Transform.position.x,
+                this.parent.position.y - camera.Transform.position.y
             );
             ctx.stroke();
         }

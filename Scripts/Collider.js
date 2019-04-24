@@ -13,8 +13,8 @@ class Collider
         // UPDATE POSITION
         this.position = 
         {
-            x: (this.transform.position.x - camera.transform.position.x),
-            y: (this.transform.position.y - camera.transform.position.y)
+            x: (this.transform.position.x - camera.Transform.position.x),
+            y: (this.transform.position.y - camera.Transform.position.y)
         }
 
         // UPDATE BOUNDS

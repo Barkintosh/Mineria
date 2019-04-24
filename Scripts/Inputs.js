@@ -7,6 +7,7 @@ var mouseX;
 var mouseY;
 
 var mouseDown = false;
+var mouse;
 var mouseUp = false;
 
 document.addEventListener('keydown', function(event) 
@@ -58,11 +59,13 @@ function UpdateInputs()
 document.addEventListener('mousedown', function()
 {
     mouseDown = true;
+    mouse = true;
 });
 
 document.addEventListener('mouseup', function()
 {
     mouseUp = true;
+    mouse = false;
 });
 
 document.addEventListener('mousemove', function()

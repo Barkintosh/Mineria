@@ -203,5 +203,5 @@ function Destroy(object)
 
 function ScreenToWorld(posX, posY)
 {
-  return { x: posX + camera.transform.position.x, y: posY + camera.transform.position.y };
+  return { x: posX + camera.Transform.position.x, y: posY + camera.Transform.position.y };
 }

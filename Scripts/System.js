@@ -11,6 +11,7 @@ var now;
 var then = Date.now();
 var interval = 1000/fps;
 var delta;
+var pause = false;
 
 // SETTINGS
 var gravity = 0.01;
@@ -25,23 +26,19 @@ function Start()
 
     camera.FocusOn(player.GetComponent("Transform"));
 
-    Instantiate("Dummy", { x:-100, y:0}).GetComponent("Transform").size = {x: 0.25, y: 0.25};
-    Instantiate("Dummy", { x:-50, y:0}).GetComponent("Transform").size = {x: 0.5, y: 0.5};
-    Instantiate("Dummy", { x:0, y:0}).GetComponent("Transform");
-    Instantiate("Dummy", { x:50, y:0}).GetComponent("Transform").size = {x: 1.5, y: 1.5};
-    Instantiate("Dummy", { x:100, y:0}).GetComponent("Transform").size = {x: 2, y: 2};
+    Instantiate("Dummy", { x:200, y:0}).GetComponent("Transform");
 
-    var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Animator");
+    var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Flipbook");
     anim.sheet = characterSprite;
     anim.frameCount = 8;
     anim.spriteSize = {x:32, y:32};
     anim.speed = 0.25;
 
-    anim = Instantiate("Dummy", { x:-100, y:100}).GetComponent("Animator");
-    anim.sheet = trump;
-    anim.frameCount = 24;
-    anim.spriteSize = {x:100, y:100};
-    anim.pixelCoord = {x: 0, y:100};
+    anim = Instantiate("Dummy", { x:-100, y:100}).GetComponent("Flipbook");
+    anim.sheet = asteroidSprite;
+    anim.frameCount = 19;
+    anim.spriteSize = {x:72, y:72};
+    anim.pixelCoord = {x: 0, y:0};
     anim.originPixelCoord = anim.pixelCoord;
     anim.speed = 0.25;
 
@@ -51,6 +48,9 @@ function Start()
 function Refresh()
 {
     requestAnimationFrame(Refresh);
+
+    if(pause) return;
+
     now = Date.now();
     delta = now - then;
     if (delta > interval) 
@@ -65,12 +65,7 @@ function Refresh()
 function Update()
 {
     DrawBackground();
-
-    for(var i = 0; i < scene.length; i++)
-    {
-        scene[i].Update();
-    }
-
+    for(var i = 0; i < scene.length; i++) scene[i].Update();
     UpdateCollisions();
     UpdateInterface();
     UpdateInputs();
@@ -112,7 +107,7 @@ function Destroy(object)
 
 function ScreenToWorld(posX, posY)
 {
-    return { x: posX + camera.transform.position.x, y: posY + camera.transform.position.y };
+    return { x: posX + camera.Transform.position.x, y: posY + camera.Transform.position.y };
 }
 
 function DrawBackground() 

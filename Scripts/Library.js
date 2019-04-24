@@ -25,9 +25,14 @@ skeleton.src = "./Assets/skeleton.png";
 const trump = new Image();
 trump.src = "./Assets/trump.png";
 
-
 const arrowSprite = new Image();
 arrowSprite.src = "./Assets/arrow.png";
+
+const planetSprite = new Image();
+planetSprite.src = "./Assets/planet.png";
+
+const asteroidSprite = new Image();
+asteroidSprite.src = "./Assets/asteroid.png";
 /*
 // ROTATE IMAGE RENDERING
 ctx.save(); // save current state

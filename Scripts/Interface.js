@@ -1,7 +1,8 @@
 var blocksOnScreen = 0;
 var debug = false;
 
-var btn = new Button({x:10, y:10}, 100, 30, "Debug", "red", ToggleDebbug);
+var btn = new Button({x:5, y:5}, 100, 30, "Debug", "red", ToggleDebbug);
+
 
 function UpdateInterface()
 {
@@ -19,6 +20,11 @@ function UpdateInterface()
     );
     ctx.stroke();
   }
+}
+
+function TogglePause()
+{
+  pause = !pause;
 }
 
 function ToggleDebbug()
@@ -39,12 +45,6 @@ function ToggleDebbug()
     if(bc != null) bc.ToggleDebug();
   }
 
-  if(debug)
-  {
-    btn.color = "green";
-  }
-  else
-  {
-    btn.color = "red";
-  }
+  if(debug) btn.color = "green";
+  else btn.color = "red";
 }
