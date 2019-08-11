@@ -16,6 +16,7 @@ class Controller
         arrow.AddComponent(new Rigidbody(arrow));
         arrow.AddComponent(new Flipbook(arrow.SpriteRenderer, arrowSprite, 4, {x:0, y:0}, {x:8, y:23}, 1));
         arrow.AddComponent(new Arrow(arrow));
+        arrow.AddComponent(new LineRenderer(arrow,[{x:-50, y:0}, {x:0, y:50}, {x:50, y:0}], 1, "blue", true));
 
         arrow.Transform.size = {x: 2, y: 2};
 
