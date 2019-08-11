@@ -45,6 +45,7 @@ class Controller
         if(leftArrow)
         {
             this.hSpeed = lerp(this.hSpeed, -this.baseSpeed/delta, 0.5);
+            this.gameObject.Transform.size = {x: -this.gameObject.Transform.size.x, y: this.gameObject.Transform.size.y};
         }
         else if(rightArrow)
         {

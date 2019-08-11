@@ -33,6 +33,12 @@ class SpriteRenderer
             h:this.height * this.gameObject.Transform.size.y
         }
 
+        ctx.save();
+
+        var h = this.gameObject.Transform.size.x < 0 ? -1 : 1;
+        var v = this.gameObject.Transform.size.y < 0 ? -1 : 1;
+        ctx.scale(h, v);
+
         if(this.gameObject.Transform.rotation != 0)
         {
             var rad = this.gameObject.Transform.rotation * Math.PI / 180;
@@ -66,8 +72,6 @@ class SpriteRenderer
                     drawBound.h
                 );
             }
-            ctx.rotate(-rad);
-            ctx.translate(-drawPoint.x, -drawPoint.y);
         }
         else
         {
@@ -99,6 +103,8 @@ class SpriteRenderer
                 );
             }
         }
+
+        ctx.restore();
     }
 
     ToggleDebug()
