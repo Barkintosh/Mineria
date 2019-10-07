@@ -2,61 +2,127 @@ class Renderer
 {
     constructor()
     {
-        this.calls = [];
+        this.drawCalls = [];
     }
 
     Update()
     {
-    
+        this.drawCalls.sort(function(a, b)
+        {
+            return a.transform.layer - b.transform.layer;
+        });
+
+        this.drawCalls.forEach(function(element)
+        {
+            element.Draw();
+        });
+
+        this.drawCalls = [];
     }
     
-    Image(sprite, coordinate, area, position, size, rotation, scale)
+    Image(sprite, coordinate, area, transform)
     {
-        ctx.save();
-        var rad = rotation * Math.PI / 180;
-        ctx.translate(position.x, position.y);
-        ctx.scale(scale.x, scale.y);
-        ctx.rotate(rad);
-
-        ctx.drawImage
-        (
-            sprite,
-            coordinate.x,
-            coordinate.y,
-            area.x,
-            area.x,
-
-            -size.w/2,
-            -size.h/2,
-            size.w,
-            size.h
+        this.drawCalls.push(
+            new ImageDrawCall(
+                sprite,
+                coordinate,
+                area, 
+                transform
+            )
         );
-
-        ctx.restore();
     }
     
-    Rectangle(position, size, rotation, scale, color)
+    Rectangle(size, transform, color = "rgba(255, 255, 255, 1)")
     {
-        ctx.save();
-        var rad = rotation * Math.PI / 180;
-        ctx.translate(position.x, position.y);
-        ctx.scale(scale.x, scale.y);
-        ctx.rotate(rad);
-
-        ctx.beginPath();
-        ctx.fillStyle = color;
-        ctx.fillRect(
-            -size.w/2,
-            -size.h/2,
-            size.w,
-            size.h
+        this.drawCalls.push(
+            new RectangleDrawCall(
+                size,
+                transform,
+                color
+            )
         );
-
-        ctx.restore();
     }
     
     Circle()
     {
         
+    }
+}
+
+class ImageDrawCall
+{
+    constructor(sprite, coordinate, area, transform)
+    {
+        this.sprite = sprite;
+        this.coordinate = coordinate;
+        this.area = area;
+        this.transform = transform;
+    }
+
+    Draw()
+    {
+        ctx.save();
+
+        var point = 
+        {
+            x: (this.transform.position.x - camera.Transform.position.x),
+            y: (this.transform.position.y - camera.Transform.position.y)
+        }
+
+        ctx.translate(point.x, point.y);
+        ctx.scale(this.transform.scale.x, this.transform.scale.y);
+        ctx.rotate(this.transform.rotation * Math.PI / 180);
+
+        ctx.drawImage
+        (
+            this.sprite,
+            this.coordinate.x,
+            this.coordinate.y,
+            this.area.x,
+            this.area.y,
+
+            -this.area.x/2,
+            -this.area.y/2,
+            this.area.x,
+            this.area.y
+        );
+
+        ctx.restore();
+    }
+}
+
+class RectangleDrawCall
+{
+    constructor(size, transform, color = "rgba(255, 255, 255, 1)")
+    {
+        this.size = size;
+        this.transform = transform;
+        this.color = color;
+    }
+
+    Draw()
+    {
+        ctx.save();
+
+        var point = 
+        {
+            x: (this.transform.position.x - camera.Transform.position.x),
+            y: (this.transform.position.y - camera.Transform.position.y)
+        }
+
+        ctx.translate(point.x, point.y);
+        ctx.scale(this.transform.scale.x, this.transform.scale.y);
+        ctx.rotate(this.transform.rotation * Math.PI / 180);
+
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.fillRect(
+            -this.size.x/2,
+            -this.size.y/2,
+            this.size.x,
+            this.size.y
+        );
+
+        ctx.restore();
     }
 }

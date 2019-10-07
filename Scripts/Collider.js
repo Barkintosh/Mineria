@@ -20,8 +20,8 @@ class Collider
         // UPDATE BOUNDS
         for( let i = 0; i < this.bounds.length; i += 2)
         {
-            this.bounds[i] = this.baseBounds[i] * this.transform.size.x;
-            this.bounds[i+1] = this.baseBounds[i+1] * this.transform.size.y;
+            this.bounds[i] = this.baseBounds[i] * this.transform.scale.x;
+            this.bounds[i+1] = this.baseBounds[i+1] * this.transform.scale.y;
         }
 
         // DEBUG

@@ -28,12 +28,13 @@ function Start()
     camera.FocusOn(player.GetComponent("Transform"));
 
     Instantiate("Dummy", { x:200, y:0}).GetComponent("Transform");
-
+/*
     var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Flipbook");
     anim.sheet = characterSprite;
     anim.frameCount = 8;
     anim.spriteSize = {x:32, y:32};
     anim.speed = 0.25;
+    */
 
     anim = Instantiate("Dummy", { x:-100, y:100}).GetComponent("Flipbook");
     anim.sheet = asteroidSprite;
@@ -41,7 +42,7 @@ function Start()
     anim.spriteSize = {x:72, y:72};
     anim.pixelCoord = {x: 0, y:0};
     anim.originPixelCoord = anim.pixelCoord;
-    anim.speed = 0.25;
+    anim.speed = 0.15;
 
     Refresh();
 }
@@ -68,6 +69,8 @@ function Update()
     DrawBackground();
 
     for(var i = 0; i < scene.length; i++) scene[i].Update();
+
+    Render.Update();
 
     UpdateCollisions();
     UpdateInterface();

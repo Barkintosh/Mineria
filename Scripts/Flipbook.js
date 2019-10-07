@@ -48,8 +48,7 @@ class Flipbook
             this.spriteRenderer.NewSprite(
                 this.sheet,
                 newPixelCoord,
-                this.spriteSize.x, 
-                this.spriteSize.y
+                this.spriteSize
             );
 
             //console.log("pos : " + this.frameIndex + ", frame : " + this.frame + " pixelX : " + newPixelCoord.x + ", pixelY : " + newPixelCoord.y);

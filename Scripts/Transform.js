@@ -1,6 +1,6 @@
 class Transform
 {
-    constructor(pos = {x:0, y:0}, size = {x:1, y:1}, rotation = 0, parent = undefined)
+    constructor(pos = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
     {
         this.position = {
             x:pos.x,
@@ -16,17 +16,16 @@ class Transform
         this.parent = parent;
         if(parent != undefined) SetParent(parent);
 
-        this.size = {
-            x:size.x,
-            y:size.y
+        this.scale = {
+            x:scale.x,
+            y:scale.y
         };
 
         this.rotation = rotation;
         this.localRotation = 0;
-
         this.name = "GameObject";
-
         this.debug = debug;
+        this.layer = layer;
     }
 
     Update()
@@ -40,6 +39,18 @@ class Transform
             this.rotation = this.localRotation + this.parent.rotation;
         }
         if(this.debug) this.Draw();
+
+
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "white";
+        ctx.textAlign = "center"; 
+        ctx.justify = "center"; 
+        ctx.textBaseline = 'middle'; 
+        ctx.fillText(
+            this.layer,
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y + 50
+        );
     }
 
     SetParent(parent)
@@ -101,13 +112,19 @@ class Transform
         ctx.fillText(
             "{ x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + " }",
             this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.size.y
+            this.position.y - camera.Transform.position.y + 25 * this.scale.y
         );
 
         ctx.fillText(
             this.name,
             this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.size.y + 10
+            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 10
+        );
+
+        ctx.fillText(
+            "Layer : " + this.layer,
+            this.position.x - camera.Transform.position.x,
+            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 20
         );
 
         if(this.parent != undefined)

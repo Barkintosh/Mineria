@@ -2,7 +2,7 @@ class Controller
 {
     constructor(gameObject)
     {
-        this.baseSpeed = 100;
+        this.baseSpeed = 25;
         this.vSpeed = 0;
         this.hSpeed = 0;
         this.gameObject = gameObject;
@@ -11,14 +11,14 @@ class Controller
     CreateArrow()
     {
         var arrow = Instantiate("GameObject");
-        arrow.AddComponent(new SpriteRenderer(arrow, arrowSprite, {x:0, y:0}, 8, 23));
+        arrow.AddComponent(new SpriteRenderer(arrow, arrowSprite, {x:0, y:0}, {x:8, y:23}));
         arrow.AddComponent(new BoxCollider(arrow, false, {x:8, y:8}));
         arrow.AddComponent(new Rigidbody(arrow));
         arrow.AddComponent(new Flipbook(arrow.SpriteRenderer, arrowSprite, 4, {x:0, y:0}, {x:8, y:23}, 1));
         arrow.AddComponent(new Arrow(arrow));
         //arrow.AddComponent(new LineRenderer(arrow,[{x:-50, y:0}, {x:0, y:50}, {x:50, y:0}], 1, "blue", true));
 
-        arrow.Transform.size = {x: 2, y: 2};
+        arrow.Transform.size = {x: 1, y: 1};
 
         arrow.Transform.position.x = this.gameObject.Transform.position.x;
         arrow.Transform.position.y = this.gameObject.Transform.position.y;
@@ -41,15 +41,17 @@ class Controller
         {
             this.vSpeed = lerp(this.vSpeed, 0, 0.5);
         }
-        
+
         if(leftArrow)
         {
             this.hSpeed = lerp(this.hSpeed, -this.baseSpeed/delta, 0.5);
-            this.gameObject.Transform.size = {x: -this.gameObject.Transform.size.x, y: this.gameObject.Transform.size.y};
+            //if(this.gameObject.Transform.scale.x > 0) this.gameObject.Transform.scale.x *= -1;
+            
         }
         else if(rightArrow)
         {
             this.hSpeed = lerp(this.hSpeed, this.baseSpeed/delta, 0.5);
+            //this.gameObject.Transform.scale.x = Math.abs(this.gameObject.Transform.scale.x);
         }
         else 
         {
@@ -66,7 +68,7 @@ class Controller
         if(mouseDown)
         {
             //for(var i = 0; i < 100; i++) this.Throw(Math.random() * 500 - 250);
-            this.Throw();
+            //this.Throw();
         }
     }
 

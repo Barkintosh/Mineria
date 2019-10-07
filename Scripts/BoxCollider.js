@@ -20,13 +20,13 @@ class BoxCollider
         // UPDATE POSITION
         this.position = 
         {
-            x: (this.gameObject.Transform.position.x - camera.Transform.position.x) + this.offset.x * this.gameObject.Transform.size.x,
-            y: (this.gameObject.Transform.position.y - camera.Transform.position.y) + this.offset.y * this.gameObject.Transform.size.y
+            x: (this.gameObject.Transform.position.x - camera.Transform.position.x) + this.offset.x * this.gameObject.Transform.scale.x,
+            y: (this.gameObject.Transform.position.y - camera.Transform.position.y) + this.offset.y * this.gameObject.Transform.scale.y
         }
         this.size = 
         {
-            x: this.baseSize.x * this.gameObject.Transform.size.x,
-            y: this.baseSize.y * this.gameObject.Transform.size.y,
+            x: this.baseSize.x * this.gameObject.Transform.scale.x,
+            y: this.baseSize.y * this.gameObject.Transform.scale.y,
         }
 
         if(!this.overlaping && this.wasOverlapping)

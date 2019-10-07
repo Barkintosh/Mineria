@@ -1,50 +1,29 @@
 class SpriteRenderer
 {
-    constructor(gameObject, sprite, pixelPosisiton, width, height)
+    constructor(gameObject, sprite, coordinate, area)
     {   
         this.sprite = sprite;
-        this.width = width;
-        this.height = height;
-        this.pixelPosition = pixelPosisiton;
+        this.area = area;
+        this.coordinate = coordinate;
         this.gameObject = gameObject;
 
         this.debug = debug;
     }
 
-    NewSprite(sprite, pixelPosisiton, width, height)
+    NewSprite(sprite, coordinate, area)
     {
         this.sprite = sprite;
-        this.pixelPosition = pixelPosisiton;  
-        this.width = width;
-        this.height = height;
+        this.coordinate = coordinate;  
+        this.area = area;
     }
 
     Update()
     {
-        var drawPoint = 
-        {
-            x: (this.gameObject.Transform.position.x - camera.Transform.position.x),
-            y: (this.gameObject.Transform.position.y - camera.Transform.position.y)
-        }
-
-        var drawBound =
-        {
-            w:this.width * this.gameObject.Transform.size.x,
-            h:this.height * this.gameObject.Transform.size.y
-        }
-
-        ctx.save();
-
-        var h = this.gameObject.Transform.size.x < 0 ? -1 : 1;
-        var v = this.gameObject.Transform.size.y < 0 ? -1 : 1;
-        ctx.scale(h, v);
-
         if(this.debug)
         {
             Render.Rectangle(
-                drawPoint, drawBound,
-                this.gameObject.Transform.rotation,
-                this.gameObject.Transform.size,
+                this.area,
+                this.gameObject.Transform,
                 "rgba(255, 255, 0, 0.25)"
             );
         }
@@ -52,12 +31,9 @@ class SpriteRenderer
         {
             Render.Image(
                 this.sprite,
-                this.pixelPosition,
-                {x:this.width, y:this.width},
-                drawPoint,
-                drawBound,
-                this.gameObject.Transform.rotation,
-                this.gameObject.Transform.size
+                this.coordinate,
+                this.area,
+                this.gameObject.Transform
             );
         }
     }
@@ -82,24 +58,3 @@ class SpriteRenderer
         else return -this.height/2;
     }
 }
-
-/*
-function drawImageRot(img,x,y,width,height,deg){
-
-    //Convert degrees to radian 
-    var rad = deg * Math.PI / 180;
-
-    //Set the origin to the center of the image
-    ctx.translate(x + width / 2, y + height / 2);
-
-    //Rotate the canvas around the origin
-    ctx.rotate(rad);
-
-    //draw the image    
-    ctx.drawImage(img,width / 2 * (-1),height / 2 * (-1),width,height);
-
-    //reset the canvas  
-    ctx.rotate(rad * ( -1 ) );
-    ctx.translate((x + width / 2) * (-1), (y + height / 2) * (-1));
-}
-*/
