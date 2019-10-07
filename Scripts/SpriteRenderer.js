@@ -39,76 +39,27 @@ class SpriteRenderer
         var v = this.gameObject.Transform.size.y < 0 ? -1 : 1;
         ctx.scale(h, v);
 
-        if(this.gameObject.Transform.rotation != 0)
+        if(this.debug)
         {
-            var rad = this.gameObject.Transform.rotation * Math.PI / 180;
-            ctx.translate(drawPoint.x, drawPoint.y);
-            ctx.rotate(rad);
-
-            if(this.debug)
-            {
-                /*
-                ctx.beginPath();
-                ctx.fillStyle = "rgba(255, 255, 0, 0.25)";
-                ctx.fillRect(
-                    -drawBound.w/2,
-                    -drawBound.h/2,
-                    drawBound.w,
-                    drawBound.h
-                );
-                */
-
-               Render.Rectangle(drawPoint, drawBound, "rgba(255, 255, 0, 0.25)");
-            }
-            else
-            {
-                ctx.drawImage
-                (
-                    this.sprite,
-                    this.pixelPosition.x,
-                    this.pixelPosition.y,
-                    this.width,
-                    this.height,
-        
-                    -drawBound.w/2,
-                    -drawBound.h/2,
-                    drawBound.w,
-                    drawBound.h
-                );
-            }
+            Render.Rectangle(
+                drawPoint, drawBound,
+                this.gameObject.Transform.rotation,
+                this.gameObject.Transform.size,
+                "rgba(255, 255, 0, 0.25)"
+            );
         }
         else
         {
-            if(this.debug)
-            {
-                ctx.beginPath();
-                ctx.fillStyle = "rgba(255, 255, 0, 0.25)";
-                ctx.fillRect(
-                    drawPoint.x - drawBound.w/2,
-                    drawPoint.y - drawBound.h/2,
-                    drawBound.w,
-                    drawBound.h
-                );
-            }
-            else
-            {
-                ctx.drawImage
-                (
-                    this.sprite,
-                    this.pixelPosition.x,
-                    this.pixelPosition.y,
-                    this.width,
-                    this.height,
-        
-                    drawPoint.x - drawBound.w/2,
-                    drawPoint.y - drawBound.h/2,
-                    drawBound.w,
-                    drawBound.h
-                );
-            }
+            Render.Image(
+                this.sprite,
+                this.pixelPosition,
+                {x:this.width, y:this.width},
+                drawPoint,
+                drawBound,
+                this.gameObject.Transform.rotation,
+                this.gameObject.Transform.size
+            );
         }
-
-        ctx.restore();
     }
 
     ToggleDebug()

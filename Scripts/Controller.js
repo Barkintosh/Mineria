@@ -65,10 +65,16 @@ class Controller
         this.Movement();
         if(mouseDown)
         {
-            var a = this.CreateArrow();
-            var mouseScreenPosition = camera.ScreenToWorldPoint({x: mouseX, y: mouseY});
-            a.Rigidbody.AddForce({x:(mouseScreenPosition.x - this.gameObject.Transform.position.x) * 0.1, y:(mouseScreenPosition.y - this.gameObject.Transform.position.y)*0.1});
+            //for(var i = 0; i < 100; i++) this.Throw(Math.random() * 500 - 250);
+            this.Throw();
         }
+    }
+
+    Throw(shift = 0)
+    {
+        var a = this.CreateArrow();
+        var mouseScreenPosition = camera.ScreenToWorldPoint({x: mouseX + shift, y: mouseY});
+        a.Rigidbody.AddForce({x:(mouseScreenPosition.x - this.gameObject.Transform.position.x) * 0.1, y:(mouseScreenPosition.y - this.gameObject.Transform.position.y)*0.1});
     }
 }
 
