@@ -47,6 +47,7 @@ class SpriteRenderer
 
             if(this.debug)
             {
+                /*
                 ctx.beginPath();
                 ctx.fillStyle = "rgba(255, 255, 0, 0.25)";
                 ctx.fillRect(
@@ -55,6 +56,9 @@ class SpriteRenderer
                     drawBound.w,
                     drawBound.h
                 );
+                */
+
+               Render.Rectangle(drawPoint, drawBound, "rgba(255, 255, 0, 0.25)");
             }
             else
             {

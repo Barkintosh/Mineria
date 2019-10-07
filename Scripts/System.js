@@ -3,6 +3,7 @@ var ctx = canvas.getContext("2d");
 
 // SCENE
 var scene = [];
+var Render = new Renderer();
 
 // REFRESH SYSTEM
 var time = 0;
@@ -65,7 +66,9 @@ function Refresh()
 function Update()
 {
     DrawBackground();
+
     for(var i = 0; i < scene.length; i++) scene[i].Update();
+
     UpdateCollisions();
     UpdateInterface();
     UpdateInputs();

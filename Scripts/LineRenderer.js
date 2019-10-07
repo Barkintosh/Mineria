@@ -21,18 +21,19 @@ class LineRenderer
         {
             ctx.strokeStyle = this.color;
             ctx.lineWidth = this.width;
-
+            
+            // THE TRANSFORM ROTATION MATRICE ISN'T WORKING YET
             /*
             if(this.gameObject.Transform.rotation != 0)
             {
+                ctx.save();
+
                 var rad = this.gameObject.Transform.rotation * Math.PI / 180;
                 ctx.translate(drawPoint.x, drawPoint.y);
                 ctx.rotate(rad);
 
                 this.Draw(drawPoint);
-
-                ctx.rotate(-rad);
-                ctx.translate(-drawPoint.x, -drawPoint.y);
+                ctx.restore();
             }
             else this.Draw(drawPoint);
             */
