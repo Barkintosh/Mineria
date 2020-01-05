@@ -39,18 +39,6 @@ class Transform
             this.rotation = this.localRotation + this.parent.rotation;
         }
         if(this.debug) this.Draw();
-
-
-        ctx.font = "16px Arial";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center"; 
-        ctx.justify = "center"; 
-        ctx.textBaseline = 'middle'; 
-        ctx.fillText(
-            this.layer,
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 50
-        );
     }
 
     SetParent(parent)
@@ -85,42 +73,26 @@ class Transform
             this.position.x - camera.Transform.position.x,
             this.position.y - camera.Transform.position.y - 5
         );
-
         ctx.lineTo(
             this.position.x - camera.Transform.position.x,
             this.position.y - camera.Transform.position.y + 5
         );
         ctx.stroke();
-
         ctx.beginPath();
         ctx.moveTo(
             this.position.x - camera.Transform.position.x - 5,
             this.position.y - camera.Transform.position.y
         );
-
         ctx.lineTo(
             this.position.x - camera.Transform.position.x + 5,
             this.position.y - camera.Transform.position.y
         );
         ctx.stroke();
-
-        ctx.font = "10px Arial";
-        ctx.fillStyle = "white";
-        ctx.textAlign = "center"; 
-        ctx.justify = "center"; 
-        ctx.textBaseline = 'middle'; 
-        ctx.fillText(
-            "{ x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + " }",
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.scale.y
-        );
-
         ctx.fillText(
             this.name,
             this.position.x - camera.Transform.position.x,
             this.position.y - camera.Transform.position.y + 25 * this.scale.y + 10
         );
-
         ctx.fillText(
             "Layer : " + this.layer,
             this.position.x - camera.Transform.position.x,
@@ -142,5 +114,8 @@ class Transform
             );
             ctx.stroke();
         }
+
+        Render.Text(this.name, "16px Arial", "white", {x: this.position.x, y: this.position.y}, 10000);
+        Render.Text("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Arial", "white", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }

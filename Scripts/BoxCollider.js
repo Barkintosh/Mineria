@@ -44,29 +44,11 @@ class BoxCollider
         this.debug = !this.debug;
     }
 
-    Draw(color = "red", width = 1)
+    Draw()
     {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.rect(
-            this.position.x - this.size.x/2,
-            this.position.y - this.size.y/2,
-            this.size.x,
-            this.size.y
-        );
-        ctx.stroke();
-
-        if(this.overlaping)
-        {
-            ctx.beginPath();
-            ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-            ctx.fillRect(
-                this.position.x - this.size.x/2,
-                this.position.y - this.size.y/2,
-                this.size.x,
-                this.size.y
-            );
-        }
+        var pos = {x: this.gameObject.Transform.position.x + this.offset.x, y: this.gameObject.Transform.position.y + this.offset.y};
+        Render.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "red", false);
+        if(this.overlaping) Render.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "rgba(255, 0, 0, 0.25)");
     }
 
     OnCollision(other)
@@ -90,10 +72,10 @@ class BoxCollider
 
         if(other != this)
         {
-           if( this.gameObject.Transform.position.x - this.size.x/2 < other.gameObject.Transform.position.x + other.size.x/2
-            && other.gameObject.Transform.position.x - other.size.x/2 < this.gameObject.Transform.position.x + this.size.x/2
-            && this.gameObject.Transform.position.y - this.size.y/2 < other.gameObject.Transform.position.y + other.size.y/2
-            && other.gameObject.Transform.position.y - other.size.y/2 < this.gameObject.Transform.position.y + this.size.y/2
+           if( this.gameObject.Transform.position.x + this.offset.x - this.size.x/2 < other.gameObject.Transform.position.x + other.offset.x + other.size.x/2
+            && other.gameObject.Transform.position.x + other.offset.x - other.size.x/2 < this.gameObject.Transform.position.x + this.offset.x + this.size.x/2
+            && this.gameObject.Transform.position.y + this.offset.y - this.size.y/2 < other.gameObject.Transform.position.y + other.offset.y + other.size.y/2
+            && other.gameObject.Transform.position.y + other.offset.y - other.size.y/2 < this.gameObject.Transform.position.y + this.offset.y + this.offset.y + this.size.y/2
             )
             {
                 //console.log(this.gameObject.Transform.name + " colliding with " + other.transform.name);

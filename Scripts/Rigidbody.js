@@ -12,7 +12,6 @@ class Rigidbody
     {
         this.gameObject.Transform.position.x += this.velocity.x;
         this.gameObject.Transform.position.y += this.velocity.y;
-
         this.velocity.y += this.gravityScale * this.mass;
     }
 

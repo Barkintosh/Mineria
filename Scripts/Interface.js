@@ -2,7 +2,6 @@ var blocksOnScreen = 0;
 var debug = false;
 
 var btn = new Button({x:5, y:5}, 100, 30, "Debug", "red", ToggleDebbug);
-var chara = new Button({x:5, y:40}, 100, 30, "Character Layer", "blue", CharacterLayer);
 
 function CharacterLayer()
 {
@@ -13,7 +12,6 @@ function CharacterLayer()
 function UpdateInterface()
 {
 	btn.Update();
-	chara.Update();
 
 	if(debug)
 	{

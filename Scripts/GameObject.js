@@ -11,7 +11,7 @@ class GameObject
     {
         this.components.forEach(function(e)
         {
-            if(c.Start != null) c.Start();
+            if(e.Start != null) c.Start();
         });
     }
 

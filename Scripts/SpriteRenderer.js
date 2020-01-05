@@ -23,7 +23,10 @@ class SpriteRenderer
         {
             Render.Rectangle(
                 this.area,
-                this.gameObject.Transform,
+                this.gameObject.Transform.position,
+                this.gameObject.Transform.scale,
+                this.gameObject.Transform.rotation,
+                this.gameObject.Transform.layer,
                 "rgba(255, 255, 0, 0.25)"
             );
         }

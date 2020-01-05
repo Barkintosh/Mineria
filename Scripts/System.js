@@ -18,33 +18,14 @@ var pause = false;
 var gravity = 0.01;
 var scale = 32;
 
-var player = Instantiate("Character");
 var camera = Instantiate("Camera");
 
 function Start()
 {
     ResizeScreen();
-
-    camera.FocusOn(player.GetComponent("Transform"));
-
-    Instantiate("Dummy", { x:200, y:0}).GetComponent("Transform");
-/*
-    var anim = Instantiate("Dummy", { x:-200, y:100}).GetComponent("Flipbook");
-    anim.sheet = characterSprite;
-    anim.frameCount = 8;
-    anim.spriteSize = {x:32, y:32};
-    anim.speed = 0.25;
-    */
-
-    anim = Instantiate("Dummy", { x:-100, y:100}).GetComponent("Flipbook");
-    anim.sheet = asteroidSprite;
-    anim.frameCount = 19;
-    anim.spriteSize = {x:72, y:72};
-    anim.pixelCoord = {x: 0, y:0};
-    anim.originPixelCoord = anim.pixelCoord;
-    anim.speed = 0.15;
-
     Refresh();
+
+    Instantiate("GameManager");
 }
 
 function Refresh()
@@ -66,12 +47,8 @@ function Refresh()
 
 function Update()
 {
-    DrawBackground();
-
     for(var i = 0; i < scene.length; i++) scene[i].Update();
-
     Render.Update();
-
     UpdateCollisions();
     UpdateInterface();
     UpdateInputs();
@@ -95,6 +72,7 @@ function Instantiate(object, position = {x:0, y:0})
     {
         newObject.Transform.position = position;
     }
+    newObject.Start();
     return newObject;
 }
 
@@ -114,17 +92,6 @@ function Destroy(object)
 function ScreenToWorld(posX, posY)
 {
     return { x: posX + camera.Transform.position.x, y: posY + camera.Transform.position.y };
-}
-
-function DrawBackground() 
-{
-    ctx.beginPath();
-    var grd = ctx.createLinearGradient(0, window.innerHeight, window.innerWidth, 0);
-    grd.addColorStop(0, "red");
-    grd.addColorStop(0.5, "green");
-    grd.addColorStop(1, "blue");
-    ctx.fillStyle = "black";
-    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 }
 
 function FindComponents(component)

@@ -9,7 +9,7 @@ class Renderer
     {
         this.drawCalls.sort(function(a, b)
         {
-            return a.transform.layer - b.transform.layer;
+            return a.layer - b.layer;
         });
 
         this.drawCalls.forEach(function(element)
@@ -32,13 +32,18 @@ class Renderer
         );
     }
     
-    Rectangle(size, transform, color = "rgba(255, 255, 255, 1)")
+    Rectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
         this.drawCalls.push(
             new RectangleDrawCall(
                 size,
-                transform,
-                color
+                position,
+                scale, 
+                rotation,
+                layer,
+                color,
+                fill,
+                width
             )
         );
     }
@@ -46,6 +51,19 @@ class Renderer
     Circle()
     {
         
+    }
+
+    Text(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
+    {
+        this.drawCalls.push(
+            new TextDrawCall(
+                text,
+                font,
+                color,
+                position,
+                layer
+            )
+        );
     }
 }
 
@@ -57,6 +75,7 @@ class ImageDrawCall
         this.coordinate = coordinate;
         this.area = area;
         this.transform = transform;
+        this.layer = this.transform.layer;
     }
 
     Draw()
@@ -93,36 +112,87 @@ class ImageDrawCall
 
 class RectangleDrawCall
 {
-    constructor(size, transform, color = "rgba(255, 255, 255, 1)")
+    constructor(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
         this.size = size;
-        this.transform = transform;
         this.color = color;
+        this.position = position; 
+        this.scale = scale;
+        this.layer = layer;
+        this.rotation = rotation;
+        this.fill = fill;
+        this.width = width;
     }
 
     Draw()
     {
-        ctx.save();
 
         var point = 
         {
-            x: (this.transform.position.x - camera.Transform.position.x),
-            y: (this.transform.position.y - camera.Transform.position.y)
+            x: (this.position.x - camera.Transform.position.x),
+            y: (this.position.y - camera.Transform.position.y)
         }
 
+        ctx.save();
         ctx.translate(point.x, point.y);
-        ctx.scale(this.transform.scale.x, this.transform.scale.y);
-        ctx.rotate(this.transform.rotation * Math.PI / 180);
+        ctx.scale(this.scale.x, this.scale.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
 
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.fillRect(
-            -this.size.x/2,
-            -this.size.y/2,
-            this.size.x,
-            this.size.y
-        );
-
+        if(this.fill)
+        {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fillRect(
+                -this.size.x/2,
+                -this.size.y/2,
+                this.size.x,
+                this.size.y
+            );
+        }
+        else
+        {
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = this.width;
+            ctx.rect(
+                -this.size.x/2,
+                -this.size.y/2,
+                this.size.x,
+                this.size.y
+            );
+            ctx.stroke();
+        }
         ctx.restore();
+    }
+}
+
+class TextDrawCall
+{
+    constructor(
+        text = "Text", 
+        font = "16px Arial", 
+        color = "white", 
+        position = {x: 0, y: 0}, 
+        layer = 0)
+    {
+        this.text = text;
+        this.font = font;
+        this.color = color;
+        this.layer = layer;
+        this.position = position;
+    }
+
+    Draw()
+    {
+        var point = 
+        {
+            x: (this.position.x - camera.Transform.position.x),
+            y: (this.position.y - camera.Transform.position.y)
+        }
+        ctx.font = this.font;
+        ctx.fillStyle = this.color;
+        ctx.textAlign = "center"; 
+        ctx.justify = "center"; 
+        ctx.textBaseline = 'middle'; 
+        ctx.fillText(this.text, point.x, point.y);
     }
 }
