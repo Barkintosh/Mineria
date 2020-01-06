@@ -4,11 +4,11 @@ class GameManager extends GameObject
     {
         super();
 
-        this.player = Instantiate("Bird");
+        this.player = Instantiate("Player");
 
-        for(var i = 0; i < 100; i++)
+        for(var i = 0; i < 15; i++)
         {
-            Instantiate("Pipe", {x: i * 200, y: GetRandomInt(-200, 200) });
+            Instantiate("Gate", {x: 300 + i * 300, y: GetRandomInt(-200, 200) });
         }
     }
 
@@ -21,34 +21,73 @@ class GameManager extends GameObject
         grd.addColorStop(1, "#35D6ED");
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-        camera.MoveTo(this.player.Transform.position.x, 0);
+        camera.MoveTo(this.player.Transform.position.x + canvas.width / 3, 0);
     }
 }
 
-class Bird extends GameObject
+class Player extends GameObject
 {
     constructor()
     {
         super();
+        this.AddComponent(new Bird(this));
         this.AddComponent(new Rigidbody(this, 0.5));
         this.AddComponent(new SpriteRenderer(this, flappySprite, {x:0, y:0}, {x:17, y:12}));
-        this.AddComponent(new BoxCollider(this, false, {x:17, y:12}));
+        this.AddComponent(new BoxCollider(this, false, {x:15, y:10}));
         this.Transform.position = {x: 0, y: 0};
         this.Transform.scale = {x: 5, y: 5};
         this.Transform.name = "Bird";
         this.Transform.layer = 1;
     }
-    
+}
+
+class Bird
+{
+    constructor(gameObject)
+    {
+        this.gameObject = gameObject;
+    }
+
     Update()
     {
-        super.Update();
         if(mouseDown)
         {
-            this.Rigidbody.velocity = {x:0, y: 0};
-            this.Rigidbody.AddForce({x:2, y: -10});
+            this.gameObject.Rigidbody.velocity = {x:0, y: 0};
+            this.gameObject.Rigidbody.AddForce({x:2, y: -10});
         }
-        //if(this.Rigidbody.velocity.x != 0 && this.Rigidbody.velocity.y != 0)
-        //   this.Transform.rotation = -Math.atan2(this.Rigidbody.velocity.x, this.Rigidbody.velocity.y) * 180/Math.PI;
+        if(this.gameObject.Rigidbody.velocity.x != 0 && this.gameObject.Rigidbody.velocity.y != 0)
+           this.gameObject.Transform.rotation = -Math.atan2(this.gameObject.Rigidbody.velocity.x, this.gameObject.Rigidbody.velocity.y) * 180/Math.PI + 90;
+    }
+ 
+    OnCollision(other)
+    {
+        console.log("OnCollision");
+        if(other.gameObject.Transform.name == "Pipe")
+        {
+            console.log("DEAD");
+            Destroy(this.gameObject);
+        }
+    }
+}
+
+class Gate extends GameObject
+{
+    constructor()
+    {
+        super();
+        this.hole = 250;
+        this.Transform.name = "Gate";
+    }
+
+    Start()
+    {
+        var up = Instantiate("Pipe", {x: this.Transform.position.x, y: this.Transform.position.y - this.hole/2});
+        up.reversed = true;
+        up.Load();
+
+        var down = Instantiate("Pipe", {x: this.Transform.position.x, y: this.Transform.position.y + this.hole/2});
+        down.reversed = false;
+        down.Load();
     }
 }
 
@@ -57,26 +96,33 @@ class Pipe extends GameObject
     constructor()
     {
         super();
+        this.partSize = 8;
+        this.tubeSize = 15;
+        this.scale = 5;
         this.Transform.name = "Pipe";
-        this.Transform.layer = 1;
-        this.AddComponent(new BoxCollider(this, false, {x:125, y:400}, {x: 0, y: 200}));
     }
 
-    Start()
+    Load()
     {
-        var up = Instantiate("GameObject");
+        var up = Instantiate("GameObject")
         up.AddComponent(new SpriteRenderer(up, flappySprite, {x:18, y:0}, {x:25, y:8}));
         up.Transform.name = "Up";
-        up.Transform.scale = {x: 5, y: 5};
-        up.Transform.position = {x: this.Transform.position.x, y: this.Transform.position.y + 8 * up.Transform.scale.y};
+        up.Transform.scale = {x: this.scale, y: this.scale};
 
-        for(var i = 1; i < 10; i++)
+        var direction = 1;
+        if(this.reversed) direction = -1;
+
+        this.AddComponent(new BoxCollider(this, false, {x:100, y:this.partSize * this.scale * (this.tubeSize + 1)}, {x: 0, y: 0.5 * direction * this.partSize * this.scale * (this.tubeSize + 1)}));
+
+        up.Transform.position = {x: this.Transform.position.x, y: this.Transform.position.y + direction * this.partSize/2 * this.scale};
+
+        for(var i = 1; i < this.tubeSize; i++)
         {
             var part = Instantiate("GameObject");
             part.AddComponent(new SpriteRenderer(part, flappySprite, {x:20, y:9}, {x:21, y:8}));
             part.Transform.name = "Part";
-            part.Transform.scale = {x: 5, y: 5};
-            part.Transform.position = {x: up.Transform.position.x, y: up.Transform.position.y + (8 * i * part.Transform.scale.y)};
+            part.Transform.scale = {x: this.scale, y: this.scale};
+            part.Transform.position = {x: up.Transform.position.x, y: up.Transform.position.y + direction * (this.partSize * i * part.Transform.scale.y)};
         }
     }
 }

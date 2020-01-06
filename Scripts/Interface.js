@@ -2,6 +2,8 @@ var blocksOnScreen = 0;
 var debug = false;
 
 var btn = new Button({x:5, y:5}, 100, 30, "Debug", "red", ToggleDebbug);
+var freeze = new Button({x:5, y:40}, 100, 30, "Pause", "blue", function(){pause = !pause});
+var reload = new Button({x:5, y:75}, 100, 30, "Reload", "green", function(){document.location.reload(true)});
 
 function CharacterLayer()
 {
@@ -12,6 +14,8 @@ function CharacterLayer()
 function UpdateInterface()
 {
 	btn.Update();
+	freeze.Update();
+	reload.Update();
 
 	if(debug)
 	{

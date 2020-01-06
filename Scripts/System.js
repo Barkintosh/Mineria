@@ -7,7 +7,7 @@ var Render = new Renderer();
 
 // REFRESH SYSTEM
 var time = 0;
-var fps = 60;
+var fps = 120;
 var now;
 var then = Date.now();
 var interval = 1000/fps;
@@ -36,6 +36,8 @@ function Refresh()
 
     now = Date.now();
     delta = now - then;
+    
+
     if (delta > interval) 
     {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -43,6 +45,8 @@ function Refresh()
         then = now - (delta % interval);
     }
     time = performance.now() / 1000;
+
+    console.log(1/delta/1000)
 }
 
 function Update()
