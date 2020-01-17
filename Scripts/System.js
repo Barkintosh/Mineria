@@ -13,12 +13,31 @@ var then = Date.now();
 var interval = 1000/fps;
 var delta;
 var pause = false;
+var debug = false;
 
 // SETTINGS
 var gravity = 0.01;
 var scale = 32;
 
 var camera = Instantiate("Camera");
+
+function Debug()
+{
+	for(var i = 0; i < scene.length; i++)
+	{
+		var sr = scene[i].GetComponent("SpriteRenderer");
+		if(sr != null) sr.ToggleDebug();
+
+		var c = scene[i].GetComponent("Collider");
+		if(c != null) c.ToggleDebug();
+
+		var t = scene[i].GetComponent("Transform");
+		if(t != null) t.ToggleDebug();
+
+		var bc = scene[i].GetComponent("BoxCollider");
+		if(bc != null) bc.ToggleDebug();
+	}
+}
 
 function Pause()
 {
@@ -27,9 +46,9 @@ function Pause()
 
 function Start()
 {
+    scene = [];
     ResizeScreen();
     Refresh();
-
     Instantiate("GameManager");
 }
 
@@ -53,7 +72,6 @@ function Update()
     for(var i = 0; i < scene.length; i++) scene[i].Update();
     Render.Update();
     UpdateCollisions();
-    UpdateInterface();
     UpdateInputs();
 }
 

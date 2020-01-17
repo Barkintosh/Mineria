@@ -2,14 +2,14 @@
 	<body onLoad="Start()"  style="margin:0;">
 		<canvas id="canvas"></canvas>
 		<div style="position:absolute; left:10; top:10;">
-			<button onClick={document.location.reload(true);}>Reload</button>
-			<button onClick=Pause()>Pause</button>
-			<button onClick=ToggleDebug()>Debug</button>
+			<button id="btn-reload" onClick="Start()">Reload</button>
+			<button id="btn-pause" onClick=TogglePause()>Pause</button>
+			<button id="btn-debug" onClick=ToggleDebug()>Normal Mode</button>
 		</div>
-
 	</body>
 
 	<head>
+		<link href="https://fonts.googleapis.com/css?family=Roboto:700&display=swap" rel="stylesheet">
 		<link rel="stylesheet" href="style.css">
 		<title>FlappyJS</title>
 		<script src="./Scripts/Utility.js"></script>
@@ -21,7 +21,6 @@
 		<script src="./Scripts/BoxCollider.js"></script>
 		<script src="./Scripts/Button.js"></script>
 		<script src="./Scripts/Inputs.js"></script>
-		<script src="./Scripts/Interface.js"></script>
 		<script src="./Scripts/Flipbook.js"></script>
 		<script src="./Scripts/Rigidbody.js"></script>
 		<script src="./Scripts/LineRenderer.js"></script>
@@ -30,6 +29,7 @@
 		<script src="./Scripts/Renderer.js"></script>
 		<script src="./Scripts/System.js"></script>
 
+		<script src="./Scripts/Engine.js"></script>
 		<script src="./Scripts/GameManager.js"></script>
 
 
