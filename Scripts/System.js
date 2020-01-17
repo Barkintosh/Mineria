@@ -20,6 +20,11 @@ var scale = 32;
 
 var camera = Instantiate("Camera");
 
+function Pause()
+{
+    pause = !pause;
+}
+
 function Start()
 {
     ResizeScreen();
@@ -31,13 +36,9 @@ function Start()
 function Refresh()
 {
     requestAnimationFrame(Refresh);
-
     if(pause) return;
-
     now = Date.now();
     delta = now - then;
-    
-
     if (delta > interval) 
     {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -45,8 +46,6 @@ function Refresh()
         then = now - (delta % interval);
     }
     time = performance.now() / 1000;
-
-    console.log(1/delta/1000)
 }
 
 function Update()

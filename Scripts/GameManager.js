@@ -31,7 +31,7 @@ class Player extends GameObject
     {
         super();
         this.AddComponent(new Bird(this));
-        this.AddComponent(new Rigidbody(this, 0.5));
+        this.AddComponent(new Rigidbody(this, 0.15));
         this.AddComponent(new SpriteRenderer(this, flappySprite, {x:0, y:0}, {x:17, y:12}));
         this.AddComponent(new BoxCollider(this, false, {x:15, y:10}));
         this.Transform.position = {x: 0, y: 0};
@@ -53,7 +53,7 @@ class Bird
         if(mouseDown)
         {
             this.gameObject.Rigidbody.velocity = {x:0, y: 0};
-            this.gameObject.Rigidbody.AddForce({x:2, y: -10});
+            this.gameObject.Rigidbody.AddForce({x:2, y: -5});
         }
         if(this.gameObject.Rigidbody.velocity.x != 0 && this.gameObject.Rigidbody.velocity.y != 0)
            this.gameObject.Transform.rotation = -Math.atan2(this.gameObject.Rigidbody.velocity.x, this.gameObject.Rigidbody.velocity.y) * 180/Math.PI + 90;

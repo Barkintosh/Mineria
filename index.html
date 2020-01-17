@@ -1,13 +1,16 @@
 <html>
-	<body onLoad="Start()"  style="height: 100%; margin: 0;">
-			<canvas
-				id="canvas"
-				width="80%"
-				height="100%">
-			</canvas>
+	<body onLoad="Start()"  style="margin:0;">
+		<canvas id="canvas"></canvas>
+		<div style="position:absolute; left:10; top:10;">
+			<button onClick={document.location.reload(true);}>Reload</button>
+			<button onClick=Pause()>Pause</button>
+			<button onClick=ToggleDebug()>Debug</button>
+		</div>
+
 	</body>
 
 	<head>
+		<link rel="stylesheet" href="style.css">
 		<title>FlappyJS</title>
 		<script src="./Scripts/Utility.js"></script>
 		<script src="./Scripts/Library.js"></script>
@@ -28,6 +31,7 @@
 		<script src="./Scripts/System.js"></script>
 
 		<script src="./Scripts/GameManager.js"></script>
+
 
 	</head>
 </html>
