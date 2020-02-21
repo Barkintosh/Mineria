@@ -115,7 +115,7 @@ class Transform
             ctx.stroke();
         }
 
-        Render.Text(this.name, "16px Arial", "white", {x: this.position.x, y: this.position.y}, 10000);
-        Render.Text("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Arial", "white", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.Text(this.name, "32px Press Start 2P", "black", {x: this.position.x, y: this.position.y}, 10000);
+        Render.Text("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Roboto", "black", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }

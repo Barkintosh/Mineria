@@ -15,6 +15,9 @@ var delta;
 var pause = false;
 var debug = false;
 
+var f = new FontFace('Golden', 'url(./Assets/Golden.ttf)');
+f.load();
+
 // SETTINGS
 var gravity = 0.01;
 var scale = 32;
@@ -27,13 +30,10 @@ function Debug()
 	{
 		var sr = scene[i].GetComponent("SpriteRenderer");
 		if(sr != null) sr.ToggleDebug();
-
 		var c = scene[i].GetComponent("Collider");
 		if(c != null) c.ToggleDebug();
-
 		var t = scene[i].GetComponent("Transform");
 		if(t != null) t.ToggleDebug();
-
 		var bc = scene[i].GetComponent("BoxCollider");
 		if(bc != null) bc.ToggleDebug();
 	}
