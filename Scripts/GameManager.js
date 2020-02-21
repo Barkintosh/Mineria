@@ -37,6 +37,7 @@ class Player extends GameObject
         this.Transform.position = {x: 0, y: 0};
         this.Transform.scale = {x: 5, y: 5};
         this.Transform.name = "Bird";
+        this.name = "Bird";
         this.Transform.layer = 1;
     }
 }
@@ -77,6 +78,7 @@ class Gate extends GameObject
         super();
         this.hole = 250;
         this.Transform.name = "Gate";
+        this.name = "Gate";
     }
 
     Start()
@@ -100,6 +102,7 @@ class Pipe extends GameObject
         this.tubeSize = 15;
         this.scale = 5;
         this.Transform.name = "Pipe";
+        this.name = "Pipe";
     }
 
     Load()
@@ -107,6 +110,7 @@ class Pipe extends GameObject
         var up = Instantiate("GameObject")
         up.AddComponent(new SpriteRenderer(up, flappySprite, {x:18, y:0}, {x:25, y:8}));
         up.Transform.name = "Up";
+        up.name = "Up";
         up.Transform.scale = {x: this.scale, y: this.scale};
 
         var direction = 1;
@@ -121,6 +125,7 @@ class Pipe extends GameObject
             var part = Instantiate("GameObject");
             part.AddComponent(new SpriteRenderer(part, flappySprite, {x:20, y:9}, {x:21, y:8}));
             part.Transform.name = "Part";
+            part.name = "Gate";
             part.Transform.scale = {x: this.scale, y: this.scale};
             part.Transform.position = {x: up.Transform.position.x, y: up.Transform.position.y + direction * (this.partSize * i * part.Transform.scale.y)};
         }

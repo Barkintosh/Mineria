@@ -1,11 +1,16 @@
 <html>
-	<body onLoad="Start()"  style="margin:0;">
+	<body onLoad="Start()"  style="margin:0px;">
 		<canvas id="canvas"></canvas>
-		<div style="position:absolute; left:10; top:10;">
-			<button id="btn-reload" onClick="Start()">Reload</button>
-			<button id="btn-pause" onClick=TogglePause()>Pause</button>
-			<button id="btn-debug" onClick=ToggleDebug()>Normal Mode</button>
-		</div>
+		<panel>
+			<div style="display: flex; flex-direction: column;">
+				<button id="btn-reload" onClick="Start()">Reload</button>
+				<button id="btn-pause" onClick=TogglePause()>Pause</button>
+				<button id="btn-debug" onClick=ToggleDebug()>Normal Mode</button>
+			</div>
+			<h1 id="scene-title" style="color:white;"></h1>
+			<div id="scene-list" style="flex:3; overflow-y: scroll;">
+			</div>
+		</panel>
 	</body>
 
 	<head>

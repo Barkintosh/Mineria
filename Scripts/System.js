@@ -73,8 +73,11 @@ function Update()
     Render.Update();
     UpdateCollisions();
     UpdateInputs();
+
+    RefreshList();
 }
 
+window.onresize = ResizeScreen;
 function ResizeScreen()
 {
     canvas.width = window.innerWidth;
@@ -82,7 +85,22 @@ function ResizeScreen()
     ctx.imageSmoothingEnabled = false;
 }
 
-window.onresize = ResizeScreen;
+function RefreshList()
+{
+    const list = document.getElementById("scene-list");
+    while (list.firstChild) {list.removeChild(list.lastChild);}
+
+    for(var i = 0; i < scene.length; i++)
+    {
+        var node = document.createElement("h2"); 
+        node.innerHTML = scene[i].name;
+        node.style.color = "white";
+        list.appendChild(node);
+    }
+
+    document.getElementById("scene-title").innerHTML = "Elements in scene : " + scene.length;
+}
+
 
 
 function Instantiate(object, position = {x:0, y:0})
