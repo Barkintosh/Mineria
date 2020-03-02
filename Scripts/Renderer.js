@@ -143,8 +143,8 @@ class ImageDrawCall
 
             pos.x - size.x/2,
             pos.y - size.y/2,
-            pos.x + size.x,
-            pos.y + size.y
+            size.x,
+            size.y
         );
 
         ctx.restore();

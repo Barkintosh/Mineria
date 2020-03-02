@@ -15,9 +15,12 @@ class GameManager extends GameObject
 
         this.btn = Instantiate("GameObject");
         this.btn.name = "Button";
-        this.btn.AddComponent(new RectTransform(this.btn, {x: 700, y: 500}, {x:200, y:50}));
+        this.btn.AddComponent(new RectTransform(this.btn, {x: 800, y: 600}, {x:200, y:50}));
         this.btn.AddComponent(new Image(this.btn, flappySprite, {x:0, y:0}, {x:17, y:12}));
-        console.log(this.btn);
+        this.btn.AddComponent(new Button(this.btn, () => {
+            this.player.Bird.UnFreeze();
+            Destroy(this.btn);
+        }));
     }
 
     Update()

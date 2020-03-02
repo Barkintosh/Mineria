@@ -1,17 +1,18 @@
 <html>
 	<body onLoad="Start()"  style="margin:0px;">
 		<canvas id="canvas"></canvas>
-		<panel>
+		<panel id="panel">
 			<div style="display: flex; flex-direction: column;">
 				<button id="btn-reload" onClick="Start()">Reload</button>
 				<button id="btn-pause" onClick=TogglePause()>Pause</button>
 				<button id="btn-debug" onClick=ToggleDebug()>Normal Mode</button>
 			</div>
 			<h1 id="scene-title" style="color:white;"></h1>
-			<div id="scene-list" style="flex:3; overflow-y: scroll;"></div>
+			<div id="scene-list" style="flex:3; overflow-y: scroll; background-color: rgba(35, 39, 42, 0.9); padding:10px"></div>
 			</br>
 			<h1 id="text-fps" style="color:yellow;">FPS</h1>
 		</panel>
+			<button id="btn-panel" onClick="TogglePanel()">&#8249;</button>
 	</body>
 
 	<head>

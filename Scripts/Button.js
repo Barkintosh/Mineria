@@ -1,28 +1,26 @@
 class Button
 {
-    constructor(action = null)
+    constructor(gameObject = null, action = null)
     {
+        this.gameObject = gameObject;
         this.action = action;
     }
 
     IsClicked(x, y)
     {
-        if(x > this.position.x
-        && x < this.position.x + this.width
-        && y > this.position.y
-        && y < this.position.y + this.height){ return true; }
+        if(x > this.gameObject.RectTransform.position.x - this.gameObject.RectTransform.size.x/2
+        && x < this.gameObject.RectTransform.position.x + this.gameObject.RectTransform.size.x/2
+        && y > this.gameObject.RectTransform.position.y - this.gameObject.RectTransform.size.y/2
+        && y < this.gameObject.RectTransform.position.y + this.gameObject.RectTransform.size.y/2)
+        { return true; }
         else return false;
     }
 
     Update()
     {
-        this.Draw();
-        if(mouseDown)
+        if(mouseDown && this.IsClicked(mouseX, mouseY))
         {
-            if(this.IsClicked(mouseX, mouseY))
-            {
-                this.action();
-            }
+            this.action();
         }
     }
 }

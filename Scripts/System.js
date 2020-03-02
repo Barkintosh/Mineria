@@ -40,7 +40,8 @@ function Debug()
         if(bc != null) bc.ToggleDebug();
         var img = scene[i].GetComponent("Image");
 		if(img != null) img.ToggleDebug();
-	}
+    }
+    Update();
 }
 
 function Pause()
