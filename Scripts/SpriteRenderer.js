@@ -32,7 +32,7 @@ class SpriteRenderer
         }
         else
         {
-            Render.Image(
+            Render.Sprite(
                 this.sprite,
                 this.coordinate,
                 this.area,

@@ -20,10 +20,10 @@ class Renderer
         this.drawCalls = [];
     }
     
-    Image(sprite, coordinate, area, transform)
+    Sprite(sprite, coordinate, area, transform)
     {
         this.drawCalls.push(
-            new ImageDrawCall(
+            new SpriteDrawCall(
                 sprite,
                 coordinate,
                 area, 
@@ -65,9 +65,71 @@ class Renderer
             )
         );
     }
+
+    Image(sprite, coordinate, area, rectTransform)
+    {
+        this.drawCalls.push(
+            new ImageDrawCall(
+                sprite,
+                coordinate,
+                area, 
+                rectTransform
+            )
+        );
+    }
 }
 
+
+
 class ImageDrawCall
+{
+    constructor(sprite, coordinate, area, rectTransform)
+    {
+        this.sprite = sprite;
+        this.coordinate = coordinate;
+        this.area = area;
+        this.rectTransform = rectTransform;
+        this.layer = this.rectTransform.layer;
+    }
+
+    Draw()
+    {
+        var pos =
+        {
+            x: this.rectTransform.position.x,
+            y: this.rectTransform.position.y
+        }
+
+        var size = 
+        {
+            x: this.rectTransform.size.x,
+            y: this.rectTransform.size.y
+        }
+
+        ctx.save();
+        //ctx.translate(this.rectTransform.position.x, this.rectTransform.position.y);
+        ctx.scale(this.rectTransform.scale.x, this.rectTransform.scale.y);
+        ctx.rotate(this.rectTransform.rotation * Math.PI / 180);
+
+        ctx.drawImage
+        (
+            this.sprite,
+            this.coordinate.x,
+            this.coordinate.y,
+            this.area.x,
+            this.area.y,
+
+            pos.x - size.x/2,
+            pos.y - size.y/2,
+            pos + size.x,
+            pos + size.y
+        );
+
+        ctx.restore();
+    }
+}
+
+class SpriteDrawCall
 {
     constructor(sprite, coordinate, area, transform)
     {

@@ -32,10 +32,10 @@ panel
 	width: 250px;
 	top: 0px;
 	left: 0px;
-	background-color: rgba(44, 47, 51, 1);
+	background-color: rgba(44, 47, 51, 0.9);
 	box-sizing: border-box; 
 	padding: 10px;
-	border-right: 5px solid rgba(35, 39, 42, 1);
+	border-right: 5px solid rgba(35, 39, 42, 0.9);
 }
 
 button

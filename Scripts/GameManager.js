@@ -3,13 +3,21 @@ class GameManager extends GameObject
     constructor()
     {
         super();
-
+        this.playing = false;
         this.player = Instantiate("Player");
+        this.player.Bird.Freeze();
 
         for(var i = 0; i < 15; i++)
         {
             Instantiate("Gate", {x: 300 + i * 300, y: GetRandomInt(-200, 200) });
         }
+
+
+        var btn = Instantiate("GameObject");
+        btn.name = "Button";
+        btn.AddComponent(new RectTransform(btn, {x: 1000, y: 500}, {x:200, y:200}));
+        btn.AddComponent(new Image(btn, flappySprite, {x:0, y:0}, {x:17, y:12}));
+        console.log(btn);
     }
 
     Update()
@@ -38,7 +46,7 @@ class Player extends GameObject
         this.Transform.scale = {x: 5, y: 5};
         this.Transform.name = "Bird";
         this.name = "Bird";
-        this.Transform.layer = 1;
+        this.Transform.layer = 2;
     }
 }
 
@@ -47,10 +55,24 @@ class Bird
     constructor(gameObject)
     {
         this.gameObject = gameObject;
+        this.freeze = false;
+    }
+
+    Freeze()
+    {
+        this.freeze = true;
+        this.gameObject.Rigidbody.activated = false;
+    }
+    UnFreeze()
+    {
+        this.freeze = false;
+        this.gameObject.Rigidbody.activated = true;
     }
 
     Update()
     {
+        if(this.freeze) return;
+
         if(mouseDown)
         {
             this.gameObject.Rigidbody.velocity = {x:0, y: 0};
@@ -84,10 +106,12 @@ class Gate extends GameObject
     Start()
     {
         var up = Instantiate("Pipe", {x: this.Transform.position.x, y: this.Transform.position.y - this.hole/2});
+        up.Transform.SetParent(this.Transform);
         up.reversed = true;
         up.Load();
 
         var down = Instantiate("Pipe", {x: this.Transform.position.x, y: this.Transform.position.y + this.hole/2});
+        down.Transform.SetParent(this.Transform);
         down.reversed = false;
         down.Load();
     }
@@ -107,11 +131,17 @@ class Pipe extends GameObject
 
     Load()
     {
-        var up = Instantiate("GameObject")
+        var up = Instantiate("GameObject");
+        up.Transform.SetParent(this.Transform);
+        var offset = 0;
+        this.reversed ? offset = -this.scale * 4 : offset = this.scale * 4;
+        up.Transform.layer = 1;
+        up.Transform.localPosition = {x:0, y:offset};
         up.AddComponent(new SpriteRenderer(up, flappySprite, {x:18, y:0}, {x:25, y:8}));
-        up.Transform.name = "Up";
-        up.name = "Up";
+        up.Transform.name = "Edge";
+        up.name = "Edge";
         up.Transform.scale = {x: this.scale, y: this.scale};
+
 
         var direction = 1;
         if(this.reversed) direction = -1;
@@ -123,11 +153,13 @@ class Pipe extends GameObject
         for(var i = 1; i < this.tubeSize; i++)
         {
             var part = Instantiate("GameObject");
+            part.Transform.SetParent(this.Transform);
+
             part.AddComponent(new SpriteRenderer(part, flappySprite, {x:20, y:9}, {x:21, y:8}));
             part.Transform.name = "Part";
-            part.name = "Gate";
+            part.name = "Part";
             part.Transform.scale = {x: this.scale, y: this.scale};
-            part.Transform.position = {x: up.Transform.position.x, y: up.Transform.position.y + direction * (this.partSize * i * part.Transform.scale.y)};
+            part.Transform.localPosition = {x: 0, y: direction * (this.partSize * i * part.Transform.scale.y)};
         }
     }
 }

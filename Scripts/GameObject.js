@@ -4,7 +4,7 @@ class GameObject
     {
         this.components = [];
         this.name = "GameObject";
-        this.AddComponent(new Transform());
+        this.AddComponent(new Transform(this));
     }
 
     Start()

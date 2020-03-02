@@ -58,6 +58,7 @@ function Refresh()
     if(pause) return;
     now = Date.now();
     delta = now - then;
+    
     if (delta > interval) 
     {
         ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
@@ -65,6 +66,18 @@ function Refresh()
         then = now - (delta % interval);
     }
     time = performance.now() / 1000;
+}
+
+setInterval(function(){ShowFramePerSeconds()},250);
+
+function ShowFramePerSeconds()
+{
+    var fpsText = document.getElementById("text-fps");
+    var fpsValue = Math.round(1000 / delta);
+    if(fpsValue < 15) fpsText.style.color = "red";
+    else if(fpsValue < 30) fpsText.style.color = "yellow";
+    else fpsText.style.color = "green";
+    fpsText.innerHTML = "FPS " + fpsValue;
 }
 
 function Update()
@@ -93,15 +106,33 @@ function RefreshList()
     for(var i = 0; i < scene.length; i++)
     {
         var node = document.createElement("h2"); 
-        node.innerHTML = scene[i].name;
+        var offset = 0;
+        var arrow = "";
+        var end = false;
+        var t = scene[i].Transform;
+        if(t == undefined) t = scene[i].RectTransform;
+        if(t == undefined) continue;
+
+        while(!end)
+        {
+            if(t.parent != undefined)
+            {
+                offset += 15;
+                arrow = "&#8593; ";
+                t = t.parent;
+            }
+            else end = true;
+        }
+        
+
+        node.innerHTML = arrow + scene[i].name;
+        node.style.paddingLeft = offset;
         node.style.color = "white";
         list.appendChild(node);
     }
 
     document.getElementById("scene-title").innerHTML = "Elements in scene : " + scene.length;
 }
-
-
 
 function Instantiate(object, position = {x:0, y:0})
 {

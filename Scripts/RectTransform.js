@@ -1,11 +1,19 @@
-class Transform
+const VerticalAnchor = Object.freeze({"up":1, "middle":2, "down":3});
+const HorizontalAnchor = Object.freeze({"left":1, "middle":2, "right":3});
+
+class RectTransform
 {
-    constructor(gameObject = undefined, pos = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
+    constructor(gameObject = undefined, pos = {x:0, y:0}, size = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
     {
         this.position = {
             x:pos.x,
             y:pos.y
         };
+
+        this.vAnchor = VerticalAnchor.middle;
+        this.hAnchor = HorizontalAnchor.middle;
+
+        this.size = size;
 
         this.localPosition =
         {
@@ -28,21 +36,15 @@ class Transform
         this.layer = layer;
         this.gameObject = gameObject;
 
-        if(this.gameObject.RectTransform != undefined)
-            this.gameObject.RemoveComponent(this.gameObject.RectTransform);
+        if(this.gameObject.Transform != undefined)
+            this.gameObject.RemoveComponent(this.gameObject.Transform);
+
     }
 
     Update()
     {
         if(this.parent != undefined)
         {
-            /*
-            var rad = ToRadian(this.parent.rotation + this.localRotation);
-            var distance = this.localPosition.x + this.localPosition.y;
-            this.position.x = this.parent.position.x + Math.cos(rad) * distance;
-            this.position.y = this.parent.position.y + Math.sin(rad) * distance;
-            this.rotation = this.localRotation + this.parent.rotation;
-            */
            this.position.x = this.parent.position.x + this.localPosition.x;
            this.position.y = this.parent.position.y + this.localPosition.y;
         }
@@ -61,9 +63,10 @@ class Transform
 
     Reset()
     {
+        this.size = {x:0, y:0};
         this.position = {x:0, y:0};
         this.localPosition = {x:0, y:0};
-        this.size = {x:1 ,y:1};
+        this.scale = {x:1 ,y:1};
     }
 
     ToggleDebug()

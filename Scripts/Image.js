@@ -1,0 +1,47 @@
+class Image
+{
+    constructor(gameObject, sprite, coordinate, area)
+    {
+        this.sprite = sprite;
+        this.area = area;
+        this.coordinate = coordinate;
+        this.gameObject = gameObject;
+        this.debug = debug;
+    }
+
+    Update()
+    {
+        if(this.debug) this.Draw();
+
+        Render.Image(
+            this.sprite,
+            this.coordinate,
+            this.area,
+            this.gameObject.RectTransform
+        );
+    }
+
+    Reset()
+    {
+
+    }
+
+    ToggleDebug()
+    {
+        this.debug = !this.debug;
+    }
+
+    Draw()
+    {
+        /*
+        Render.Rectangle(
+            this.area,
+            this.gameObject.RectTransform.position,
+            this.gameObject.RectTransform.scale,
+            this.gameObject.RectTransform.rotation,
+            this.gameObject.RectTransform.layer,
+            "rgba(255, 255, 0, 0.25)"
+        );
+        */
+    }
+}
