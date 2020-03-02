@@ -33,9 +33,13 @@ function Debug()
 		var c = scene[i].GetComponent("Collider");
 		if(c != null) c.ToggleDebug();
 		var t = scene[i].GetComponent("Transform");
-		if(t != null) t.ToggleDebug();
+        if(t != null) t.ToggleDebug();
+        var rt = scene[i].GetComponent("RectTransform");
+		if(rt != null) rt.ToggleDebug();
 		var bc = scene[i].GetComponent("BoxCollider");
-		if(bc != null) bc.ToggleDebug();
+        if(bc != null) bc.ToggleDebug();
+        var img = scene[i].GetComponent("Image");
+		if(img != null) img.ToggleDebug();
 	}
 }
 

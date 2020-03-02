@@ -7,17 +7,17 @@ class GameManager extends GameObject
         this.player = Instantiate("Player");
         this.player.Bird.Freeze();
 
-        for(var i = 0; i < 15; i++)
+        for(var i = 0; i < 3; i++)
         {
             Instantiate("Gate", {x: 300 + i * 300, y: GetRandomInt(-200, 200) });
         }
 
 
-        var btn = Instantiate("GameObject");
-        btn.name = "Button";
-        btn.AddComponent(new RectTransform(btn, {x: 1000, y: 500}, {x:200, y:200}));
-        btn.AddComponent(new Image(btn, flappySprite, {x:0, y:0}, {x:17, y:12}));
-        console.log(btn);
+        this.btn = Instantiate("GameObject");
+        this.btn.name = "Button";
+        this.btn.AddComponent(new RectTransform(this.btn, {x: 700, y: 500}, {x:200, y:50}));
+        this.btn.AddComponent(new Image(this.btn, flappySprite, {x:0, y:0}, {x:17, y:12}));
+        console.log(this.btn);
     }
 
     Update()
@@ -30,6 +30,8 @@ class GameManager extends GameObject
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
         camera.MoveTo(this.player.Transform.position.x + canvas.width / 3, 0);
+
+        //this.btn.position = {x: mouseX, y: mouseY};
     }
 }
 

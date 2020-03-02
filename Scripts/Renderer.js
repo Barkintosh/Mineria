@@ -36,6 +36,24 @@ class Renderer
     {
         this.drawCalls.push(
             new RectangleDrawCall(
+                false,
+                size,
+                position,
+                scale, 
+                rotation,
+                layer,
+                color,
+                fill,
+                width
+            )
+        );
+    }
+
+    UIRectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    {
+        this.drawCalls.push(
+            new RectangleDrawCall(
+                true,
                 size,
                 position,
                 scale, 
@@ -57,6 +75,21 @@ class Renderer
     {
         this.drawCalls.push(
             new TextDrawCall(
+                false,
+                text,
+                font,
+                color,
+                position,
+                layer
+            )
+        );
+    }
+
+    UIText(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
+    {
+        this.drawCalls.push(
+            new TextDrawCall(
+                true,
                 text,
                 font,
                 color,
@@ -79,8 +112,6 @@ class Renderer
     }
 }
 
-
-
 class ImageDrawCall
 {
     constructor(sprite, coordinate, area, rectTransform)
@@ -94,17 +125,8 @@ class ImageDrawCall
 
     Draw()
     {
-        var pos =
-        {
-            x: this.rectTransform.position.x,
-            y: this.rectTransform.position.y
-        }
-
-        var size = 
-        {
-            x: this.rectTransform.size.x,
-            y: this.rectTransform.size.y
-        }
+        var pos = this.rectTransform.position;
+        var size = this.rectTransform.size;
 
         ctx.save();
         //ctx.translate(this.rectTransform.position.x, this.rectTransform.position.y);
@@ -121,8 +143,8 @@ class ImageDrawCall
 
             pos.x - size.x/2,
             pos.y - size.y/2,
-            pos + size.x,
-            pos + size.y
+            pos.x + size.x,
+            pos.y + size.y
         );
 
         ctx.restore();
@@ -174,7 +196,7 @@ class SpriteDrawCall
 
 class RectangleDrawCall
 {
-    constructor(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    constructor(ui = false, size = {x: 0, y: 0}, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
         this.size = size;
         this.color = color;
@@ -184,15 +206,20 @@ class RectangleDrawCall
         this.rotation = rotation;
         this.fill = fill;
         this.width = width;
+
+        this.ui = ui;
     }
 
     Draw()
     {
-
-        var point = 
+        var point = this.position;
+        if(!this.ui)
         {
-            x: (this.position.x - camera.Transform.position.x),
-            y: (this.position.y - camera.Transform.position.y)
+            point = 
+            {
+                x: (this.position.x - camera.Transform.position.x),
+                y: (this.position.y - camera.Transform.position.y)
+            }
         }
 
         ctx.save();
@@ -230,6 +257,7 @@ class RectangleDrawCall
 class TextDrawCall
 {
     constructor(
+        ui = false,
         text = "Text", 
         font = "16px Arial", 
         color = "white", 
@@ -241,14 +269,19 @@ class TextDrawCall
         this.color = color;
         this.layer = layer;
         this.position = position;
+        this.ui = ui;
     }
 
     Draw()
     {
-        var point = 
+        var point = this.position;
+        if(!this.ui)
         {
-            x: (this.position.x - camera.Transform.position.x),
-            y: (this.position.y - camera.Transform.position.y)
+            point = 
+            {
+                x: (this.position.x - camera.Transform.position.x),
+                y: (this.position.y - camera.Transform.position.y)
+            }
         }
         ctx.font = this.font;
         ctx.fillStyle = this.color;

@@ -12,7 +12,7 @@ class Image
     Update()
     {
         if(this.debug) this.Draw();
-
+        
         Render.Image(
             this.sprite,
             this.coordinate,
@@ -33,15 +33,16 @@ class Image
 
     Draw()
     {
-        /*
-        Render.Rectangle(
-            this.area,
+        Render.UIText("IMAGE", "21px Press Start 2P", "black", this.gameObject.RectTransform.position, 10000);
+    
+        Render.UIRectangle(
+            this.gameObject.RectTransform.size,
             this.gameObject.RectTransform.position,
             this.gameObject.RectTransform.scale,
             this.gameObject.RectTransform.rotation,
             this.gameObject.RectTransform.layer,
             "rgba(255, 255, 0, 0.25)"
         );
-        */
+    
     }
 }

@@ -81,33 +81,33 @@ class RectTransform
 
         ctx.beginPath();
         ctx.moveTo(
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y - 5
+            this.position.x,
+            this.position.y - 5
         );
         ctx.lineTo(
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 5
+            this.position.x,
+            this.position.y + 5
         );
         ctx.stroke();
         ctx.beginPath();
         ctx.moveTo(
-            this.position.x - camera.Transform.position.x - 5,
-            this.position.y - camera.Transform.position.y
+            this.position.x - 5,
+            this.position.y
         );
         ctx.lineTo(
-            this.position.x - camera.Transform.position.x + 5,
-            this.position.y - camera.Transform.position.y
+            this.position.x + 5,
+            this.position.y
         );
         ctx.stroke();
         ctx.fillText(
             this.name,
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 10
+            this.position.x,
+            this.position.y + 25 * this.scale.y + 10
         );
         ctx.fillText(
             "Layer : " + this.layer,
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 20
+            this.position.x,
+            this.position.y + 25 * this.scale.y + 20
         );
 
         if(this.parent != undefined)
@@ -116,17 +116,17 @@ class RectTransform
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(
-                this.position.x - camera.Transform.position.x,
-                this.position.y - camera.Transform.position.y
+                this.position.x,
+                this.position.y
             );
             ctx.lineTo(
-                this.parent.position.x - camera.Transform.position.x,
-                this.parent.position.y - camera.Transform.position.y
+                this.parent.position.x,
+                this.parent.position.y
             );
             ctx.stroke();
         }
 
-        Render.Text(this.name, "32px Press Start 2P", "black", {x: this.position.x, y: this.position.y}, 10000);
-        Render.Text("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Roboto", "black", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.UIText(this.gameObject.name, "32px Press Start 2P", "black", this.position, 10000);
+        Render.UIText("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Roboto", "black", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }
