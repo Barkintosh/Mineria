@@ -85,7 +85,7 @@ class Renderer
         );
     }
 
-    UIText(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
+    UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white")
     {
         this.drawCalls.push(
             new TextDrawCall(
@@ -93,8 +93,8 @@ class Renderer
                 text,
                 font,
                 color,
-                position,
-                layer
+                rectTransform.position,
+                rectTransform.layer
             )
         );
     }
@@ -120,7 +120,7 @@ class ImageDrawCall
         this.coordinate = coordinate;
         this.area = area;
         this.rectTransform = rectTransform;
-        this.layer = this.rectTransform.layer;
+        this.layer = this.rectTransform.layer + 100;
     }
 
     Draw()
@@ -129,7 +129,7 @@ class ImageDrawCall
         var size = this.rectTransform.size;
 
         ctx.save();
-        //ctx.translate(this.rectTransform.position.x, this.rectTransform.position.y);
+        ctx.translate(this.rectTransform.position.x, this.rectTransform.position.y);
         ctx.scale(this.rectTransform.scale.x, this.rectTransform.scale.y);
         ctx.rotate(this.rectTransform.rotation * Math.PI / 180);
 
@@ -141,8 +141,8 @@ class ImageDrawCall
             this.area.x,
             this.area.y,
 
-            pos.x - size.x/2,
-            pos.y - size.y/2,
+            -size.x/2,
+            -size.y/2,
             size.x,
             size.y
         );
@@ -208,6 +208,7 @@ class RectangleDrawCall
         this.width = width;
 
         this.ui = ui;
+        if(this.ui) this.layer += 100;
     }
 
     Draw()
@@ -270,6 +271,7 @@ class TextDrawCall
         this.layer = layer;
         this.position = position;
         this.ui = ui;
+        if(this.ui) this.layer += 100;
     }
 
     Draw()
@@ -283,6 +285,7 @@ class TextDrawCall
                 y: (this.position.y - camera.Transform.position.y)
             }
         }
+
         ctx.font = this.font;
         ctx.fillStyle = this.color;
         ctx.textAlign = "center"; 

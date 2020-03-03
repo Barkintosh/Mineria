@@ -36,7 +36,7 @@ panel
 	box-sizing: border-box; 
 	padding: 10px;
 	border-right: 5px solid rgba(35, 39, 42, 0.9);
-	transition-duration: 0.5s;
+	transition: 0.2s;
 	overflow: hidden;
 }
 
@@ -58,6 +58,18 @@ button
 	background-color: #7289da;
 }
 
+gameobject-element
+{
+	cursor: pointer;
+	font-size: 14px;
+	color: white;
+}
+gameobject-element:hover
+{
+	color: rgba(35, 39, 42, 1);
+	background-color: white;
+}
+
 #btn-panel
 {
 	background-color : rgba(35, 39, 42, 1);
@@ -68,5 +80,5 @@ button
 	font-size: 32px;
 	margin: 0px;
 	border-radius: 0px 5px 5px 0px;
-	transition-duration: 0.5s;
+	transition: 0.2s;
 }

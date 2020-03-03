@@ -51,4 +51,9 @@ class GameObject
     {
 
     }
+
+    OnCollision(other)
+    {
+
+    }
 }

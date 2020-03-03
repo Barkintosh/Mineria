@@ -1,5 +1,5 @@
-const VerticalAnchor = Object.freeze({"up":1, "middle":2, "down":3});
-const HorizontalAnchor = Object.freeze({"left":1, "middle":2, "right":3});
+const VerticalAnchor = {"up":1, "middle":2, "down":3};
+const HorizontalAnchor = {"left":1, "middle":2, "right":3};
 
 class RectTransform
 {
@@ -9,33 +9,27 @@ class RectTransform
             x:pos.x,
             y:pos.y
         };
-
-        this.vAnchor = VerticalAnchor.middle;
-        this.hAnchor = HorizontalAnchor.middle;
-
-        this.size = size;
-
         this.localPosition =
         {
-            x: 0,
-            y: 0
+            x:pos.x,
+            y:pos.y
         }
-
-        this.parent = parent;
-        if(parent != undefined) SetParent(parent);
-
         this.scale = {
             x:scale.x,
             y:scale.y
         };
 
+        this.vAnchor = VerticalAnchor.middle;
+        this.hAnchor = HorizontalAnchor.middle;
+        this.size = size;
+        this.parent = parent;
+        if(parent != undefined) SetParent(parent);
         this.rotation = rotation;
         this.localRotation = 0;
         this.name = "GameObject";
         this.debug = debug;
         this.layer = layer;
         this.gameObject = gameObject;
-
         if(this.gameObject.Transform != undefined)
             this.gameObject.RemoveComponent(this.gameObject.Transform);
 
@@ -49,6 +43,35 @@ class RectTransform
            this.position.y = this.parent.position.y + this.localPosition.y;
         }
         if(this.debug) this.Draw();
+
+        this.ApplyAnchor();
+    }
+
+    ApplyAnchor()
+    {
+        switch(this.vAnchor)
+        {
+            case VerticalAnchor.up:
+                break;
+            case VerticalAnchor.middle:
+                this.position.y = this.localPosition.y + canvas.clientHeight/2;
+                break;
+            case VerticalAnchor.down:
+                this.position.y = this.localPosition.y + canvas.clientHeight;
+                break;
+        }
+
+        switch(this.hAnchor)
+        {
+            case HorizontalAnchor.left:
+                break;
+            case HorizontalAnchor.middle:
+                this.position.x = this.localPosition.x + canvas.clientWidth/2;
+                break;
+            case HorizontalAnchor.right:
+                this.position.x = this.localPosition.x + canvas.clientWidth;
+                break;
+        }
     }
 
     SetParent(parent)
@@ -126,7 +149,7 @@ class RectTransform
             ctx.stroke();
         }
 
-        Render.UIText(this.gameObject.name, "32px Press Start 2P", "black", this.position, 10000);
-        Render.UIText("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Roboto", "black", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.UIText(this, this.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y}, 10000);
+        Render.UIText(this, Math.floor(this.position.x) + " " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }

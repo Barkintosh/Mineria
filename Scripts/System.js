@@ -15,8 +15,7 @@ var delta;
 var pause = false;
 var debug = false;
 
-var f = new FontFace('Golden', 'url(./Assets/Golden.ttf)');
-f.load();
+
 
 // SETTINGS
 var gravity = 0.01;
@@ -110,7 +109,7 @@ function RefreshList()
 
     for(var i = 0; i < scene.length; i++)
     {
-        var node = document.createElement("h2"); 
+        var node = document.createElement("gameobject-element");
         var offset = 0;
         var arrow = "";
         var end = false;
@@ -128,7 +127,6 @@ function RefreshList()
             }
             else end = true;
         }
-        
 
         node.innerHTML = arrow + scene[i].name;
         node.style.paddingLeft = offset;

@@ -12,13 +12,17 @@ class Image
     Update()
     {
         if(this.debug) this.Draw();
+        else
+        {
+            Render.Image(
+                this.sprite,
+                this.coordinate,
+                this.area,
+                this.gameObject.RectTransform
+            );
+        }
         
-        Render.Image(
-            this.sprite,
-            this.coordinate,
-            this.area,
-            this.gameObject.RectTransform
-        );
+
     }
 
     Reset()
@@ -33,7 +37,7 @@ class Image
 
     Draw()
     {
-        Render.UIText("IMAGE", "21px Press Start 2P", "black", this.gameObject.RectTransform.position, 10000);
+        //Render.UIText("IMAGE", "21px Press Start 2P", "black", this.gameObject.RectTransform.position, 10000);
     
         Render.UIRectangle(
             this.gameObject.RectTransform.size,

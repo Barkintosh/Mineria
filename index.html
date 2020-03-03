@@ -8,7 +8,8 @@
 				<button id="btn-debug" onClick=ToggleDebug()>Normal Mode</button>
 			</div>
 			<h1 id="scene-title" style="color:white;"></h1>
-			<div id="scene-list" style="flex:3; overflow-y: scroll; background-color: rgba(35, 39, 42, 0.9); padding:10px"></div>
+			<div id="scene-list" style="flex:3; display: flex; flex-direction: column; overflow-y: scroll; background-color: rgba(35, 39, 42, 0.9); padding:10px"></div>
+			<div id="selected-gameobject" style="flex:1; display: flex; flex-direction: column; background-color: rgba(35, 39, 42, 0.9); padding:10px"></div>
 			</br>
 			<h1 id="text-fps" style="color:yellow;">FPS</h1>
 		</panel>
@@ -25,6 +26,7 @@
 		<script src="./Scripts/GameObject.js"></script>
 		<script src="./Scripts/SpriteRenderer.js"></script>
 		<script src="./Scripts/Image.js"></script>
+		<script src="./Scripts/Text.js"></script>
 		<script src="./Scripts/Camera.js"></script>
 		<script src="./Scripts/Transform.js"></script>
 		<script src="./Scripts/RectTransform.js"></script>

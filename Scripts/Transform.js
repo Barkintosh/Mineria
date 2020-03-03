@@ -20,6 +20,10 @@ class Transform
             x:scale.x,
             y:scale.y
         };
+        this.localScale = {
+            x:scale.x,
+            y:scale.y
+        };
 
         this.rotation = rotation;
         this.localRotation = 0;
@@ -45,6 +49,9 @@ class Transform
             */
            this.position.x = this.parent.position.x + this.localPosition.x;
            this.position.y = this.parent.position.y + this.localPosition.y;
+
+           this.scale.x = this.localScale.x * this.parent.scale.x;
+           this.scale.y = this.localScale.y * this.parent.scale.y;
         }
         if(this.debug) this.Draw();
     }
@@ -123,7 +130,7 @@ class Transform
             ctx.stroke();
         }
 
-        Render.Text(this.name, "32px Press Start 2P", "black", {x: this.position.x, y: this.position.y}, 10000);
-        Render.Text("{x:" + Math.floor(this.position.x) + ",  y:" + Math.floor(this.position.y) + "}", "10px Roboto", "black", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.Text(this.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y}, 10000);
+        Render.Text(Math.floor(this.position.x) + " " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }

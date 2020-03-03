@@ -51,19 +51,13 @@ function TogglePanel()
     panelOpen = !panelOpen;
     if(panelOpen)
     {
-        panel.style.width = "250px";
-        //panel.style.display = "flex";
-        panel.style.padding = "10px";
-
+        panel.style.left = "0px";
         btn.style.left = "250px";
         btn.innerHTML = "&#8249;";
     }
     else
     {
-        panel.style.width = "0px";
-        //panel.style.display = "none";
-        panel.style.padding = "0px";
-
+        panel.style.left = "-250px";
         btn.style.left = "0px";
         btn.innerHTML = "&#8250;";
     }
