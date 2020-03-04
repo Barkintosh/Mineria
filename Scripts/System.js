@@ -155,6 +155,12 @@ function Destroy(object)
     {
         if(object == scene[i])
         {
+            if(object.Transform != undefined)
+            {
+                object.Transform.children.forEach(function(e)
+                {Destroy(e.gameObject);});
+            }
+
             delete scene[i];
             scene.splice(i, 1);
             return;

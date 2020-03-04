@@ -31,6 +31,7 @@ class Transform
         this.debug = debug;
         this.layer = layer;
         this.gameObject = gameObject;
+        this.children = [];
 
         if(this.gameObject.RectTransform != undefined)
             this.gameObject.RemoveComponent(this.gameObject.RectTransform);
@@ -56,14 +57,34 @@ class Transform
         if(this.debug) this.Draw();
     }
 
+    AddChild(child)
+    {
+        this.children[this.children.length] = child;
+    }
+
+    RemoveChild(child)
+    {
+        for(let i = 0; i < this.children.length; i++)
+        {
+            if(this.children[i] == child) this.children.splice(i, 1);
+        }
+    }
+
     SetParent(parent)
     {
         this.parent = parent;
+        this.parent.AddChild(this);
         this.localPosition =
         {
             x: this.position.x - this.parent.position.x,
             y: this.position.y - this.parent.position.y
         }
+    }
+
+    UnParent()
+    {
+        this.parent.RemoveChild(this);
+        this.parent = undefined;
     }
 
     Reset()
@@ -80,57 +101,8 @@ class Transform
 
     Draw(color = "white", width = 1)
     {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-
-        ctx.beginPath();
-        ctx.moveTo(
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y - 5
-        );
-        ctx.lineTo(
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 5
-        );
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.moveTo(
-            this.position.x - camera.Transform.position.x - 5,
-            this.position.y - camera.Transform.position.y
-        );
-        ctx.lineTo(
-            this.position.x - camera.Transform.position.x + 5,
-            this.position.y - camera.Transform.position.y
-        );
-        ctx.stroke();
-        ctx.fillText(
-            this.name,
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 10
-        );
-        ctx.fillText(
-            "Layer : " + this.layer,
-            this.position.x - camera.Transform.position.x,
-            this.position.y - camera.Transform.position.y + 25 * this.scale.y + 20
-        );
-
-        if(this.parent != undefined)
-        {
-            ctx.strokeStyle = "white";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(
-                this.position.x - camera.Transform.position.x,
-                this.position.y - camera.Transform.position.y
-            );
-            ctx.lineTo(
-                this.parent.position.x - camera.Transform.position.x,
-                this.parent.position.y - camera.Transform.position.y
-            );
-            ctx.stroke();
-        }
-
-        Render.Text(this.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y}, 10000);
-        Render.Text(Math.floor(this.position.x) + " " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.Rectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 0, "grey", false, 1);
+        Render.Text(this.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 10000);
+        Render.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 10000);
     }
 }

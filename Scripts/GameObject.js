@@ -47,13 +47,6 @@ class GameObject
         }
     }
 
-    OnTriggerEnter(other)
-    {
-
-    }
-
-    OnCollision(other)
-    {
-
-    }
+    OnTriggerEnter(other){}
+    OnCollision(other){}
 }

@@ -70,20 +70,38 @@ class Background extends GameObject
         this.offset = 0;
         this.name = "Background";
         this.Transform.scale = {x: 4, y: 4};
+        this.panels = [];
         
-        for(var i = 0; i < 15; i++)
+        for(var i = 0; i < 5; i++)
         {
-            var city = Instantiate("GameObject");
-            city.AddComponent(new SpriteRenderer(city, flapSprite, {x:0, y:0}, {x:138, y:256}));
-            city.name = i;
-            city.Transform.SetParent(this.Transform);
-            city.Transform.localPosition = {x: 0 + i * 138 * 4, y: 0};
+            this.NewPanel();
         }
+    }
+
+    NewPanel()
+    {
+        var panel = Instantiate("GameObject");
+        panel.AddComponent(new SpriteRenderer(panel, flapSprite, {x:0, y:0}, {x:138, y:256}));
+        panel.name = "Back";
+        panel.Transform.SetParent(this.Transform);
+        panel.Transform.localPosition = {x: this.offset, y: 0};
+        panel.Transform.layer = -1;
+
+        this.panels[this.panels.length] = panel;
+
+        this.offset += 138 * 4;
     }
 
     Update()
     {
         this.Transform.position.x -= 0.5;
+
+        if(Math.abs(this.panels[0].Transform.position.x - camera.Transform.position.x) > 500 )
+        {
+            Destroy(this.panels[0]);
+            this.panels.splice(0, 1);
+            this.NewPanel();
+        }
     }
 }
 
@@ -146,6 +164,7 @@ class Bird
         {
             this.manager.SpawnPipe();
             this.manager.AddToScore();
+            Destroy(other.gameObject);
         }
     }
 
@@ -164,7 +183,7 @@ class Gate extends GameObject
         this.Transform.name = "Gate";
         this.name = "Gate";
 
-        this.AddComponent(new BoxCollider(this, true, {x:100, y:this.hole}, {x: 0, y: 0}));
+        this.AddComponent(new BoxCollider(this, true, {x:25, y:this.hole}, {x: 0, y: 0}));
     }
 
     Start()

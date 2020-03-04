@@ -49,7 +49,7 @@ class Renderer
         );
     }
 
-    UIRectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    UIRectangle(size = {x: 0, y: 0}, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
         this.drawCalls.push(
             new RectangleDrawCall(
@@ -85,7 +85,7 @@ class Renderer
         );
     }
 
-    UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white")
+    UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white", offset = {x:0, y:0})
     {
         this.drawCalls.push(
             new TextDrawCall(
@@ -93,7 +93,7 @@ class Renderer
                 text,
                 font,
                 color,
-                rectTransform.position,
+                {x: rectTransform.position.x + offset.x, y: rectTransform.position.y + offset.y},
                 rectTransform.layer
             )
         );

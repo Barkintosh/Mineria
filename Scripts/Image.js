@@ -45,7 +45,7 @@ class Image
             this.gameObject.RectTransform.scale,
             this.gameObject.RectTransform.rotation,
             this.gameObject.RectTransform.layer,
-            "rgba(255, 255, 0, 0.25)"
+            "rgba(255, 0, 255, 0.25)"
         );
     
     }
