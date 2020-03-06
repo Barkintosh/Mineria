@@ -5,6 +5,62 @@ class Renderer
         this.drawCalls = [];
     }
 
+    Out(position, size, scale)
+    {
+        var cameraBounds = this.Bounds();
+        var drawBounds =
+        {
+            upleft: 
+            {
+                x: position.x - size.x/2 * scale.x,
+                y: position.y - size.y/2 * scale.y
+            },
+            upright: 
+            {
+                x: position.x + size.x/2 * scale.x,
+                y: position.y - size.y/2 * scale.y
+            },
+            downleft: 
+            {
+                x: position.x - size.x/2 * scale.x,
+                y: position.y + size.y/2 * scale.y
+            },
+            downright: 
+            {
+                x: position.x + size.x/2 * scale.x,
+                y: position.y + size.y/2 * scale.y
+            }
+        };
+
+        if(drawBounds.downRight.x < cameraBounds.upleft.x)
+    }
+
+    Bounds()
+    {
+        return {
+            upleft: 
+            {
+                x: camera.Transform.position.x - canvas.width/2,
+                y: camera.Transform.position.y - canvas.height/2
+            },
+            upright: 
+            {
+                x: camera.Transform.position.x + canvas.width/2,
+                y: camera.Transform.position.y - canvas.height/2
+            },
+            downleft: 
+            {
+                x: camera.Transform.position.x - canvas.width/2,
+                y: camera.Transform.position.y + canvas.height/2
+            },
+            downright: 
+            {
+                x: camera.Transform.position.x + canvas.width/2,
+                y: camera.Transform.position.y + canvas.height/2
+            }
+        };
+    }
+
     Update()
     {
         this.drawCalls.sort(function(a, b)
@@ -22,6 +78,8 @@ class Renderer
     
     Sprite(sprite, coordinate, area, transform)
     {
+        if(Out(transform.position, area, transform.scale)) return;
+
         this.drawCalls.push(
             new SpriteDrawCall(
                 sprite,
