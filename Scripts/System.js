@@ -1,10 +1,8 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
-
 // SCENE
 var scene = [];
 var Render = new Renderer();
-
 // REFRESH SYSTEM
 var time = 0;
 var fps = 120;
@@ -14,14 +12,9 @@ var interval = 1000/fps;
 var delta;
 var pause = false;
 var debug = false;
-
-
-
 // SETTINGS
 var gravity = 0.01;
-var scale = 32;
-
-var camera = Instantiate("Camera");
+var camera;
 
 function Debug()
 {
@@ -53,6 +46,7 @@ function Start()
     scene = [];
     ResizeScreen();
     Refresh();
+    camera = Instantiate("CameraObject").Camera;
     Instantiate("GameManager");
 }
 
@@ -90,7 +84,6 @@ function Update()
     Render.Update();
     UpdateCollisions();
     UpdateInputs();
-
     RefreshList();
 }
 

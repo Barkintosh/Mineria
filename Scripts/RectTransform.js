@@ -97,10 +97,10 @@ class RectTransform
         this.debug = !this.debug;
     }
 
-    Draw(color = "white", width = 1)
+    Draw()
     {
         Render.UIRectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 0, "blue", false, 1);
-        Render.UIText(this, this.name, "16px Roboto", "blue", {x:0,y:-15});
+        Render.UIText(this, this.gameObject.name, "16px Roboto", "blue", {x:0,y:-15});
         Render.UIText(this, Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "blue", {x:0,y:15});
     }
 }

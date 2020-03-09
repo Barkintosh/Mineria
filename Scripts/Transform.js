@@ -99,10 +99,10 @@ class Transform
         this.debug = !this.debug;
     }
 
-    Draw(color = "white", width = 1)
+    Draw()
     {
-        Render.Rectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 0, "grey", false, 1);
-        Render.Text(this.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 10000);
-        Render.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 10000);
+        Render.Rectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 1000, "grey", false, 1);
+        Render.Text(this.gameObject.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 1000);
+        Render.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 1000);
     }
 }

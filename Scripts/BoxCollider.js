@@ -20,8 +20,8 @@ class BoxCollider
         // UPDATE POSITION
         this.position = 
         {
-            x: (this.gameObject.Transform.position.x - camera.Transform.position.x) + this.offset.x * this.gameObject.Transform.scale.x,
-            y: (this.gameObject.Transform.position.y - camera.Transform.position.y) + this.offset.y * this.gameObject.Transform.scale.y
+            x: (this.gameObject.Transform.position.x - camera.position.x) + this.offset.x * this.gameObject.Transform.scale.x,
+            y: (this.gameObject.Transform.position.y - camera.position.y) + this.offset.y * this.gameObject.Transform.scale.y
         }
         this.size = 
         {
@@ -47,7 +47,7 @@ class BoxCollider
     Draw()
     {
         var pos = {x: this.gameObject.Transform.position.x + this.offset.x, y: this.gameObject.Transform.position.y + this.offset.y};
-        Render.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "red", false);
+        Render.Rectangle(this.size, pos, {x: 1, y: 1}, 0*/this.gameObject.Transform.rotation*/, 1000, "red", false, 1);
         if(this.overlaping) Render.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "rgba(255, 0, 0, 0.25)");
     }
 
@@ -68,8 +68,6 @@ class BoxCollider
 
     BoxOverlap(other)
     {
-        //console.log(this.position.x + " > " + other.position.x + other.size.x/2);
-
         if(other != this)
         {
            if( this.gameObject.Transform.position.x + this.offset.x - this.size.x/2 < other.gameObject.Transform.position.x + other.offset.x + other.size.x/2

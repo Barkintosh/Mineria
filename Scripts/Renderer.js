@@ -5,123 +5,133 @@ class Renderer
         this.drawCalls = [];
     }
 
-    Out(position, size, scale)
+    Out(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
-        var cameraBounds = this.Bounds();
-        var drawBounds =
-        {
-            upleft: 
-            {
-                x: position.x - size.x/2 * scale.x,
-                y: position.y - size.y/2 * scale.y
-            },
-            upright: 
-            {
-                x: position.x + size.x/2 * scale.x,
-                y: position.y - size.y/2 * scale.y
-            },
-            downleft: 
-            {
-                x: position.x - size.x/2 * scale.x,
-                y: position.y + size.y/2 * scale.y
-            },
-            downright: 
-            {
-                x: position.x + size.x/2 * scale.x,
-                y: position.y + size.y/2 * scale.y
-            }
-        };
-
-        if(drawBounds.downRight.x < cameraBounds.upleft.x)
+        var drawBounds = this.Bounds(position, size, scale);
+        var cameraBounds = camera.Bounds();
+        return this.BoundsOut(drawBounds, cameraBounds);
     }
 
-    Bounds()
+    UIOut(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
+        var drawBounds = this.Bounds(position, size, scale, true);
+        var canvasBounds = camera.CanvasBounds();
+        return this.BoundsOut(drawBounds, canvasBounds);
+    }
+
+    BoundsOut(drawBounds, otherBounds)
+    {
+        if(drawBounds.downRight.x < otherBounds.upLeft.x || drawBounds.upLeft.x > otherBounds.downRight.x)
+        {
+            return true;
+        }
+        else if(drawBounds.downRight.y < otherBounds.upLeft.y || drawBounds.upLeft.y > otherBounds.downRight.y)
+        {
+            return true;
+        }
+        else return false;
+
+
+        if(drawBounds.downRight.x < otherBounds.upLeft.x 
+        || drawBounds.downRight.y < otherBounds.upLeft.y
+        || drawBounds.upLeft.x > otherBounds.downRight.x
+        || drawBounds.upLeft.y > otherBounds.downRight.y
+        ) return true;
+        else return false;
+    }
+
+    Bounds(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1}, ui = false)
+    {
+        var pos = 
+        {
+            x: position.x/* - (!ui ? camera.position.x : 0)*/,
+            y: position.y/* - (!ui ? camera.position.y : 0)*/
+        }
+
         return {
-            upleft: 
+            upLeft: 
             {
-                x: camera.Transform.position.x - canvas.width/2,
-                y: camera.Transform.position.y - canvas.height/2
+                x: pos.x - (size.x/2) * scale.x,
+                y: pos.y - (size.y/2) * scale.y
             },
-            upright: 
+            upRight: 
             {
-                x: camera.Transform.position.x + canvas.width/2,
-                y: camera.Transform.position.y - canvas.height/2
+                x: pos.x + (size.x/2) * scale.x,
+                y: pos.y - (size.y/2) * scale.y
             },
-            downleft: 
+            downLeft: 
             {
-                x: camera.Transform.position.x - canvas.width/2,
-                y: camera.Transform.position.y + canvas.height/2
+                x: pos.x - (size.x/2) * scale.x,
+                y: pos.y + (size.y/2) * scale.y
             },
-            downright: 
+            downRight: 
             {
-                x: camera.Transform.position.x + canvas.width/2,
-                y: camera.Transform.position.y + canvas.height/2
+                x: pos.x + (size.x/2) * scale.x,
+                y: pos.y + (size.y/2) * scale.y
             }
         };
     }
 
     Update()
     {
-        this.drawCalls.sort(function(a, b)
-        {
-            return a.layer - b.layer;
-        });
-
-        this.drawCalls.forEach(function(element)
-        {
-            element.Draw();
-        });
-
+        this.drawCalls.sort(function(a, b) {return a.layer - b.layer;});
+        this.drawCalls.forEach(function(element) {element.Draw();});
         this.drawCalls = [];
     }
     
     Sprite(sprite, coordinate, area, transform)
     {
-        if(Out(transform.position, area, transform.scale)) return;
-
-        this.drawCalls.push(
-            new SpriteDrawCall(
-                sprite,
-                coordinate,
-                area, 
-                transform
-            )
-        );
+        if(!this.Out(transform.position, area, transform.scale))
+        {
+            this.drawCalls.push(
+                new SpriteDrawCall(
+                    sprite,
+                    coordinate,
+                    area, 
+                    transform
+                )
+            );
+        }
     }
     
     Rectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
-        this.drawCalls.push(
-            new RectangleDrawCall(
-                false,
-                size,
-                position,
-                scale, 
-                rotation,
-                layer,
-                color,
-                fill,
-                width
-            )
-        );
+        if(!this.Out(position, size, scale))
+        {
+            this.drawCalls.push(
+                new RectangleDrawCall(
+                    false,
+                    size,
+                    position,
+                    scale, 
+                    rotation,
+                    layer,
+                    color,
+                    fill,
+                    width
+                )
+            );
+        }
     }
 
     UIRectangle(size = {x: 0, y: 0}, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
-        this.drawCalls.push(
-            new RectangleDrawCall(
-                true,
-                size,
-                position,
-                scale, 
-                rotation,
-                layer,
-                color,
-                fill,
-                width
-            )
-        );
+        if(!this.UIOut(position, size, scale))
+        {
+            this.drawCalls.push(
+                new RectangleDrawCall(
+                    true,
+                    size,
+                    position,
+                    scale, 
+                    rotation,
+                    layer,
+                    color,
+                    fill,
+                    width
+                )
+            );
+        }
     }
     
     Circle()
@@ -131,42 +141,51 @@ class Renderer
 
     Text(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
     {
-        this.drawCalls.push(
-            new TextDrawCall(
-                false,
-                text,
-                font,
-                color,
-                position,
-                layer
-            )
-        );
+        if(!this.Out(position))
+        {
+            this.drawCalls.push(
+                new TextDrawCall(
+                    false,
+                    text,
+                    font,
+                    color,
+                    position,
+                    layer
+                )
+            );
+        }
     }
 
     UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white", offset = {x:0, y:0})
     {
-        this.drawCalls.push(
-            new TextDrawCall(
-                true,
-                text,
-                font,
-                color,
-                {x: rectTransform.position.x + offset.x, y: rectTransform.position.y + offset.y},
-                rectTransform.layer
-            )
-        );
+        if(!this.UIOut(rectTransform.position + offset))
+        {
+            this.drawCalls.push(
+                new TextDrawCall(
+                    true,
+                    text,
+                    font,
+                    color,
+                    {x: rectTransform.position.x + offset.x, y: rectTransform.position.y + offset.y},
+                    rectTransform.layer
+                )
+            );
+        }
     }
 
     Image(sprite, coordinate, area, rectTransform)
     {
-        this.drawCalls.push(
-            new ImageDrawCall(
-                sprite,
-                coordinate,
-                area, 
-                rectTransform
-            )
-        );
+        if(!this.UIOut(rectTransform.position, rectTransform.size, rectTransform.scale))
+        {
+            this.drawCalls.push(
+                new ImageDrawCall(
+                    sprite,
+                    coordinate,
+                    area, 
+                    rectTransform
+                )
+            );
+        }
     }
 }
 
@@ -226,8 +245,8 @@ class SpriteDrawCall
 
         var point = 
         {
-            x: (this.transform.position.x - camera.Transform.position.x),
-            y: (this.transform.position.y - camera.Transform.position.y)
+            x: (this.transform.position.x - camera.gameObject.Transform.position.x),
+            y: (this.transform.position.y - camera.gameObject.Transform.position.y)
         }
 
         ctx.translate(point.x, point.y);
@@ -276,8 +295,8 @@ class RectangleDrawCall
         {
             point = 
             {
-                x: (this.position.x - camera.Transform.position.x),
-                y: (this.position.y - camera.Transform.position.y)
+                x: (this.position.x - camera.gameObject.Transform.position.x),
+                y: (this.position.y - camera.gameObject.Transform.position.y)
             }
         }
 
@@ -339,8 +358,8 @@ class TextDrawCall
         {
             point = 
             {
-                x: (this.position.x - camera.Transform.position.x),
-                y: (this.position.y - camera.Transform.position.y)
+                x: (this.position.x - camera.gameObject.Transform.position.x),
+                y: (this.position.y - camera.gameObject.Transform.position.y)
             }
         }
 

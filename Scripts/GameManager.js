@@ -3,6 +3,7 @@ class GameManager extends GameObject
     constructor()
     {
         super();
+        this.name = "GAMEMANAGER";
         this.playing = false;
         this.player = Instantiate("Player");
         this.player.Bird.Freeze();
@@ -19,15 +20,14 @@ class GameManager extends GameObject
         }
 
         this.btn = Instantiate("GameObject");
-        this.btn.name = "Button";
+        this.btn.name = "Button_Start";
         this.btn.AddComponent(new RectTransform(this.btn, {x: 0, y: 0}, {x:208, y:116}, {x: 2, y: 2}));
         this.btn.AddComponent(new Image(this.btn, flapSprite, {x:354, y:118}, {x:52, y:29}));
         this.btn.AddComponent(new Button(this.btn, () => {
             this.player.Bird.UnFreeze();
             Destroy(this.btn);
-
             this.scoreText = Instantiate("GameObject");
-            this.scoreText.name = "scoreText";
+            this.scoreText.name = "Text_Score";
             this.scoreText.AddComponent(new RectTransform(this.scoreText));
             this.scoreText.RectTransform.vAnchor = VerticalAnchor.up;
             this.scoreText.RectTransform.hAnchor = HorizontalAnchor.middle;
@@ -50,6 +50,7 @@ class GameManager extends GameObject
 
     Update()
     {
+        /*
         ctx.beginPath();
         var grd = ctx.createLinearGradient(window.innerWidth/2, window.innerHeight, window.innerWidth/2, 0);
         grd.addColorStop(0, "#C9F6FF");
@@ -57,6 +58,7 @@ class GameManager extends GameObject
         grd.addColorStop(1, "#35D6ED");
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
+        */
         camera.MoveTo(this.player.Transform.position.x + canvas.width / 3, 0);
     }
 }
@@ -66,16 +68,11 @@ class Background extends GameObject
     constructor()
     {
         super();
-
         this.offset = 0;
         this.name = "Background";
         this.Transform.scale = {x: 4, y: 4};
         this.panels = [];
-        
-        for(var i = 0; i < 5; i++)
-        {
-            this.NewPanel();
-        }
+        for(var i = 0; i < 5; i++) this.NewPanel();
     }
 
     NewPanel()
@@ -86,17 +83,14 @@ class Background extends GameObject
         panel.Transform.SetParent(this.Transform);
         panel.Transform.localPosition = {x: this.offset, y: 0};
         panel.Transform.layer = -1;
-
         this.panels[this.panels.length] = panel;
-
         this.offset += 138 * 4;
     }
 
     Update()
     {
         this.Transform.position.x -= 0.5;
-
-        if(Math.abs(this.panels[0].Transform.position.x - camera.Transform.position.x) > 500 )
+        if(Math.abs(this.panels[0].Transform.position.x - camera.position.x) > 500 )
         {
             Destroy(this.panels[0]);
             this.panels.splice(0, 1);
