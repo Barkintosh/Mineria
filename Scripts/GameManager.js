@@ -14,7 +14,7 @@ class GameManager extends GameObject
 
         this.offset = 0;
 
-        for(var i = 0; i < 3; i++)
+        for(var i = 0; i < 6; i++)
         {
             this.SpawnPipe();
         }
@@ -48,6 +48,15 @@ class GameManager extends GameObject
         this.scoreText.Text.text = this.score;
     }
 
+    Loose()
+    {
+        this.btn = Instantiate("GameObject");
+        this.btn.name = "Button_Start";
+        this.btn.AddComponent(new RectTransform(this.btn, {x: 0, y: 0}, {x:208, y:116}, {x: 2, y: 2}));
+        this.btn.AddComponent(new Image(this.btn, flapSprite, {x:354, y:118}, {x:52, y:29}));
+        this.btn.AddComponent(new Button(this.btn, () => {Start()}));
+    }
+
     Update()
     {
         /*
@@ -68,10 +77,14 @@ class Background extends GameObject
     constructor()
     {
         super();
-        this.offset = 0;
+        this.offset = -50;
         this.name = "Background";
         this.Transform.scale = {x: 4, y: 4};
         this.panels = [];
+    }
+
+    Start()
+    {
         for(var i = 0; i < 5; i++) this.NewPanel();
     }
 
@@ -152,13 +165,13 @@ class Bird
     {
         if(other.gameObject.Transform.name == "Pipe")
         {
+            this.manager.Loose();
             Destroy(this.gameObject);
         }
         else if(other.gameObject.name == "Gate")
         {
             this.manager.SpawnPipe();
             this.manager.AddToScore();
-            Destroy(other.gameObject);
         }
     }
 
@@ -192,6 +205,12 @@ class Gate extends GameObject
         down.reversed = false;
         down.Load();
     }
+
+    Update()
+    {
+        if(Math.abs(this.Transform.position.x < camera.Bounds().upLeft.x - 200))
+            Destroy(this);
+    }
 }
 
 class Pipe extends GameObject
@@ -218,8 +237,6 @@ class Pipe extends GameObject
         up.Transform.name = "Edge";
         up.name = "Edge";
         up.Transform.localScale = {x: this.scale, y: this.scale};
-
-
         var direction = 1;
         if(this.reversed) direction = -1;
 

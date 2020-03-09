@@ -87,6 +87,15 @@ function Update()
     RefreshList();
 }
 
+function GetObjectIndex(object)
+{
+    for(var i = 0; i < scene.length; i++)
+    {
+        if(object == scene[i]) return i;
+    }
+    return -1;
+}
+
 window.onresize = ResizeScreen;
 function ResizeScreen()
 {
@@ -103,7 +112,10 @@ function RefreshList()
     for(var i = 0; i < scene.length; i++)
     {
         var node = document.createElement("gameobject-element");
+        list.appendChild(node);
         var offset = 0;
+        var alpha = 1;
+        var size = 16;
         var arrow = "";
         var end = false;
         var t = scene[i].Transform;
@@ -115,6 +127,8 @@ function RefreshList()
             if(t.parent != undefined)
             {
                 offset += 15;
+                alpha -= 0.2;
+                size -= 2;
                 arrow = "&#8593; ";
                 t = t.parent;
             }
@@ -123,8 +137,8 @@ function RefreshList()
 
         node.innerHTML = arrow + scene[i].name;
         node.style.paddingLeft = offset;
-        node.style.color = "white";
-        list.appendChild(node);
+        node.style.fontSize = size;
+        node.style.color = "rgba(255, 255, 255, " + alpha + ")";
     }
 
     document.getElementById("scene-title").innerHTML = "Elements in scene : " + scene.length;
@@ -198,3 +212,4 @@ function Include(filename, type = "text/javascript")
 
     head.appendChild(script)
 }
+

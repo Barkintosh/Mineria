@@ -79,6 +79,13 @@ class Transform
             x: this.position.x - this.parent.position.x,
             y: this.position.y - this.parent.position.y
         }
+
+        var pIndex = GetObjectIndex(this.parent.gameObject);
+        var mIndex = GetObjectIndex(this.gameObject);
+        if(pIndex != -1 && mIndex != -1)
+        {
+            scene.move(mIndex, pIndex + 1);
+        }
     }
 
     UnParent()

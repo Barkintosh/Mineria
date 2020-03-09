@@ -7,16 +7,18 @@ class Renderer
 
     Out(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
-        var drawBounds = this.Bounds(position, size, scale);
-        var cameraBounds = camera.Bounds();
-        return this.BoundsOut(drawBounds, cameraBounds);
+        return this.BoundsOut(
+            this.Bounds(position, size, scale),
+            camera.Bounds()
+        );
     }
 
     UIOut(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
-        var drawBounds = this.Bounds(position, size, scale, true);
-        var canvasBounds = camera.CanvasBounds();
-        return this.BoundsOut(drawBounds, canvasBounds);
+        return this.BoundsOut(
+            this.Bounds(position, size, scale, true),
+            camera.CanvasBounds()
+        );
     }
 
     BoundsOut(drawBounds, otherBounds)
@@ -30,44 +32,30 @@ class Renderer
             return true;
         }
         else return false;
-
-
-        if(drawBounds.downRight.x < otherBounds.upLeft.x 
-        || drawBounds.downRight.y < otherBounds.upLeft.y
-        || drawBounds.upLeft.x > otherBounds.downRight.x
-        || drawBounds.upLeft.y > otherBounds.downRight.y
-        ) return true;
-        else return false;
     }
 
     Bounds(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1}, ui = false)
     {
-        var pos = 
-        {
-            x: position.x/* - (!ui ? camera.position.x : 0)*/,
-            y: position.y/* - (!ui ? camera.position.y : 0)*/
-        }
-
         return {
             upLeft: 
             {
-                x: pos.x - (size.x/2) * scale.x,
-                y: pos.y - (size.y/2) * scale.y
+                x: position.x - (size.x/2) * scale.x,
+                y: position.y - (size.y/2) * scale.y
             },
             upRight: 
             {
-                x: pos.x + (size.x/2) * scale.x,
-                y: pos.y - (size.y/2) * scale.y
+                x: position.x + (size.x/2) * scale.x,
+                y: position.y - (size.y/2) * scale.y
             },
             downLeft: 
             {
-                x: pos.x - (size.x/2) * scale.x,
-                y: pos.y + (size.y/2) * scale.y
+                x: position.x - (size.x/2) * scale.x,
+                y: position.y + (size.y/2) * scale.y
             },
             downRight: 
             {
-                x: pos.x + (size.x/2) * scale.x,
-                y: pos.y + (size.y/2) * scale.y
+                x: position.x + (size.x/2) * scale.x,
+                y: position.y + (size.y/2) * scale.y
             }
         };
     }

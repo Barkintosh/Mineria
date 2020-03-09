@@ -79,12 +79,6 @@ function GetRandomColor(minRed, maxRed, minGreen, maxGreen, minBlue, maxBlue)
 function IsIntersecting(ax, ay, bx, by, cx, cy, dx, dy)
 {
     var tmp = (cx - dx) * (by - ay) - (dy - cy) * (bx - ax);
-
-    console.log(tmp);
-
-
-
-
     /*
     var denominator = ((bx - ax) * (dy - cy)) - ((by - ay) * (dx - cx));
     var numeratorOne = ((ay - cy) * (dx - cx)) - ((ax - cx) * (dy - cy));
@@ -111,6 +105,11 @@ function BoxOverlap(box1, box2)
     }
     return false;
 }
+
+Array.prototype.move = function(from, to) 
+{
+    this.splice(to, 0, this.splice(from, 1)[0]);
+};
 
 /*
 let bounds = [
