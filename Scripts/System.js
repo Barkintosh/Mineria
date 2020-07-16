@@ -106,6 +106,9 @@ function ResizeScreen()
 
 function RefreshList()
 {
+    if(!panelOpen) return;
+    console.log("dzadz");
+
     const list = document.getElementById("scene-list");
     while (list.firstChild) {list.removeChild(list.lastChild);}
 
