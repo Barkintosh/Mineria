@@ -13,32 +13,43 @@ class Camera
     constructor(gameObject)
     {
         this.gameObject = gameObject;
-        this.zoom = 1;
         this.target = undefined;
         this.occlusion = 0;
+        this.lerp = 0.15;
         this.position = this.gameObject.Transform.position;
     }
 
-    FocusOn(transformTarget)
+    Focus(transform)
     {
-        this.target = transformTarget;
-    }
-
-    MoveTo(posX, posY)
-    {
-        this.gameObject.Transform.position.x = posX - canvas.width/2;
-        this.gameObject.Transform.position.y = posY - canvas.height/2;
+        this.target = transform;
     }
 
     Update()
     {
-        this.position = this.gameObject.Transform.position;
-        if(this.target != undefined) this.MoveTo(this.target.position.x, this.target.position.y);
+        this.Calculate();
+        this.Apply();
     }
 
-    ScreenToWorldPoint(mousePosition)
+    Calculate()
     {
-        return {x:mousePosition.x + this.gameObject.Transform.position.x, y: mousePosition.y + this.gameObject.Transform.position.y};
+        if(this.target != undefined) this.position = this.target.position;
+    }
+
+    Apply()
+    {
+        this.gameObject.Transform.position.x = lerp(this.gameObject.Transform.position.x, this.position.x - canvas.width/2, this.lerp);
+        this.gameObject.Transform.position.y = lerp(this.gameObject.Transform.position.y, this.position.y - canvas.height/2, this.lerp);
+    }
+
+    Teleport()
+    {
+        this.gameObject.Transform.position.x = this.position.x - canvas.width/2;
+        this.gameObject.Transform.position.y = this.position.y - canvas.height/2;
+    }
+
+    ScreenToWorldPoint(position)
+    {
+        return {x:position.x + this.gameObject.Transform.position.x, y: position.y + this.gameObject.Transform.position.y};
     }
 
     Bounds()

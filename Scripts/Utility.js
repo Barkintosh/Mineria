@@ -106,6 +106,11 @@ function BoxOverlap(box1, box2)
     return false;
 }
 
+function lerp (start, end, amt)
+{
+    return (1-amt)*start+amt*end
+}
+
 Array.prototype.move = function(from, to) 
 {
     this.splice(to, 0, this.splice(from, 1)[0]);

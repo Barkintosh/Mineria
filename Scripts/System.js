@@ -41,6 +41,13 @@ function Pause()
     pause = !pause;
 }
 
+function Sound(name)
+{
+    var audio = new Audio(name);
+    audio.play();
+    console.log(name);
+}
+
 function Start()
 {
     scene = [];
@@ -48,6 +55,8 @@ function Start()
     Refresh();
     camera = Instantiate("CameraObject").Camera;
     Instantiate("GameManager");
+
+    TogglePanel();
 }
 
 function Refresh()
@@ -107,7 +116,6 @@ function ResizeScreen()
 function RefreshList()
 {
     if(!panelOpen) return;
-    console.log("dzadz");
 
     const list = document.getElementById("scene-list");
     while (list.firstChild) {list.removeChild(list.lastChild);}

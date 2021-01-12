@@ -3,8 +3,9 @@ class GameObject
     constructor()
     {
         this.components = [];
-        this.name = "GameObject";
         this.AddComponent(new Transform(this));
+        this.name = this.constructor.name;
+        this.Transform.name = this.name;
     }
 
     Start()
