@@ -1,29 +1,15 @@
 class Transform
 {
-    constructor(gameObject = undefined, pos = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
+    constructor(gameObject = undefined, pos = new Vector2(), scale = new Vector2(), rotation = 0, parent = undefined, layer = 0)
     {
-        this.position = {
-            x:pos.x,
-            y:pos.y
-        };
-
-        this.localPosition =
-        {
-            x: 0,
-            y: 0
-        }
+        this.position = new Vector2(pos.x, pos.y);
+        this.localPosition = new Vector2(0, 0);
 
         this.parent = parent;
         if(parent != undefined) SetParent(parent);
 
-        this.scale = {
-            x:scale.x,
-            y:scale.y
-        };
-        this.localScale = {
-            x:scale.x,
-            y:scale.y
-        };
+        this.scale = new Vector2(scale.x, scale.y);
+        this.localScale = new Vector2(1, 1);
 
         this.rotation = rotation;
         this.localRotation = 0;
@@ -37,6 +23,11 @@ class Transform
             this.gameObject.RemoveComponent(this.gameObject.RectTransform);
     }
 
+    Up()
+    {
+        return new Vector2(Math.sin(this.rotation * (Math.PI/180)), -Math.cos(this.rotation * (Math.PI/180))).Normalized();
+    }
+
     Update()
     {
         if(this.parent != undefined)
@@ -48,11 +39,8 @@ class Transform
             this.position.y = this.parent.position.y + Math.sin(rad) * distance;
             this.rotation = this.localRotation + this.parent.rotation;
             */
-           this.position.x = this.parent.position.x + this.localPosition.x;
-           this.position.y = this.parent.position.y + this.localPosition.y;
-
-           this.scale.x = this.localScale.x * this.parent.scale.x;
-           this.scale.y = this.localScale.y * this.parent.scale.y;
+           this.position = this.position.AddWith(this.localPosition);
+           this.scale = this.scale.MultiplyWith(this.localScale);
         }
         if(this.debug) this.Draw();
     }
@@ -74,11 +62,7 @@ class Transform
     {
         this.parent = parent;
         this.parent.AddChild(this);
-        this.localPosition =
-        {
-            x: this.position.x - this.parent.position.x,
-            y: this.position.y - this.parent.position.y
-        }
+        this.localPosition = new Vector2(this.position.x - this.parent.position.x, this.position.y - this.parent.position.y);
 
         var pIndex = GetObjectIndex(this.parent.gameObject);
         var mIndex = GetObjectIndex(this.gameObject);
@@ -96,9 +80,9 @@ class Transform
 
     Reset()
     {
-        this.position = {x:0, y:0};
-        this.localPosition = {x:0, y:0};
-        this.size = {x:1 ,y:1};
+        this.position = Vector2.zero;
+        this.localPosition = Vector2.zero;
+        this.size = Vector2.one;
     }
 
     ToggleDebug()
@@ -108,8 +92,8 @@ class Transform
 
     Draw()
     {
-        Render.Rectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 1000, "grey", false, 1);
-        Render.Text(this.gameObject.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 1000);
-        Render.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 1000);
+        Renderer.Rectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 1000, "grey", false, 1);
+        Renderer.Text(this.gameObject.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 1000);
+        Renderer.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 1000);
     }
 }

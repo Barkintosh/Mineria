@@ -1,11 +1,8 @@
 class Renderer
 {
-    constructor()
-    {
-        this.drawCalls = [];
-    }
+    static calls = [];
 
-    Out(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
+    static Out(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
         return this.BoundsOut(
             this.Bounds(position, size, scale),
@@ -13,7 +10,7 @@ class Renderer
         );
     }
 
-    UIOut(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
+    static UIOut(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1})
     {
         return this.BoundsOut(
             this.Bounds(position, size, scale, true),
@@ -21,7 +18,7 @@ class Renderer
         );
     }
 
-    BoundsOut(drawBounds, otherBounds)
+    static BoundsOut(drawBounds, otherBounds)
     {
         if(drawBounds.downRight.x < otherBounds.upLeft.x || drawBounds.upLeft.x > otherBounds.downRight.x)
         {
@@ -34,7 +31,7 @@ class Renderer
         else return false;
     }
 
-    Bounds(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1}, ui = false)
+    static Bounds(position = {x: 0, y: 0}, size = {x: 1, y: 1} , scale = {x: 1, y: 1}, ui = false)
     {
         return {
             upLeft: 
@@ -60,18 +57,18 @@ class Renderer
         };
     }
 
-    Update()
+    static Update()
     {
-        this.drawCalls.sort(function(a, b) {return a.layer - b.layer;});
-        this.drawCalls.forEach(function(element) {element.Draw();});
-        this.drawCalls = [];
+        Renderer.calls.sort(function(a, b) {return a.layer - b.layer;});
+        Renderer.calls.forEach(function(element) {element.Draw();});
+        Renderer.calls = [];
     }
     
-    Sprite(sprite, coordinate, area, transform)
+    static Sprite(sprite, coordinate, area, transform)
     {
-        if(!this.Out(transform.position, area, transform.scale))
+        if(!Renderer.Out(transform.position, area, transform.scale))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new SpriteDrawCall(
                     sprite,
                     coordinate,
@@ -82,11 +79,11 @@ class Renderer
         }
     }
     
-    Rectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    static Rectangle(size, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
-        if(!this.Out(position, size, scale))
+        if(!Renderer.Out(position, size, scale))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new RectangleDrawCall(
                     false,
                     size,
@@ -102,11 +99,11 @@ class Renderer
         }
     }
 
-    UIRectangle(size = {x: 0, y: 0}, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    static UIRectangle(size = {x: 0, y: 0}, position = {x: 0, y: 0}, scale = {x: 1, y: 1}, rotation = 0, layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
     {
-        if(!this.UIOut(position, size, scale))
+        if(!Renderer.UIOut(position, size, scale))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new RectangleDrawCall(
                     true,
                     size,
@@ -121,17 +118,45 @@ class Renderer
             );
         }
     }
+
+    static Line(points = [], color = "rgba(255, 255, 255, 1)", width = 1, loop = false, layer = 0)
+    {
+        Renderer.calls.push(
+            new LineDrawCall(
+                false,
+                layer,
+                points,
+                color, 
+                width,
+                loop
+            )
+        );
+    }
+
+    static UILine(points = [], color = "rgba(255, 255, 255, 1)", width = 1, loop = false, layer = 0)
+    {
+        Renderer.calls.push(
+            new LineDrawCall(
+                true,
+                layer,
+                points,
+                color, 
+                width,
+                loop
+            )
+        );
+    }
     
-    Circle()
+    static Circle()
     {
         
     }
 
-    Text(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
+    static Text(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
     {
-        if(!this.Out(position))
+        if(!Renderer.Out(position))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new TextDrawCall(
                     false,
                     text,
@@ -144,11 +169,11 @@ class Renderer
         }
     }
 
-    UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white", offset = {x:0, y:0})
+    static UIText(rectTransform = null, text = "Text", font = "16px Arial", color = "white", offset = {x:0, y:0})
     {
-        if(!this.UIOut(rectTransform.position + offset))
+        if(!Renderer.UIOut(rectTransform.position + offset))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new TextDrawCall(
                     true,
                     text,
@@ -161,11 +186,11 @@ class Renderer
         }
     }
 
-    Image(sprite, coordinate, area, rectTransform)
+    static Image(sprite, coordinate, area, rectTransform)
     {
-        if(!this.UIOut(rectTransform.position, rectTransform.size, rectTransform.scale))
+        if(!Renderer.UIOut(rectTransform.position, rectTransform.size, rectTransform.scale))
         {
-            this.drawCalls.push(
+            Renderer.calls.push(
                 new ImageDrawCall(
                     sprite,
                     coordinate,
@@ -357,5 +382,63 @@ class TextDrawCall
         ctx.justify = "center"; 
         ctx.textBaseline = 'middle'; 
         ctx.fillText(this.text, point.x, point.y);
+    }
+}
+
+class LineDrawCall
+{
+    constructor(ui = false, layer = 0, points = [], color = "rgba(255, 255, 255, 1)", width = 1, loop = false)
+    {
+        this.loop = loop;
+        this.points = points;
+        this.ui = ui;
+        this.color = color;
+        this.width = width;
+        this.layer = layer;
+        if(this.ui) this.layer += 100;
+    }
+
+    Draw()
+    {
+        if(this.points.length == 0) return;
+
+        if(!this.ui)
+        {
+            for(var i = 0; i < this.points.length; i++)
+            {
+                this.points[i] = new Vector2(
+                    this.points[i].x - camera.gameObject.Transform.position.x,
+                    this.points[i].y - camera.gameObject.Transform.position.y
+                );
+            }
+        }
+
+        // BEGIN
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.width;
+        ctx.moveTo(
+            this.points[0].x,
+            this.points[0].y
+        );
+        // PATH
+        for(var i = 1; i < this.points.length; i++)
+        {
+            ctx.lineTo(
+                this.points[i].x,
+                this.points[i].y 
+            );
+        }
+        // END
+        if(this.loop)
+        {
+            ctx.lineTo(
+                this.points[0].x,
+                this.points[0].y
+            );
+        }
+
+        // DRAW
+        ctx.stroke();
     }
 }

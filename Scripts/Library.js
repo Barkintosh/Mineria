@@ -10,6 +10,9 @@ roguelike.src = "./Assets/roguelike.png";
 const dungeon = new Image();
 dungeon.src = "./Assets/dungeon.png";
 
+const hands = new Image();
+hands.src = "./Assets/hands.png";
+
 const f = new FontFace('Golden', 'url(Assets/Golden.ttf)');
 f.load().then(function(){document.fonts.add(f)});
 

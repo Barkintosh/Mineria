@@ -28,6 +28,7 @@ class GameObject
     {   
         this.components[this.components.length] = component;
         this[component.constructor.name] = this.components[this.components.length - 1];
+        return component;
     }
 
     GetComponent(component)

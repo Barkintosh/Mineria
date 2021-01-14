@@ -21,7 +21,7 @@ class SpriteRenderer
     {
         if(this.debug)
         {
-            Render.Rectangle(
+            Renderer.Rectangle(
                 this.area,
                 this.gameObject.Transform.position,
                 this.gameObject.Transform.scale,
@@ -32,7 +32,7 @@ class SpriteRenderer
         }
         else
         {
-            Render.Sprite(
+            Renderer.Sprite(
                 this.sprite,
                 this.coordinate,
                 this.area,

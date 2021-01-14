@@ -1,8 +1,9 @@
 var canvas = document.getElementById("canvas");
+canvas.oncontextmenu = function(e) { e.preventDefault(); e.stopPropagation(); }
 var ctx = canvas.getContext("2d");
+
 // SCENE
 var scene = [];
-var Render = new Renderer();
 // REFRESH SYSTEM
 var time = 0;
 var fps = 120;
@@ -15,6 +16,8 @@ var debug = false;
 // SETTINGS
 var gravity = 0.01;
 var camera;
+
+
 
 function Debug()
 {
@@ -90,7 +93,7 @@ function ShowFramePerSeconds()
 function Update()
 {
     for(var i = 0; i < scene.length; i++) scene[i].Update();
-    Render.Update();
+    Renderer.Update();
     UpdateCollisions();
     UpdateInputs();
     RefreshList();
@@ -155,7 +158,7 @@ function RefreshList()
     document.getElementById("scene-title").innerHTML = "Elements in scene : " + scene.length;
 }
 
-function Instantiate(object, position = {x:0, y:0})
+function Instantiate(object, position = new Vector2())
 {
     var newObject = eval("new " + object + "()");
     scene[scene.length] = newObject;

@@ -47,8 +47,8 @@ class BoxCollider
     Draw()
     {
         var pos = {x: this.gameObject.Transform.position.x + this.offset.x, y: this.gameObject.Transform.position.y + this.offset.y};
-        Render.Rectangle(this.size, pos, {x: 1, y: 1}, 0*/this.gameObject.Transform.rotation*/, 1000, "red", false, 1);
-        if(this.overlaping) Render.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "rgba(255, 0, 0, 0.25)");
+        Renderer.Rectangle(this.size, pos, {x: 1, y: 1}, 0*/this.gameObject.Transform.rotation*/, 1000, "red", false, 1);
+        if(this.overlaping) Renderer.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "rgba(255, 0, 0, 0.25)");
     }
 
     OnCollision(other)

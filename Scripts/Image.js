@@ -14,7 +14,7 @@ class Image
         if(this.debug) this.Draw();
         else
         {
-            Render.Image(
+            Renderer.Image(
                 this.sprite,
                 this.coordinate,
                 this.area,
@@ -37,9 +37,9 @@ class Image
 
     Draw()
     {
-        //Render.UIText("IMAGE", "21px Press Start 2P", "black", this.gameObject.RectTransform.position, 10000);
+        //Renderer.UIText("IMAGE", "21px Press Start 2P", "black", this.gameObject.RectTransform.position, 10000);
     
-        Render.UIRectangle(
+        Renderer.UIRectangle(
             this.gameObject.RectTransform.size,
             this.gameObject.RectTransform.position,
             this.gameObject.RectTransform.scale,

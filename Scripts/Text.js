@@ -11,6 +11,6 @@ class Text
 
     Update()
     {
-        Render.UIText(this.gameObject.RectTransform, this.text, this.size + "px "+ this.font, this.color);
+        Renderer.UIText(this.gameObject.RectTransform, this.text, this.size + "px "+ this.font, this.color);
     }
 }
