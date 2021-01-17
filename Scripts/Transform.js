@@ -1,7 +1,8 @@
-class Transform
+class Transform extends Component
 {
     constructor(gameObject = undefined, pos = new Vector2(), scale = new Vector2(1, 1), rotation = 0, parent = undefined, layer = 0)
     {
+        super();
         this.position = pos;
         this.localPosition = new Vector2(0, 0);
 
@@ -40,32 +41,13 @@ class Transform
             
             this.scale = this.parent.scale.MultiplyWith(this.localScale);
             this.rotation = this.parent.rotation + this.localRotation;
-
-            /*
-            var rad = this.rotation * (Math.PI/180);
-            var distance = this.localPosition.x + this.localPosition.y;
-            this.position = new Vector2
-            (
-                this.parent.position.x + Math.cos(rad) * distance,
-                this.parent.position.y + Math.sin(rad) * distance
-            );
-            */
-
             this.position = this.parent.position.Plus(
                 new Vector2(
-                    this.Up().x * this.localPosition.y + this.Right().x * this.localPosition.y,
-                    this.Up().y * this.localPosition.x + this.Right().y * this.localPosition.x
+                    this.Up().x * this.localPosition.y + this.Right().y * this.localPosition.x,
+                    this.Up().y * this.localPosition.x + this.Right().x * -this.localPosition.y
                 )
             );
-            
-            if(Inputs.mouse) 
-            {
-                console.log("UP     | x: " + this.Up().x + ", y: " + this.Up().y);
-                console.log("RIGHT  | x: " + this.Right().x + ", y: " + this.Right().y);
-            }
-
         }
-        if(this.debug) this.Draw();
     }
 
     AddChild(child)
@@ -106,11 +88,6 @@ class Transform
         this.position = Vector2.zero;
         this.localPosition = Vector2.zero;
         this.size = Vector2.one;
-    }
-
-    ToggleDebug()
-    {
-        this.debug = !this.debug;
     }
 
     Draw()

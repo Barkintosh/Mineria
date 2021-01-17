@@ -35,6 +35,7 @@ class Player extends Component
         this.left = Instantiate("HandObject").Hand;
         this.weapon = Instantiate("Weapon");
         this.weapon.Transform.SetParent(this.right.Transform);
+        this.weapon.Transform.localPosition = new Vector2(0, 40);
     }
 
     Update()
@@ -85,7 +86,6 @@ class Player extends Component
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
         this.right.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
         this.left.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
-        //this.weapon.Transform.localPosition = new Vector2(0, 50);
         //this.weapon.Transform.rotation = lerp(this.weapon.Transform.rotation, (Vector2.Angle(Vector2.up, this.Transform.position.Plus(this.right.offset).Direction(this.right.Transform.position)) + 180) * (180 / Math.PI), 0.1);
         
         
