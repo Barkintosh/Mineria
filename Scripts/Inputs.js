@@ -1,11 +1,4 @@
-var mouseX = 0;
-var mouseY = 0;
-var mouseDown = false;
-var mouse;
-var mouseUp = false;
-var mousePosition;
-
-class Input
+class Action
 {
     constructor(key, name, value = false)
     {
@@ -15,70 +8,79 @@ class Input
     }
 }
 
-var inputs = [];
-Add("KeyW", "up");
-Add("KeyS", "down");
-Add("KeyA", "left");
-Add("KeyD", "right");
-
-Add("KeyR", "next");
-Add("KeyF", "previous");
-
-function Get(name)
+class Inputs
 {
-    for(var i = 0; i < inputs.length; i++)
+    static mouseX = 0;
+    static mouseY = 0;
+    static mousePosition =  new Vector2();
+    static mouseDown = false;
+    static mouse = false;
+    static mouseUp = false;
+    static wheel = 0;
+    static actions = [];
+
+    static Get(name)
     {
-        if(inputs[i].name == name) return inputs[i].value;
+        for(var i = 0; i < Inputs.actions.length; i++)
+        {
+            if(Inputs.actions[i].name == name) return Inputs.actions[i].value;
+        }
+        return false;
     }
-    return false;
+    
+    static Add(key, name)
+    {
+        Inputs.actions[Inputs.actions.length] = new Action(key, name);
+    }
+
+    static Update()
+    {
+        Inputs.mouseDown = false;
+        Inputs.mouseUp = false;
+        Inputs.mousePosition = new Vector2(Inputs.mouseX, Inputs.mouseY);
+        Inputs.wheel = 0;
+    }
 }
 
-function Add(key, name)
-{
-    inputs[inputs.length] = new Input(key, name);
-}
+Inputs.Add("KeyW", "up");
+Inputs.Add("KeyS", "down");
+Inputs.Add("KeyA", "left");
+Inputs.Add("KeyD", "right");
+Inputs.Add("KeyR", "next");
+Inputs.Add("KeyF", "previous");
 
 document.addEventListener('keydown', function(event) 
 {
-    for(var i = 0; i < inputs.length; i++)
+    for(var i = 0; i < Inputs.actions.length; i++)
     {
-        if(event.code == inputs[i].key)
-            inputs[i].value = true;
+        if(event.code == Inputs.actions[i].key)
+        Inputs.actions[i].value = true;
     }
 });
-
 document.addEventListener('keyup', function(event) 
 {
-    for(var i = 0; i < inputs.length; i++)
+    for(var i = 0; i < Inputs.actions.length; i++)
     {
-        if(event.code == inputs[i].key)
-            inputs[i].value = false;
+        if(event.code == Inputs.actions[i].key)
+        Inputs.actions[i].value = false;
     }
 });
-function UpdateInputs()
-{
-    mouseDown = false;
-    mouseUp = false;
-    mousePosition = {x: mouseX, y:mouseY};
-}
 document.addEventListener('mousedown', function()
 {
-    mouseDown = true;
-    mouse = true;
+    Inputs.mouseDown = true;
+    Inputs.mouse = true;
 });
-
 document.addEventListener('mouseup', function()
 {
-    mouseUp = true;
-    mouse = false;
+    Inputs.mouseUp = true;
+    Inputs.mouse = false;
 });
 document.addEventListener('mousemove', function()
 {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
+    Inputs.mouseX = event.clientX;
+    Inputs.mouseY = event.clientY;
 });
-var wheel = 0;
 document.addEventListener('wheel', function()
 {
-    wheel = event.deltaY;
+    Inputs.wheel = event.deltaY;
 });

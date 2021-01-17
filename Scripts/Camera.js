@@ -49,7 +49,7 @@ class Camera
 
     ScreenToWorldPoint(position)
     {
-        return {x:position.x + this.gameObject.Transform.position.x, y: position.y + this.gameObject.Transform.position.y};
+        return new Vector2(position.x + this.gameObject.Transform.position.x, position.y + this.gameObject.Transform.position.y);
     }
 
     Bounds()

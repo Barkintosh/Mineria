@@ -1,123 +1,52 @@
-class BoxCollider
+class BoxCollider extends Collider
 {
-    constructor(gameObject, isTrigger = false, size = {x:1, y:1}, offset = {x:0, y:0})
+    constructor(size = new Vector2(), offset = new Vector2(), isTrigger = false)
     {
-        this.gameObject = gameObject;
+        super();
         this.baseSize = size;
         this.size = size;
         this.offset = offset;
         this.isTrigger = isTrigger;
-        this.overlaping = false;
-
-        this.wasOverlapping = false;
-
-        this.debug = debug;
-
     }
 
     Update()
     {
-        // UPDATE POSITION
+        super.Update();
         this.position = 
         {
-            x: (this.gameObject.Transform.position.x - camera.position.x) + this.offset.x * this.gameObject.Transform.scale.x,
-            y: (this.gameObject.Transform.position.y - camera.position.y) + this.offset.y * this.gameObject.Transform.scale.y
+            x: this.gameObject.Transform.position.x + this.offset.x * this.gameObject.Transform.scale.x,
+            y: this.gameObject.Transform.position.y + this.offset.y * this.gameObject.Transform.scale.y
         }
         this.size = 
         {
             x: this.baseSize.x * this.gameObject.Transform.scale.x,
             y: this.baseSize.y * this.gameObject.Transform.scale.y,
         }
-
-        if(!this.overlaping && this.wasOverlapping)
-        {
-            this.wasOverlapping = false;
-            this.overlaping = false;
-        }
-
-        // DEBUG
-        if(this.debug) this.Draw();
-    }
-
-    ToggleDebug()
-    {
-        this.debug = !this.debug;
     }
 
     Draw()
     {
-        var pos = {x: this.gameObject.Transform.position.x + this.offset.x, y: this.gameObject.Transform.position.y + this.offset.y};
-        Renderer.Rectangle(this.size, pos, {x: 1, y: 1}, 0*/this.gameObject.Transform.rotation*/, 1000, "red", false, 1);
-        if(this.overlaping) Renderer.Rectangle(this.size, pos, {x: 1, y: 1}, this.gameObject.Transform.rotation, 1000, "rgba(255, 0, 0, 0.25)");
+        Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "red", false, 2);
+        if(this.overlaping) Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "rgba(255, 0, 0, 0.25)", true);
     }
 
-    OnCollision(other)
+    Overlap(other)
     {
-        this.overlaping = true;
+        if(other == this) return false;
 
-        if(!this.wasOverlapping)
+        if(other instanceof BoxCollider)
         {
-            this.wasOverlapping = true;
-            for(let i = 0; i < this.gameObject.components.length; i++)
-            {
-                if(typeof this.gameObject.components[i].OnCollision !== 'undefined')
-                    this.gameObject.components[i].OnCollision(other);
-            }
-        }
-    }
-
-    BoxOverlap(other)
-    {
-        if(other != this)
-        {
-           if( this.gameObject.Transform.position.x + this.offset.x - this.size.x/2 < other.gameObject.Transform.position.x + other.offset.x + other.size.x/2
+            return this.gameObject.Transform.position.x + this.offset.x - this.size.x/2 < other.gameObject.Transform.position.x + other.offset.x + other.size.x/2
             && other.gameObject.Transform.position.x + other.offset.x - other.size.x/2 < this.gameObject.Transform.position.x + this.offset.x + this.size.x/2
             && this.gameObject.Transform.position.y + this.offset.y - this.size.y/2 < other.gameObject.Transform.position.y + other.offset.y + other.size.y/2
-            && other.gameObject.Transform.position.y + other.offset.y - other.size.y/2 < this.gameObject.Transform.position.y + this.offset.y + this.offset.y + this.size.y/2
-            )
-            {
-                //console.log(this.gameObject.Transform.name + " colliding with " + other.transform.name);
-                /*
-                if(!this.isTrigger || !other.isTrigger)
-                {
-                    var horizontalDistance = Math.abs(this.gameObject.Transform.position.x - other.gameObject.Transform.position.x);
-                    var verticalDistance = Math.abs(this.gameObject.Transform.position.y - other.gameObject.Transform.position.y);
-
-                    console.log(other.size.x/2 + this.size.x/2 - horizontalDistance);
-
-                    if(horizontalDistance < verticalDistance)
-                    {
-                        if(this.gameObject.Transform.position.x < other.gameObject.Transform.position.x)
-                        {
-                            //other.size.x/2 - horizontalDistance
-                            this.gameObject.Transform.position.x -= other.size.x/2 - horizontalDistance;
-                        }
-                        else
-                        {
-                            this.gameObject.Transform.position.x += other.size.x/2 + horizontalDistance;
-                        }
-                    }
-                    else
-                    {
-                        if(this.gameObject.Transform.position.y < other.gameObject.Transform.position.y)
-                        {
-                            this.gameObject.Transform.position.y -= other.size.y/2 + verticalDistance;
-                        }
-                        else
-                        {
-                            this.gameObject.Transform.position.y += other.size.y/2  + verticalDistance;
-                        }
-                    }
-                }
-                */
-                return true;
-            }
-            return false;
+            && other.gameObject.Transform.position.y + other.offset.y - other.size.y/2 < this.gameObject.Transform.position.y + this.offset.y + this.offset.y + this.size.y/2;
         }
-        else 
+        else if(other instanceof CircleCollider)
         {
             return false;
         }
+        
+        return false;
     }
     /*
     BoxOverlap(other)

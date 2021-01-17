@@ -1,105 +1,36 @@
-class Collider
+class Collider extends Component
 {
-    constructor(transform, newBounds)
+    constructor()
     {
-        this.transform = transform;
-        this.baseBounds = this.CopyArray(newBounds);
-        this.bounds = this.CopyArray(this.baseBounds);
-        this.shown = false;
+        super();
+        this.overlaping = false;
+        this.wasOverlapping = false;
+        this.isTrigger = false;
+        this.offset = new Vector2();
     }
 
     Update()
     {
-        // UPDATE POSITION
-        this.position = 
+        if(!this.overlaping && this.wasOverlapping)
         {
-            x: (this.transform.position.x - camera.Transform.position.x),
-            y: (this.transform.position.y - camera.Transform.position.y)
+            this.wasOverlapping = false;
+            this.overlaping = false;
         }
 
-        // UPDATE BOUNDS
-        for( let i = 0; i < this.bounds.length; i += 2)
-        {
-            this.bounds[i] = this.baseBounds[i] * this.transform.scale.x;
-            this.bounds[i+1] = this.baseBounds[i+1] * this.transform.scale.y;
-        }
-
-        // DEBUG
-        if(this.shown) this.Draw();
+        if(this.debug) this.Draw();
     }
 
-    ToggleDebug()
+    OnCollision(other)
     {
-        this.shown = !this.shown;
-    }
-
-    Draw(color = "white", width = 1)
-    {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = width;
-        ctx.beginPath();
-
-        ctx.moveTo(
-            (this.bounds[0] + this.position.x),
-            (this.bounds[1] + this.position.y)
-        );
-
-        for( let i = 2; i < this.bounds.length; i += 2)
+        this.overlaping = true;
+        if(!this.wasOverlapping)
         {
-            ctx.lineTo(
-                this.bounds[i] + this.position.x,
-                this.bounds[i+1] + this.position.y
-            );
-        }
-
-        ctx.lineTo(
-            this.bounds[0] + this.position.x,
-            this.bounds[1] + this.position.y
-        );
-        ctx.stroke();
-    }
-
-    IsColliding(other)
-    {    
-        for( let i = 0; i < this.bounds.length; i += 4)
-        {
-            for( let j = 0; j < other.bounds.length; j += 4)
+            this.wasOverlapping = true;
+            for(let i = 0; i < this.gameObject.components.length; i++)
             {
-                if(IsIntersecting(
-                    this.bounds[i] + this.transform.position.x,
-                    this.bounds[i+1] + this.transform.position.y,
-                    this.bounds[i+2] + this.transform.position.x,
-                    this.bounds[i+3] + this.transform.position.y,
-                    other.bounds[j] + other.transform.position.x,
-                    other.bounds[j+1] + other.transform.position.y,
-                    other.bounds[j+2] + other.transform.position.x,
-                    other.bounds[j+3] + other.transform.position.y
-                    ))
-                {
-                    return true;
-                }
+                if(typeof this.gameObject.components[i].OnCollision !== 'undefined')
+                    this.gameObject.components[i].OnCollision(other);
             }
         }
-        return false;
-    }
-
-    CopyArray(array)
-    {
-        var newArray = [];
-        for(var i = 0; i < array.length; i++)
-        {
-            newArray[i] = array[i];
-        }
-        return newArray;
-    }
-
-    IsPointInBounds(posX, posY)
-    {
-        var pos = ScreenToWorld(posX, posY);
-        if(pos.x > this.transform.position.x + this.bounds[0]
-        && pos.x < this.transform.position.x + this.bounds[4]
-        && pos.y > this.transform.position.y + this.bounds[1]
-        && pos.y < this.transform.position.y + this.bounds[5]) return true;
-        else return false;  
     }
 }

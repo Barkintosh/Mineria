@@ -32,7 +32,9 @@ function Debug()
         var rt = scene[i].GetComponent("RectTransform");
 		if(rt != null) rt.ToggleDebug();
 		var bc = scene[i].GetComponent("BoxCollider");
-        if(bc != null) bc.ToggleDebug();
+        if(bc != null) bc.ToggleDebug();		
+        var cc = scene[i].GetComponent("CircleCollider");
+        if(cc != null) cc.ToggleDebug();
         var img = scene[i].GetComponent("Image");
 		if(img != null) img.ToggleDebug();
     }
@@ -94,8 +96,8 @@ function Update()
 {
     for(var i = 0; i < scene.length; i++) scene[i].Update();
     Renderer.Update();
-    UpdateCollisions();
-    UpdateInputs();
+    Physics.Update();
+    Inputs.Update();
     RefreshList();
 }
 
@@ -166,7 +168,7 @@ function Instantiate(object, position = new Vector2())
     {
         newObject.Transform.position = position;
     }
-    newObject.Start();
+    if(newObject.start != null) newObject.Start();
     return newObject;
 }
 

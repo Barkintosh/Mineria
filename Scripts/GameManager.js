@@ -14,46 +14,39 @@ class Character extends GameObject
     {
         super();
         this.AddComponent(new SpriteRenderer(this, roguelike, {x:0, y:0}, {x:16, y:16}));
-        this.AddComponent(new BoxCollider(this, false, {x:15, y:10}));
-        this.AddComponent(new Player(this));
+        this.AddComponent(new Player());
         this.Transform.scale = new Vector2(10, 10);
         this.Transform.layer = 1;
     }
 }
 
-class Player
+class Player extends Component
 {
-    constructor(gameObject)
+    constructor()
     {
-        this.gameObject = gameObject;
+        super();
         this.velocity = new Vector2();
         this.speed = 5;
-        this.armLength = 100;
+        this.armLength = 150;
         this.acceleration = 0.5;
         this.direction = 1;
 
+        this.right = Instantiate("HandObject").Hand;
+        this.left = Instantiate("HandObject").Hand;
         this.weapon = Instantiate("Weapon");
-
-        this.rightArmLR = this.gameObject.AddComponent(new LineRenderer(this.gameObject));
-        this.rightArmLR.color = "rgba(229, 196, 157, 1)";
-        this.rightArmLR.width = 10;
-        this.rightShoulderPosition = Vector2.zero;
-        this.rightHandPosition = Vector2.zero;
-
-        this.leftArmLR = this.gameObject.AddComponent(new LineRenderer(this.gameObject));
-        this.leftArmLR.color = "rgba(229, 196, 157, 1)";
-        this.leftArmLR.width = 10;
-        this.leftShoulderPosition = Vector2.zero;
-        this.leftHandPosition = Vector2.zero;
+        this.weapon.Transform.SetParent(this.right.Transform);
     }
 
     Update()
     {
-        if(Get("up")) this.velocity.y = lerp(this.velocity.y, -1, this.acceleration);
-        else if(Get("down")) this.velocity.y = lerp(this.velocity.y, 1, this.acceleration);
+        this.right.attach = this.gameObject.Transform;
+        this.left.attach = this.gameObject.Transform;
+
+        if(Inputs.Get("up")) this.velocity.y = lerp(this.velocity.y, -1, this.acceleration);
+        else if(Inputs.Get("down")) this.velocity.y = lerp(this.velocity.y, 1, this.acceleration);
         else this.velocity.y = lerp(this.velocity.y, 0, this.acceleration);
 
-        if(Get("left"))
+        if(Inputs.Get("left"))
         {
             this.velocity.x = lerp(this.velocity.x, -1, this.acceleration);
 
@@ -63,7 +56,7 @@ class Player
                 this.direction = -1;
             }
         }
-        else if(Get("right"))
+        else if(Inputs.Get("right"))
         {
             this.velocity.x = lerp(this.velocity.x, 1, this.acceleration);
 
@@ -75,62 +68,74 @@ class Player
         }
         else this.velocity.x = lerp(this.velocity.x, 0, this.acceleration);
         this.gameObject.Transform.position.Add(this.velocity.MultiplyBy(this.speed));
-
-
-        var mousePos = camera.ScreenToWorldPoint(mousePosition);
-        this.rightShoulderPosition = new Vector2(
-            this.gameObject.Transform.position.x + 30 * this.direction,
-            this.gameObject.Transform.position.y - 24
-        );
-        var dirToMouse = new Vector2
-        (
-            mousePos.x - this.rightShoulderPosition.x,
-            mousePos.y - this.rightShoulderPosition.y
-        );
-
+        
+        var mousePos = camera.ScreenToWorldPoint(Inputs.mousePosition);
+        var dirToMouse = mousePos.Less(this.Transform.position.Plus(this.right.offset));
         var distToMouse = dirToMouse.Magnitude();
         if(distToMouse > this.armLength) distToMouse = this.armLength;
-
         dirToMouse = dirToMouse.Normalized();
 
-        var handPos = new Vector2(this.rightShoulderPosition.x + dirToMouse.x * distToMouse, this.rightShoulderPosition.y + dirToMouse.y * distToMouse);
-
-        this.weapon.Transform.position.x = lerp(this.weapon.Transform.position.x, handPos.x, 0.2);
-        this.weapon.Transform.position.y = lerp(this.weapon.Transform.position.y, handPos.y, 0.2);
-
-        var direction = new Vector2
-        (
-            this.weapon.Transform.position.x - this.rightShoulderPosition.x,
-            this.weapon.Transform.position.y - this.rightShoulderPosition.y
-        );
+        var handPosition = this.Transform.position.Plus(new Vector2(dirToMouse.x * distToMouse, dirToMouse.y * distToMouse));
+        this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, handPosition, 0.5);
+        this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, handPosition, 0.5);
+        this.right.offset = new Vector2(30 * this.direction, -25);
+        this.left.offset = new Vector2(-40 * this.direction, -25);
 
 
-
-        this.rightHandPosition = this.weapon.Transform.position.Plus(this.weapon.Transform.Up().MultiplyBy(-35));
-        this.leftHandPosition = Vector2.Lerp(
-            this.leftHandPosition,
-            new Vector2(
-                this.gameObject.Transform.position.x - 44 * this.direction,
-                this.gameObject.Transform.position.y + 30
-            ),
-            0.2
-        );
-        this.leftShoulderPosition = new Vector2(
-            this.gameObject.Transform.position.x - 44 * this.direction,
-            this.gameObject.Transform.position.y - 30
-        );
-
-        this.weapon.Transform.rotation = lerp(this.weapon.Transform.rotation, Vector2.Angle(Vector2.up, direction) * (180 / Math.PI), 0.1);
+        var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
+        this.right.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
+        this.left.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
+        //this.weapon.Transform.localPosition = new Vector2(0, 50);
+        //this.weapon.Transform.rotation = lerp(this.weapon.Transform.rotation, (Vector2.Angle(Vector2.up, this.Transform.position.Plus(this.right.offset).Direction(this.right.Transform.position)) + 180) * (180 / Math.PI), 0.1);
         
-        this.rightArmLR.points = [];
-        this.rightArmLR.Add(this.rightShoulderPosition);
-        this.rightArmLR.Add(this.rightHandPosition);
-
-        this.leftArmLR.points = [];
-        this.leftArmLR.Add(this.leftShoulderPosition);
-        this.leftArmLR.Add(this.leftHandPosition);
-
+        
+        
         camera.position = this.gameObject.Transform.position.Plus(this.weapon.Transform.position).DivideBy(2);
+
+        this.right.Draw(this.Transform.position.Plus(this.right.offset));
+        this.left.Draw(this.Transform.position.Plus(this.left.offset));
+    }
+}
+
+class HandObject extends GameObject
+{
+    constructor()
+    {
+        super();
+        this.AddComponent(new Hand());
+        this.AddComponent(new CircleCollider(30));
+        this.AddComponent(new LineRenderer([], 10, "rgba(229, 196, 157, 1)", false));
+        this.Transform.layer = 2;
+    }
+}
+
+class Hand extends Component
+{
+    constructor()
+    {
+        super();
+        this.offset = new Vector2();
+    }
+
+    Update()
+    {
+        Renderer.Rectangle
+        (
+            new Vector2(16, 16),
+            this.Transform.position,
+            this.Transform.scale,
+            this.Transform.rotation,
+            this.layer + 100,
+            "rgba(229, 196, 157, 1)",
+        );
+
+    }
+
+    Draw(shoulderPosition)
+    {
+        this.gameObject.LineRenderer.points = [];
+        this.gameObject.LineRenderer.Add(shoulderPosition);
+        this.gameObject.LineRenderer.Add(this.Transform.position);
     }
 }
 
@@ -140,8 +145,9 @@ class Weapon extends GameObject
     {
         super();
         this.AddComponent(new SpriteRenderer(this, roguelike, {x:44 * 16 + 44 - 4.5, y:6 * 16 + 6}, {x:16, y:16}));
+        this.AddComponent(new CircleCollider(6));
         this.Transform.layer = 2;
-        this.Transform.scale = new Vector2(10, 10);
+        this.Transform.localScale = new Vector2(10, 10);
     }
 }
 
@@ -150,13 +156,13 @@ class Map extends GameObject
     constructor()
     {
         super();
-        for(var x = 0; x < 50; x++)
+        for(var x = 0; x < 10; x++)
         {
-            for(var y = 0; y < 50; y++)
+            for(var y = 0; y < 10; y++)
             {
                 var s = Instantiate("Slab");
-                s.Transform.position.x = (x * 16 - 25 * 16) * 10;
-                s.Transform.position.y = (y * 16 - 25 * 16) * 10;
+                s.Transform.position.x = (x * 16 - 5 * 16) * 10;
+                s.Transform.position.y = (y * 16 - 5 * 16) * 10;
             }
         }
     }

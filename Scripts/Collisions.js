@@ -1,16 +1,19 @@
-function UpdateCollisions()
+class Physics
 {
-    var colliders = FindComponents("BoxCollider");
-
-    for(let i = 0; i < colliders.length; i++)
+    static Update()
     {
-        colliders[i].overlaping = false;
-        for(let j = 0; j < colliders.length; j++)
+        var colliders = FindComponents("BoxCollider");
+        colliders = colliders.concat(FindComponents("CircleCollider"));
+         for(let i = 0; i < colliders.length; i++)
         {
-            if(colliders[i].BoxOverlap(colliders[j]))
+            colliders[i].overlaping = false;
+            for(let j = 0; j < colliders.length; j++)
             {
-                colliders[i].OnCollision(colliders[j]);
-                colliders[j].OnCollision(colliders[i]);
+                if(colliders[i].Overlap(colliders[j]))
+                {
+                    colliders[i].OnCollision(colliders[j]);
+                    colliders[j].OnCollision(colliders[i]);
+                }
             }
         }
     }

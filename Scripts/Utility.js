@@ -29,6 +29,16 @@ function ToRadian(angle)
     return angle * Math.PI / 180;
 }
 
+function CopyArray(array)
+{
+    var newArray = [];
+    for(var i = 0; i < array.length; i++)
+    {
+        newArray[i] = array[i];
+    }
+    return newArray;
+}
+
 function Create2DArray(rows)
 {
     var arr = [];

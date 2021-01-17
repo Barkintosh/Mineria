@@ -63,7 +63,43 @@ class Renderer
         Renderer.calls.forEach(function(element) {element.Draw();});
         Renderer.calls = [];
     }
-    
+
+    static Circle(radius = 0, position = new Vector2(), layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    {
+        Renderer.calls.push(
+            new CircleDrawCall(
+                false,
+                radius,
+                position,
+                layer,
+                color,
+                fill,
+                width
+            )
+        );
+        //if(!Renderer.Out(position, size, scale))
+        //{
+        //}
+    }
+
+    static UICircle(radius = 0, position = new Vector2(), layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    {
+        Renderer.calls.push(
+            new CircleDrawCall(
+                true,
+                radius,
+                position,
+                layer,
+                color,
+                fill,
+                width
+            )
+        );
+        //if(!Renderer.Out(position, size, scale))
+        //{
+        //}
+    }
+
     static Sprite(sprite, coordinate, area, transform)
     {
         if(!Renderer.Out(transform.position, area, transform.scale))
@@ -145,11 +181,6 @@ class Renderer
                 loop
             )
         );
-    }
-    
-    static Circle()
-    {
-        
     }
 
     static Text(text = "Text", font = "16px Arial", color = "white", position = {x: 0, y: 0}, layer = 0)
@@ -281,6 +312,43 @@ class SpriteDrawCall
         );
 
         ctx.restore();
+    }
+}
+
+class CircleDrawCall
+{
+    constructor(ui = false, radius = 0, position = new Vector2(), layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
+    {
+        this.radius = radius;
+        this.color = color;
+        this.position = position; 
+        this.layer = layer;
+        this.fill = fill;
+        this.width = width;
+
+        this.ui = ui;
+        if(this.ui) this.layer += 100;
+    }
+
+    Draw()
+    {
+        var pos = new Vector2(this.position.x, this.position.y);
+        if(!this.ui)
+        {
+            pos = new Vector2
+            (
+                this.position.x - camera.gameObject.Transform.position.x,
+                this.position.y - camera.gameObject.Transform.position.y
+            );
+        }
+
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.width;
+        ctx.arc(pos.x, pos.y, this.radius, 0, 2 * Math.PI);
+        if(this.fill) ctx.fill();
+        else ctx.stroke();
     }
 }
 
