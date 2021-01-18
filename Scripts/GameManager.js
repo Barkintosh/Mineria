@@ -3,24 +3,25 @@ class GameManager extends GameObject
     constructor()
     {
         super();
-        Instantiate("Character");
+        Instantiate("CharacterObject");
         Instantiate("Map");
     }
 }
 
-class Character extends GameObject
+class CharacterObject extends GameObject
 {
     constructor()
     {
         super();
         this.AddComponent(new SpriteRenderer(this, roguelike, {x:0, y:0}, {x:16, y:16}));
+        this.AddComponent(new Character());
         this.AddComponent(new Player());
         this.Transform.scale = new Vector2(10, 10);
         this.Transform.layer = 1;
     }
 }
 
-class Player extends Component
+class Character extends Component
 {
     constructor()
     {
@@ -30,7 +31,7 @@ class Player extends Component
         this.armLength = 150;
         this.acceleration = 0.5;
         this.direction = 1;
-
+        this.aimPosition = new Vector2();
         this.right = Instantiate("HandObject").Hand;
         this.left = Instantiate("HandObject").Hand;
         this.weapon = Instantiate("Weapon");
@@ -42,36 +43,8 @@ class Player extends Component
     {
         this.right.attach = this.gameObject.Transform;
         this.left.attach = this.gameObject.Transform;
-
-        if(Inputs.Get("up")) this.velocity.y = lerp(this.velocity.y, -1, this.acceleration);
-        else if(Inputs.Get("down")) this.velocity.y = lerp(this.velocity.y, 1, this.acceleration);
-        else this.velocity.y = lerp(this.velocity.y, 0, this.acceleration);
-
-        if(Inputs.Get("left"))
-        {
-            this.velocity.x = lerp(this.velocity.x, -1, this.acceleration);
-
-            if(this.direction == 1)
-            {
-                this.gameObject.Transform.scale.x = -this.gameObject.Transform.scale.x;
-                this.direction = -1;
-            }
-        }
-        else if(Inputs.Get("right"))
-        {
-            this.velocity.x = lerp(this.velocity.x, 1, this.acceleration);
-
-            if(this.direction == -1)
-            {
-                this.gameObject.Transform.scale.x = -this.gameObject.Transform.scale.x;
-                this.direction = 1;
-            }
-        }
-        else this.velocity.x = lerp(this.velocity.x, 0, this.acceleration);
-        this.gameObject.Transform.position.Add(this.velocity.MultiplyBy(this.speed));
         
-        var mousePos = camera.ScreenToWorldPoint(Inputs.mousePosition);
-        var dirToMouse = mousePos.Less(this.Transform.position.Plus(this.right.offset));
+        var dirToMouse = this.aimPosition.Less(this.Transform.position.Plus(this.right.offset));
         var distToMouse = dirToMouse.Magnitude();
         if(distToMouse > this.armLength) distToMouse = this.armLength;
         dirToMouse = dirToMouse.Normalized();
@@ -86,14 +59,51 @@ class Player extends Component
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
         this.right.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
         this.left.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
-        //this.weapon.Transform.rotation = lerp(this.weapon.Transform.rotation, (Vector2.Angle(Vector2.up, this.Transform.position.Plus(this.right.offset).Direction(this.right.Transform.position)) + 180) * (180 / Math.PI), 0.1);
         
-        
-        
-        camera.position = this.gameObject.Transform.position.Plus(this.weapon.Transform.position).DivideBy(2);
 
         this.right.Draw(this.Transform.position.Plus(this.right.offset));
         this.left.Draw(this.Transform.position.Plus(this.left.offset));
+    }
+}
+
+class Player extends Component
+{
+    constructor()
+    {
+        super();
+    }
+
+    Update()
+    {
+        this.gameObject.Character.aimPosition = camera.ScreenToWorldPoint(Inputs.mousePosition);
+        camera.position = this.gameObject.Transform.position.Plus(this.gameObject.Character.weapon.Transform.position).DivideBy(2);
+
+        if(Inputs.Get("up")) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, -1, this.gameObject.Character.acceleration);
+        else if(Inputs.Get("down")) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, 1, this.gameObject.Character.acceleration);
+        else this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, 0, this.gameObject.Character.acceleration);
+
+        if(Inputs.Get("left"))
+        {
+            this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, -1, this.gameObject.Character.acceleration);
+
+            if(this.gameObject.Character.direction == 1)
+            {
+                this.gameObject.Character.gameObject.Transform.scale.x = -this.gameObject.Character.gameObject.Transform.scale.x;
+                this.gameObject.Character.direction = -1;
+            }
+        }
+        else if(Inputs.Get("right"))
+        {
+            this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, 1, this.gameObject.Character.acceleration);
+
+            if(this.gameObject.Character.direction == -1)
+            {
+                this.gameObject.Character.gameObject.Transform.scale.x = -this.gameObject.Character.gameObject.Transform.scale.x;
+                this.gameObject.Character.direction = 1;
+            }
+        }
+        else this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, 0, this.gameObject.Character.acceleration);
+        this.gameObject.Character.gameObject.Transform.position.Add(this.gameObject.Character.velocity.MultiplyBy(this.gameObject.Character.speed));
     }
 }
 
