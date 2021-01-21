@@ -5,7 +5,7 @@ class GameManager extends GameObject
         super();
         Instantiate("CharacterObject");
         Instantiate("Map");
-        Instantiate("Weapon");
+        Instantiate("WeaponObject");
     }
 }
 
@@ -35,13 +35,24 @@ class Character extends Component
         this.aimPosition = new Vector2();
         this.right = Instantiate("HandObject").Hand;
         this.left = Instantiate("HandObject").Hand;
-
         this.right.gameObject.AddComponent(new CircleCollider(30));
-        //this.weapon = Instantiate("Weapon");
-        //this.weapon.Transform.SetParent(this.right.Transform);
-        //this.weapon.Transform.localPosition = new Vector2(0, 40);
-
         this.weaponUnderHand = null;
+    }
+
+    Equip(w)
+    {
+        this.weapon = w;
+        this.weapon.Transform.SetParent(this.right.Transform);
+        this.weapon.Transform.localPosition = new Vector2(0, 40);
+    }
+
+    Drop()
+    {
+        if(this.weapon != undefined)
+        {
+            this.weapon.Transform.UnParent();
+            this.weapon = undefined;
+        }
     }
 
     Update()
@@ -58,7 +69,7 @@ class Character extends Component
         var leftHandPosition = this.Transform.position;
         
         this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, rightHandPosition, 0.5);
-        this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, leftHandPosition, 0.5);
+        this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
         this.right.offset = new Vector2(30 * this.direction, -25);
         this.left.offset = new Vector2(-40 * this.direction, -25);
 
@@ -85,11 +96,11 @@ class Player extends Component
         this.gameObject.Character.aimPosition = camera.ScreenToWorldPoint(Inputs.mousePosition);
         camera.position = this.gameObject.Transform.position.Plus(this.gameObject.Character.right.Transform.position).DivideBy(2);
 
-        if(Inputs.Get("up")) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, -1, this.gameObject.Character.acceleration);
-        else if(Inputs.Get("down")) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, 1, this.gameObject.Character.acceleration);
+        if(Inputs.Get("up").held) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, -1, this.gameObject.Character.acceleration);
+        else if(Inputs.Get("down").held) this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, 1, this.gameObject.Character.acceleration);
         else this.gameObject.Character.velocity.y = lerp(this.gameObject.Character.velocity.y, 0, this.gameObject.Character.acceleration);
 
-        if(Inputs.Get("left"))
+        if(Inputs.Get("left").held)
         {
             this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, -1, this.gameObject.Character.acceleration);
 
@@ -99,7 +110,7 @@ class Player extends Component
                 this.gameObject.Character.direction = -1;
             }
         }
-        else if(Inputs.Get("right"))
+        else if(Inputs.Get("right").held)
         {
             this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, 1, this.gameObject.Character.acceleration);
 
@@ -111,6 +122,22 @@ class Player extends Component
         }
         else this.gameObject.Character.velocity.x = lerp(this.gameObject.Character.velocity.x, 0, this.gameObject.Character.acceleration);
         this.gameObject.Character.gameObject.Transform.position.Add(this.gameObject.Character.velocity.MultiplyBy(this.gameObject.Character.speed));
+    
+    
+        if(this.gameObject.Character.right.weaponUnder != this.gameObject.Character.weapon)
+            Renderer.Text("Pickup", "16px Roboto", "white", this.gameObject.Character.right.Transform.position, 100);
+
+        if(Inputs.Get("interact").down)
+        {
+            if(this.gameObject.Character.weapon != undefined)
+            {
+                this.gameObject.Character.Drop();
+            }
+            else if(this.gameObject.Character.right.weaponUnder != undefined)
+            {
+                this.gameObject.Character.Equip(this.gameObject.Character.right.weaponUnder);
+            }
+        }
     }
 }
 
@@ -131,8 +158,21 @@ class Hand extends Component
     {
         super();
         this.offset = new Vector2();
+        this.weaponUnder = null;
     }
-    
+
+    OnTriggerEnter(other)
+    {
+        if(other.gameObject.Weapon != undefined)
+            this.weaponUnder = other.gameObject.Weapon;
+    }
+
+    OnTriggerExit(other)
+    {
+        if(other.gameObject.Weapon != undefined)
+            this.weaponUnder = undefined;
+    }
+
     Update()
     {
         Renderer.Rectangle
@@ -144,7 +184,6 @@ class Hand extends Component
             this.layer + 100,
             "rgba(229, 196, 157, 1)",
         );
-
     }
 
     Draw(shoulderPosition)
@@ -155,15 +194,29 @@ class Hand extends Component
     }
 }
 
-class Weapon extends GameObject
+class WeaponObject extends GameObject
 {
     constructor()
     {
         super();
         this.AddComponent(new SpriteRenderer(roguelike, {x:44 * 16 + 44 - 4.5, y:6 * 16 + 6}, {x:16, y:16}));
         this.AddComponent(new CircleCollider(6));
+        this.AddComponent(new Weapon());
         this.Transform.layer = 3;
         this.Transform.scale = new Vector2(10, 10);
+    }
+
+    Update()
+    {
+        super.Update();
+    }
+}
+
+class Weapon extends Component
+{
+    constructor()
+    {
+        super();
     }
 }
 

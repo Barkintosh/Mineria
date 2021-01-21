@@ -1,10 +1,13 @@
 class Action
 {
-    constructor(key, name, value = false)
+    constructor(key, name)
     {
         this.key = key;
         this.name = name;
-        this.value = false;
+
+        this.down = false;
+        this.held = false;
+        this.up = false;
     }
 }
 
@@ -23,7 +26,22 @@ class Inputs
     {
         for(var i = 0; i < Inputs.actions.length; i++)
         {
-            if(Inputs.actions[i].name == name) return Inputs.actions[i].value;
+            if(Inputs.actions[i].name == name) 
+            {
+                return Inputs.actions[i];
+            }
+        }
+        return false;
+    }
+
+    static KeyGet(key)
+    {
+        for(var i = 0; i < Inputs.actions.length; i++)
+        {
+            if(Inputs.actions[i].key == key) 
+            {
+                return Inputs.actions[i];
+            }
         }
         return false;
     }
@@ -35,6 +53,12 @@ class Inputs
 
     static Update()
     {
+        for(var i = 0; i < Inputs.actions.length; i++)
+        {
+            Inputs.actions[i].down = false;
+            Inputs.actions[i].up = false;
+        }
+
         Inputs.mouseDown = false;
         Inputs.mouseUp = false;
         Inputs.mousePosition = new Vector2(Inputs.mouseX, Inputs.mouseY);
@@ -47,14 +71,19 @@ Inputs.Add("KeyS", "down");
 Inputs.Add("KeyA", "left");
 Inputs.Add("KeyD", "right");
 Inputs.Add("KeyR", "next");
-Inputs.Add("KeyF", "previous");
+Inputs.Add("mouse0", "interact");
+Inputs.Add("mouse1", "throw");
 
 document.addEventListener('keydown', function(event) 
 {
     for(var i = 0; i < Inputs.actions.length; i++)
     {
         if(event.code == Inputs.actions[i].key)
-        Inputs.actions[i].value = true;
+        {
+            Inputs.actions[i].down = true;
+            Inputs.actions[i].held = true;
+            Inputs.actions[i].up = false;
+        }
     }
 });
 document.addEventListener('keyup', function(event) 
@@ -62,18 +91,36 @@ document.addEventListener('keyup', function(event)
     for(var i = 0; i < Inputs.actions.length; i++)
     {
         if(event.code == Inputs.actions[i].key)
-        Inputs.actions[i].value = false;
+        {
+            Inputs.actions[i].down = false;
+            Inputs.actions[i].held = false;
+            Inputs.actions[i].up = true;
+        }
     }
 });
-document.addEventListener('mousedown', function()
+document.addEventListener('mousedown', function(event)
 {
     Inputs.mouseDown = true;
     Inputs.mouse = true;
+
+    var a = Inputs.KeyGet("mouse" + event.button);
+    if(a != false)
+    {
+        a.down = true;
+        a.held = true;
+    }
 });
-document.addEventListener('mouseup', function()
+document.addEventListener('mouseup', function(event)
 {
     Inputs.mouseUp = true;
     Inputs.mouse = false;
+
+    var a = Inputs.KeyGet("mouse" + event.button);
+    if(a != false)
+    {
+        a.held = false;
+        a.up = true;
+    }
 });
 document.addEventListener('mousemove', function()
 {

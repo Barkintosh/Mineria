@@ -17,6 +17,7 @@ class SpriteRenderer extends Component
 
     Update()
     {
+        super.Update();
         Renderer.Sprite(
             this.sprite,
             this.coordinate,

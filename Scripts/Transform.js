@@ -68,6 +68,7 @@ class Transform extends Component
     {
         this.parent = parent;
         this.parent.AddChild(this);
+        this.localScale = this.scale;
         this.localPosition = new Vector2(this.position.x - this.parent.position.x, this.position.y - this.parent.position.y);
 
         var pIndex = GetObjectIndex(this.parent.gameObject);
@@ -80,8 +81,11 @@ class Transform extends Component
 
     UnParent()
     {
-        this.parent.RemoveChild(this);
-        this.parent = undefined;
+        if(this.parent != undefined)
+        {
+            this.parent.RemoveChild(this);
+            this.parent = undefined;
+        }
     }
 
     Reset()
