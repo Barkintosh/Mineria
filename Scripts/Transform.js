@@ -36,6 +36,7 @@ class Transform extends Component
 
     Update()
     {
+        super.Update();
         if(this.parent != undefined)
         {
             
@@ -90,19 +91,19 @@ class Transform extends Component
         this.size = Vector2.one;
     }
 
-    Draw()
+    Exhibit()
     {
         Renderer.Rectangle({x: 2, y:2}, this.position, {x:1,y:1}, 0, 1000, "blue", false, 1);
-        Renderer.Text(this.gameObject.name, "16px Roboto", "grey", {x: this.position.x, y: this.position.y - 15}, 1000);
-        Renderer.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "grey", {x: this.position.x, y: this.position.y + 16}, 1000);
+        Renderer.Text(this.gameObject.name, "16px Roboto", "white", {x: this.position.x, y: this.position.y + 15}, 1000);
+        Renderer.Text(Math.floor(this.position.x) + " | " + Math.floor(this.position.y), "12px Roboto", "white", {x: this.position.x, y: this.position.y + 30}, 1000);
         var a = [];
         a[a.length] = this.position;
         a[a.length] = this.position.Plus(this.Up().MultiplyBy(25));
-        Renderer.Line(a, "red", 1);
+        Renderer.Line(a, "red", 1, false, 100);
 
         a = [];
         a[a.length] = this.position;
         a[a.length] = this.position.Plus(this.Right().MultiplyBy(25));
-        Renderer.Line(a, "yellow", 1);
+        Renderer.Line(a, "yellow", 1, false, 100);
     }
 }

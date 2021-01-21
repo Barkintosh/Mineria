@@ -11,16 +11,13 @@ class LineRenderer extends Component
 
     Update()
     {
-        if(!this.debug)
-        {
-            Renderer.Line(
-                this.points, 
-                this.color,
-                this.width,
-                this.loop,
-                this.gameObject.Transform.layer
-            );
-        }
+        Renderer.Line(
+            this.points, 
+            this.color,
+            this.width,
+            this.loop,
+            this.gameObject.Transform.layer
+        );
     }
 
     Add(point = new Vector2())

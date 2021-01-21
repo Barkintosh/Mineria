@@ -1,16 +1,14 @@
-class SpriteRenderer
+class SpriteRenderer extends Component
 {
-    constructor(gameObject, sprite, coordinate, area)
+    constructor(sprite, coordinate, area)
     {   
+        super();
         this.sprite = sprite;
         this.area = area;
         this.coordinate = coordinate;
-        this.gameObject = gameObject;
-
-        this.debug = debug;
     }
 
-    NewSprite(sprite, coordinate, area)
+    Sprite(sprite, coordinate, area)
     {
         this.sprite = sprite;
         this.coordinate = coordinate;  
@@ -19,32 +17,25 @@ class SpriteRenderer
 
     Update()
     {
-        if(this.debug)
-        {
-            Renderer.Rectangle(
-                this.area,
-                this.gameObject.Transform.position,
-                this.gameObject.Transform.scale,
-                this.gameObject.Transform.rotation,
-                this.gameObject.Transform.layer,
-                "rgba(255, 255, 0, 0.25)"
-            );
-        }
-        else
-        {
-            Renderer.Sprite(
-                this.sprite,
-                this.coordinate,
-                this.area,
-                this.gameObject.Transform
-            );
-        }
+        Renderer.Sprite(
+            this.sprite,
+            this.coordinate,
+            this.area,
+            this.gameObject.Transform
+        );
     }
 
-    ToggleDebug()
+    Exhibit()
     {
-        if(this.debug == undefined) this.debug = true;
-        else this.debug = !this.debug;
+        super.Exhibit();
+        Renderer.Rectangle(
+            this.area,
+            this.gameObject.Transform.position,
+            this.gameObject.Transform.scale,
+            this.gameObject.Transform.rotation,
+            this.gameObject.Transform.layer + 1,
+            "rgba(255, 255, 0, 0.25)"
+        );
     }
 
     GetHorizontalShift()

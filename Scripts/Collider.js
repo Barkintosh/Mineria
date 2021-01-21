@@ -3,34 +3,64 @@ class Collider extends Component
     constructor()
     {
         super();
-        this.overlaping = false;
-        this.wasOverlapping = false;
         this.isTrigger = false;
         this.offset = new Vector2();
+        this.others = [];
+        this.id = Physics.GetID();
     }
 
-    Update()
+    Overlap(other)
     {
-        if(!this.overlaping && this.wasOverlapping)
+        return false;
+    }
+
+    Remember(other)
+    {
+        if(other == this || this.Know(other)) return;
+        
+        this.others[this.others.length] = other;
+    }
+
+    Forget(other)
+    {
+        if(other == this || !this.Know(other)) return;
+
+        for(var i = 0; i < this.others.length; i++)
         {
-            this.wasOverlapping = false;
-            this.overlaping = false;
+            if(this.others[i].id == other.id) this.others.splice(i, 1);
         }
-
-        if(this.debug) this.Draw();
     }
 
-    OnCollision(other)
+    Know(other)
     {
-        this.overlaping = true;
-        if(!this.wasOverlapping)
+        if(other == this) return false;
+        
+        for(var i = 0; i < this.others.length; i++)
         {
-            this.wasOverlapping = true;
-            for(let i = 0; i < this.gameObject.components.length; i++)
-            {
-                if(typeof this.gameObject.components[i].OnCollision !== 'undefined')
-                    this.gameObject.components[i].OnCollision(other);
-            }
+            if(this.others[i].id == other.id) return true;
+        }
+        return false;
+    }
+
+    OnOverlapEnter(other)
+    {
+        if(other == this) return false;
+        this.Remember(other);
+        for(var i = 0; i < this.gameObject.components.length; i++)
+        {
+            if(typeof this.gameObject.components[i].OnTriggerEnter !== 'undefined')
+                this.gameObject.components[i].OnTriggerEnter(other);
+        }
+    }
+
+    OnOverlapExit(other)
+    {
+        if(other == this) return false;
+        this.Forget(other);
+        for(var i = 0; i < this.gameObject.components.length; i++)
+        {
+            if(typeof this.gameObject.components[i].OnTriggerExit !== 'undefined')
+                this.gameObject.components[i].OnTriggerExit(other);
         }
     }
 }

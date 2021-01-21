@@ -24,7 +24,7 @@ class BoxCollider extends Collider
         }
     }
 
-    Draw()
+    Exhibit()
     {
         Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "red", false, 2);
         if(this.overlaping) Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "rgba(255, 0, 0, 0.25)", true);
@@ -32,8 +32,6 @@ class BoxCollider extends Collider
 
     Overlap(other)
     {
-        if(other == this) return false;
-
         if(other instanceof BoxCollider)
         {
             return this.gameObject.Transform.position.x + this.offset.x - this.size.x/2 < other.gameObject.Transform.position.x + other.offset.x + other.size.x/2
@@ -45,7 +43,6 @@ class BoxCollider extends Collider
         {
             return false;
         }
-        
         return false;
     }
     /*

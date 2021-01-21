@@ -52,5 +52,5 @@ class GameObject
     }
 
     OnTriggerEnter(other){}
-    OnCollision(other){}
+    OnTriggerExit(other){}
 }

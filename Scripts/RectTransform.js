@@ -1,9 +1,9 @@
 const VerticalAnchor = {"up":1, "middle":2, "down":3};
 const HorizontalAnchor = {"left":1, "middle":2, "right":3};
 
-class RectTransform
+class RectTransform extends Component
 {
-    constructor(gameObject = undefined, pos = {x:0, y:0}, size = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
+    constructor(pos = {x:0, y:0}, size = {x:0, y:0}, scale = {x:1, y:1}, rotation = 0, parent = undefined, layer = 0)
     {
         this.position = {
             x:pos.x,
@@ -29,7 +29,6 @@ class RectTransform
         this.name = "GameObject";
         this.debug = debug;
         this.layer = layer;
-        this.gameObject = gameObject;
         if(this.gameObject.Transform != undefined)
             this.gameObject.RemoveComponent(this.gameObject.Transform);
 
@@ -92,12 +91,7 @@ class RectTransform
         this.scale = {x:1 ,y:1};
     }
 
-    ToggleDebug()
-    {
-        this.debug = !this.debug;
-    }
-
-    Draw()
+    Exhibit()
     {
         Renderer.UIRectangle({x: 5, y:5}, this.position, {x:1,y:1}, 0, 0, "blue", false, 1);
         Renderer.UIText(this, this.gameObject.name, "16px Roboto", "blue", {x:0,y:-15});

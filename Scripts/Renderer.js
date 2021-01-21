@@ -59,9 +59,26 @@ class Renderer
 
     static Update()
     {
+        var min = 0;
+        var max = 0;
+        for(var i = 0; i < Renderer.calls.length; i++)
+        {
+            if(Renderer.calls[i].layer < min) min = Renderer.calls[i].layer;
+            else if(Renderer.calls[i].layer > max) max = Renderer.calls[i].layer;
+        }
+        for(var i = min; i <= max; i++)
+        {
+            for(var j = 0; j < Renderer.calls.length; j++)
+            {
+                if(Renderer.calls[j].layer === i) Renderer.calls[j].Draw();
+            }
+        }
+        Renderer.calls = [];
+        /*
         Renderer.calls.sort(function(a, b) {return a.layer - b.layer;});
         Renderer.calls.forEach(function(element) {element.Draw();});
         Renderer.calls = [];
+        */
     }
 
     static Circle(radius = 0, position = new Vector2(), layer = 0, color = "rgba(255, 255, 255, 1)", fill = true, width = 1)
@@ -341,10 +358,10 @@ class CircleDrawCall
                 this.position.y - camera.gameObject.Transform.position.y
             );
         }
-
-        ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.strokeStyle = this.color;
+
+        ctx.beginPath();
         ctx.lineWidth = this.width;
         ctx.arc(pos.x, pos.y, this.radius, 0, 2 * Math.PI);
         if(this.fill) ctx.fill();

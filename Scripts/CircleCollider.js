@@ -28,15 +28,14 @@ class CircleCollider extends Collider
         }
     }
 
-    Draw()
+    Exhibit()
     {
-        Renderer.Circle(this.radius, this.position, 1000, "red", false, 1);
-        if(this.overlaping) Renderer.Circle(this.radius, this.position, 1000, "rgba(255, 0, 0, 0.25)", true);
+        Renderer.Circle(this.radius, this.position, 100, "rgba(255, 0, 0, 1)", false, 1);
+        if(this.others.length > 0) Renderer.Circle(this.radius, this.position, 100, "rgba(255, 0, 0, 0.5)", true);
     }
 
     Overlap(other)
     {
-        if(other == this) return false;
         if(other instanceof CircleCollider)
         {
             var distance = Vector2.Distance(this.gameObject.Transform.position, other.gameObject.Transform.position);
