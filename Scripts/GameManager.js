@@ -14,10 +14,9 @@ class CharacterObject extends GameObject
     constructor()
     {
         super();
-        this.AddComponent(new SpriteRenderer(roguelike, {x:0, y:0}, {x:16, y:16}));
+        //this.AddComponent(new SpriteRenderer(roguelike, {x:0, y:0}, {x:16, y:16}));
         this.AddComponent(new Character());
         this.AddComponent(new Player());
-        this.Transform.scale = new Vector2(10, 10);
         this.Transform.layer = 1;
     }
 }
@@ -57,6 +56,10 @@ class Character extends Component
 
     Update()
     {
+        var s
+        Renderer.Rectangle(new Vector2(50, 100), this.Transform.position, this.Transform.scale, this.Transform.rotation, 1, "rgb(229, 194, 152)", true, 0);
+
+
         this.right.attach = this.gameObject.Transform;
         this.left.attach = this.gameObject.Transform;
         
@@ -70,8 +73,8 @@ class Character extends Component
         
         this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, rightHandPosition, 0.5);
         this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
-        this.right.offset = new Vector2(30 * this.direction, -25);
-        this.left.offset = new Vector2(-40 * this.direction, -25);
+        this.right.offset = new Vector2(25 * this.direction, -50);
+        this.left.offset = new Vector2(-25 * this.direction, -50);
 
 
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
@@ -129,13 +132,16 @@ class Player extends Component
 
         if(Inputs.Get("interact").down)
         {
+            if(this.gameObject.Character.right.weaponUnder != undefined)
+            {
+                this.gameObject.Character.Equip(this.gameObject.Character.right.weaponUnder);
+            }
+        }
+        if(Inputs.Get("drop").down)
+        {
             if(this.gameObject.Character.weapon != undefined)
             {
                 this.gameObject.Character.Drop();
-            }
-            else if(this.gameObject.Character.right.weaponUnder != undefined)
-            {
-                this.gameObject.Character.Equip(this.gameObject.Character.right.weaponUnder);
             }
         }
     }

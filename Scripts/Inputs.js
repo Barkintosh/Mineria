@@ -72,7 +72,7 @@ Inputs.Add("KeyA", "left");
 Inputs.Add("KeyD", "right");
 Inputs.Add("KeyR", "next");
 Inputs.Add("mouse0", "interact");
-Inputs.Add("mouse1", "throw");
+Inputs.Add("mouse1", "drop");
 
 document.addEventListener('keydown', function(event) 
 {
