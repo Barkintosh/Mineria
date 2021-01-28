@@ -73,8 +73,8 @@ class Character extends Component
         
         this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, rightHandPosition, 0.5);
         this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
-        this.right.offset = new Vector2(25 * this.direction, -50);
-        this.left.offset = new Vector2(-25 * this.direction, -50);
+        this.right.offset = new Vector2(25 * this.direction, -45);
+        this.left.offset = new Vector2(-25 * this.direction, -45);
 
 
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
