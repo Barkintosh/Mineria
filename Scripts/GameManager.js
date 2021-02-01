@@ -45,7 +45,7 @@ class Character extends Component
         this.velocity = new Vector2();
         this.speed = 5;
         this.armLength = 150;
-        this.acceleration = 0.5;
+        this.acceleration = 0.1;
         this.direction = 1;
         this.aimPosition = new Vector2();
         this.color = GetRandomColor(0, 255, 0, 255, 0, 255);
@@ -54,8 +54,8 @@ class Character extends Component
         this.right.gameObject.AddComponent(new CircleCollider(16));
         this.right.color = this.color;
 
-        this.left = Instantiate("HandObject").Hand;
-        this.left.color = this.color;
+        //this.left = Instantiate("HandObject").Hand;
+        //this.left.color = this.color;
 
         this.weaponUnderHand = null;
     }
@@ -79,7 +79,7 @@ class Character extends Component
     Update()
     {
         this.right.attach = this.gameObject.Transform;
-        this.left.attach = this.gameObject.Transform; 
+        //this.left.attach = this.gameObject.Transform; 
         var dirToMouse = this.aimPosition.Less(this.Transform.position.Plus(this.right.offset));
         
         var distToMouse = dirToMouse.Magnitude();
@@ -89,10 +89,10 @@ class Character extends Component
         var rightHandPosition = this.Transform.position.Plus(new Vector2(dirToMouse.x * distToMouse, dirToMouse.y * distToMouse));
         var leftHandPosition = this.Transform.position;
         
-        this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, rightHandPosition, 0.5);
-        this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
-        this.right.offset = new Vector2(25 * this.direction, 0);
-        this.left.offset = new Vector2(-25 * this.direction, 0);
+        this.right.Transform.position = rightHandPosition;
+        //this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
+        //this.right.offset = new Vector2(25 * this.direction, 0);
+        //this.left.offset = new Vector2(-25 * this.direction, 0);
 
 
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
@@ -100,11 +100,24 @@ class Character extends Component
         //this.left.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
 
         this.right.Draw(this.Transform.position.Plus(this.right.offset));
-        this.left.Draw(this.Transform.position.Plus(this.left.offset));
+        //this.left.Draw(this.Transform.position.Plus(this.left.offset));
 
         Renderer.Circle(this.size, this.Transform.position, this.Transform.layer, this.color);
         Renderer.Circle(this.size * 0.75, this.Transform.position, this.Transform.layer, "white");
-        Renderer.Circle(this.size * 0.5, this.Transform.position.Plus(dirToMouse.MultiplyBy(8)), this.Transform.layer, "black");
+
+
+        var eyePos = this.Transform.position;
+
+        if(this.weapon != null)
+        {
+            eyePos = this.Transform.position.Plus(dirToMouse.MultiplyBy(this.size * 0.35));
+        }
+        else
+        {
+            eyePos = this.Transform.position.Plus(this.velocity.MultiplyBy(this.size * 0.35));
+        }
+        
+        Renderer.Circle(this.size * 0.5, eyePos, this.Transform.layer, "black");
     }
 }
 
@@ -175,7 +188,7 @@ class HandObject extends GameObject
         super();
         this.AddComponent(new Hand());
         this.AddComponent(new LineRenderer([], 10, "rgba(229, 196, 157, 1)", false));
-        this.Transform.layer = 2;
+        this.Transform.layer = 1;
     }
 }
 
