@@ -16,8 +16,9 @@ class CharacterObject extends GameObject
     {
         super();
         //this.AddComponent(new SpriteRenderer(roguelike, {x:0, y:0}, {x:16, y:16}));
-        this.AddComponent(new Character());
         this.AddComponent(new CircleCollider(32));
+        this.AddComponent(new Character());
+        this.CircleCollider.radius = this.Character.size;
         this.Transform.layer = 1;
     }
 }
@@ -40,6 +41,7 @@ class Character extends Component
     constructor()
     {
         super();
+        this.size = 32;
         this.velocity = new Vector2();
         this.speed = 5;
         this.armLength = 150;
@@ -100,9 +102,9 @@ class Character extends Component
         this.right.Draw(this.Transform.position.Plus(this.right.offset));
         this.left.Draw(this.Transform.position.Plus(this.left.offset));
 
-        Renderer.Circle(32, this.Transform.position, this.Transform.layer, this.color);
-        Renderer.Circle(16, this.Transform.position, this.Transform.layer, "white");
-        Renderer.Circle(8, this.Transform.position.Plus(dirToMouse.MultiplyBy(8)), this.Transform.layer, "black");
+        Renderer.Circle(this.size, this.Transform.position, this.Transform.layer, this.color);
+        Renderer.Circle(this.size * 0.75, this.Transform.position, this.Transform.layer, "white");
+        Renderer.Circle(this.size * 0.5, this.Transform.position.Plus(dirToMouse.MultiplyBy(8)), this.Transform.layer, "black");
     }
 }
 
