@@ -3,7 +3,8 @@ class GameManager extends GameObject
     constructor()
     {
         super();
-        Instantiate("CharacterObject");
+        Instantiate("CharacterObject").AddComponent(new Player());
+        Instantiate("CharacterObject").AddComponent(new Mob());
         Instantiate("Map");
         Instantiate("WeaponObject");
     }
@@ -16,8 +17,21 @@ class CharacterObject extends GameObject
         super();
         //this.AddComponent(new SpriteRenderer(roguelike, {x:0, y:0}, {x:16, y:16}));
         this.AddComponent(new Character());
-        this.AddComponent(new Player());
+        this.AddComponent(new CircleCollider(32));
         this.Transform.layer = 1;
+    }
+}
+
+class Mob extends Component
+{
+    constructor()
+    {
+        super();
+    }
+
+    Update()
+    {
+
     }
 }
 
@@ -32,9 +46,15 @@ class Character extends Component
         this.acceleration = 0.5;
         this.direction = 1;
         this.aimPosition = new Vector2();
+        this.color = GetRandomColor(0, 255, 0, 255, 0, 255);
+
         this.right = Instantiate("HandObject").Hand;
+        this.right.gameObject.AddComponent(new CircleCollider(16));
+        this.right.color = this.color;
+
         this.left = Instantiate("HandObject").Hand;
-        this.right.gameObject.AddComponent(new CircleCollider(30));
+        this.left.color = this.color;
+
         this.weaponUnderHand = null;
     }
 
@@ -56,14 +76,10 @@ class Character extends Component
 
     Update()
     {
-        var s
-        Renderer.Rectangle(new Vector2(50, 100), this.Transform.position, this.Transform.scale, this.Transform.rotation, 1, "rgb(229, 194, 152)", true, 0);
-
-
         this.right.attach = this.gameObject.Transform;
-        this.left.attach = this.gameObject.Transform;
-        
+        this.left.attach = this.gameObject.Transform; 
         var dirToMouse = this.aimPosition.Less(this.Transform.position.Plus(this.right.offset));
+        
         var distToMouse = dirToMouse.Magnitude();
         if(distToMouse > this.armLength) distToMouse = this.armLength;
         dirToMouse = dirToMouse.Normalized();
@@ -73,17 +89,20 @@ class Character extends Component
         
         this.right.Transform.position = Vector2.Lerp(this.right.Transform.position, rightHandPosition, 0.5);
         this.left.Transform.position = Vector2.Lerp(this.left.Transform.position, rightHandPosition, 0.5);
-        this.right.offset = new Vector2(25 * this.direction, -45);
-        this.left.offset = new Vector2(-25 * this.direction, -45);
+        this.right.offset = new Vector2(25 * this.direction, 0);
+        this.left.offset = new Vector2(-25 * this.direction, 0);
 
 
         var handRotation = Vector2.Angle(Vector2.up, dirToMouse) * (180 / Math.PI);
         this.right.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
         //this.left.Transform.rotation = lerp(this.right.Transform.rotation, handRotation, 0.1);
-        
 
         this.right.Draw(this.Transform.position.Plus(this.right.offset));
         this.left.Draw(this.Transform.position.Plus(this.left.offset));
+
+        Renderer.Circle(32, this.Transform.position, this.Transform.layer, this.color);
+        Renderer.Circle(16, this.Transform.position, this.Transform.layer, "white");
+        Renderer.Circle(8, this.Transform.position.Plus(dirToMouse.MultiplyBy(8)), this.Transform.layer, "black");
     }
 }
 
@@ -165,6 +184,7 @@ class Hand extends Component
         super();
         this.offset = new Vector2();
         this.weaponUnder = null;
+        this.color = "white";
     }
 
     OnTriggerEnter(other)
@@ -181,14 +201,14 @@ class Hand extends Component
 
     Update()
     {
-        Renderer.Rectangle
+        this.gameObject.LineRenderer.color = this.color;
+        Renderer.Circle
         (
-            new Vector2(16, 16),
+            10,
             this.Transform.position,
-            this.Transform.scale,
-            this.Transform.rotation,
-            this.layer + 100,
-            "rgba(229, 196, 157, 1)",
+            this.Transform.layer,
+            this.color,
+            true
         );
     }
 
@@ -231,6 +251,7 @@ class Map extends GameObject
     constructor()
     {
         super();
+        /*
         for(var x = 0; x < 10; x++)
         {
             for(var y = 0; y < 10; y++)
@@ -240,6 +261,7 @@ class Map extends GameObject
                 s.Transform.position.y = (y * 16 - 5 * 16) * 10;
             }
         }
+        */
     }
 }
 
