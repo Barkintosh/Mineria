@@ -4,7 +4,6 @@ class GameManager extends GameObject
     {
         super();
         Instantiate("CharacterObject").AddComponent(new Player());
-        Instantiate("CharacterObject").AddComponent(new Mob());
         Instantiate("Map");
         Instantiate("WeaponObject");
     }
@@ -16,6 +15,7 @@ class CharacterObject extends GameObject
     {
         super();
         //this.AddComponent(new SpriteRenderer(roguelike, {x:0, y:0}, {x:16, y:16}));
+        this.AddComponent(new Rigidbody(0));
         this.AddComponent(new CircleCollider(32));
         this.AddComponent(new Character());
         this.CircleCollider.radius = this.Character.size;
@@ -162,7 +162,7 @@ class Player extends Component
     
     
         if(this.gameObject.Character.right.weaponUnder != this.gameObject.Character.weapon)
-            Renderer.Text("Pickup", "16px Roboto", "white", this.gameObject.Character.right.Transform.position, 100);
+            Renderer.Text("pickup", "32px Kid", "black", this.gameObject.Character.right.Transform.position, 100);
 
         if(Inputs.Get("interact").down)
         {
@@ -240,11 +240,11 @@ class WeaponObject extends GameObject
     constructor()
     {
         super();
-        this.AddComponent(new SpriteRenderer(roguelike, {x:44 * 16 + 44 - 4.5, y:6 * 16 + 6}, {x:16, y:16}));
+        this.AddComponent(new SpriteRenderer(weapons, new Vector2(220, 0), new Vector2(200, 360)));
         this.AddComponent(new CircleCollider(6));
         this.AddComponent(new Weapon());
         this.Transform.layer = 3;
-        this.Transform.scale = new Vector2(10, 10);
+        this.Transform.scale = new Vector2(0.5, 0.5);
     }
 
     Update()
@@ -266,29 +266,36 @@ class Map extends GameObject
     constructor()
     {
         super();
-        /*
+        
         for(var x = 0; x < 10; x++)
         {
-            for(var y = 0; y < 10; y++)
-            {
-                var s = Instantiate("Slab");
-                s.Transform.position.x = (x * 16 - 5 * 16) * 10;
-                s.Transform.position.y = (y * 16 - 5 * 16) * 10;
-            }
+            var s = Instantiate("BlockObject");
+            s.Transform.position.x = x * 32;
+            s.Transform.position.y = 100;
         }
-        */
     }
 }
 
-class Slab extends GameObject
+class BlockObject extends GameObject
 {
     constructor()
     {
         super();
-        var cX = 17 * 17 + 17 * GetRandomInt(0, 4);
-        var cY = 13 * 17;
-        this.Transform.scale = {x: 10, y: 10};
+        this.AddComponent(new BoxCollider(new Vector2(32, 32)));
+        this.AddComponent(new Block());
         this.layer = 0;
-        this.AddComponent(new SpriteRenderer(dungeon, {x:cX, y:cY}, {x:16, y:16}));
+    }
+}
+
+class Block extends Component
+{
+    constructor()
+    {
+        super();
+    }
+
+    Update()
+    {
+        Renderer.Rectangle(new Vector2(32, 32), this.Transform.position, this.Transform.scale, this.Transform.rotation, this.Transform.layer, "black");
     }
 }

@@ -1,9 +1,8 @@
 class Rigidbody
 {
-    constructor(gameObject, mass = 1)
+    constructor(mass = 1)
     {
         this.activated = true;
-        this.gameObject = gameObject;
         this.velocity = {x: 0, y: 0};
         this.gravityScale = 1;
         this.mass = mass;

@@ -12,22 +12,24 @@ class BoxCollider extends Collider
     Update()
     {
         super.Update();
-        this.position = 
-        {
-            x: this.gameObject.Transform.position.x + this.offset.x * this.gameObject.Transform.scale.x,
-            y: this.gameObject.Transform.position.y + this.offset.y * this.gameObject.Transform.scale.y
-        }
-        this.size = 
-        {
-            x: this.baseSize.x * this.gameObject.Transform.scale.x,
-            y: this.baseSize.y * this.gameObject.Transform.scale.y,
-        }
+        this.position = this.gameObject.Transform.position.Plus(new Vector2(this.gameObject.Transform.Up().x * this.offset.y + this.gameObject.Transform.Right().y * this.offset.x, this.gameObject.Transform.Up().y * this.offset.x + this.gameObject.Transform.Right().x * -this.offset.y).MultiplyWith(this.gameObject.Transform.scale));
+        this.size = this.baseSize.MultiplyWith(this.gameObject.Transform.scale);
     }
 
     Exhibit()
     {
         Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "red", false, 2);
         if(this.overlaping) Renderer.Rectangle(this.size, this.position, new Vector2(1, 1), 0, 1000, "rgba(255, 0, 0, 0.25)", true);
+    }
+
+    Bounds()
+    {
+        return {
+            w: 0,
+            x: 0,
+            y: 0,
+            z: 0
+        };
     }
 
     Overlap(other)
@@ -45,62 +47,6 @@ class BoxCollider extends Collider
         }
         return false;
     }
-    /*
-    BoxOverlap(other)
-    {
-        console.log(this.position.x + " > " + other.position.x + other.size.x/2);
-
-        if(other != this)
-        {
-           if( this.position.x < other.position.x + other.size.x
-            && other.position.x < this.position.x + this.size.x
-            && this.position.y < other.position.y + other.size.y
-            && other.position.y < this.position.y + this.size.y
-            )
-            {
-                //console.log(this.gameObject.Transform.name + " colliding with " + other.transform.name);
-                /*
-                if(!this.isTrigger || !other.isTrigger)
-                {
-                    var horizontalDistance = Math.abs(this.position.x - other.position.x);
-                    var verticalDistance = Math.abs(this.position.y - other.position.y);
-
-                    console.log(other.size.x/2 + this.size.x/2 - horizontalDistance);
-
-                    if(horizontalDistance < verticalDistance)
-                    {
-                        if(this.position.x < other.position.x)
-                        {
-                            //other.size.x/2 - horizontalDistance
-                            this.gameObject.Transform.position.x -= other.size.x/2 - horizontalDistance;
-                        }
-                        else
-                        {
-                            this.gameObject.Transform.position.x += other.size.x/2 - horizontalDistance;
-                        }
-                    }
-                    else
-                    {
-                        if(this.position.y < other.position.y)
-                        {
-                            this.gameObject.Transform.position.y -= other.size.y/2 - verticalDistance;
-                        }
-                        else
-                        {
-                            this.gameObject.Transform.position.y += other.size.y/2  - verticalDistance;
-                        }
-                    }
-                }
-                return true;
-            }
-            return false;
-        }
-        else 
-        {
-            return false;
-        }
-    }
-    */
 
     IsPointInBounds(position)
     {

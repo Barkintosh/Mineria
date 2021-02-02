@@ -12,20 +12,12 @@ class CircleCollider extends Collider
     Update()
     {
         super.Update();
-        this.position = new Vector2
-        (
-            this.gameObject.Transform.position.x + this.offset.x * this.gameObject.Transform.scale.x,
-            this.gameObject.Transform.position.y + this.offset.y * this.gameObject.Transform.scale.y
-        );
+        this.position = this.gameObject.Transform.position.Plus(new Vector2(this.gameObject.Transform.Up().x * this.offset.y + this.gameObject.Transform.Right().y * this.offset.x, this.gameObject.Transform.Up().y * this.offset.x + this.gameObject.Transform.Right().x * -this.offset.y).MultiplyWith(this.gameObject.Transform.scale));
             
         if(this.gameObject.Transform.scale.x >= this.gameObject.Transform.y)
-        {
             this.radius = this.baseRadius * this.gameObject.Transform.scale.x;
-        }
         else
-        {
             this.radius = this.baseRadius * this.gameObject.Transform.scale.y;
-        }
     }
 
     Exhibit()
@@ -38,11 +30,16 @@ class CircleCollider extends Collider
     {
         if(other instanceof CircleCollider)
         {
-            var distance = Vector2.Distance(this.gameObject.Transform.position, other.gameObject.Transform.position);
+            var distance = Vector2.Distance(this.gameObject.Transform.position.Plus(this.offset), other.gameObject.Transform.position.Plus(other.offset));
             return distance < this.radius + other.radius;
         }
         else if(other instanceof BoxCollider)
         {
+            var distance = Vector2.Distance(this.gameObject.Transform.position.Plus(this.offset), other.gameObject.Transform.position.Plus(other.offset));
+            if(distance < this.radius) return true;
+
+
+
             return false;
         }
         return false;
